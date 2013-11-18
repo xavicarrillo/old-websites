@@ -1,0 +1,1 @@
+awk -f code.awk -s "\n" " "

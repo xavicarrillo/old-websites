@@ -1,0 +1,42 @@
+<html>
+
+<?php
+
+$link= mysql_connect("localhost","rayosuva","vor5toh3") or die ("no puc conectar a localhost :(");
+mysql_select_db("rayosuva_db", $link) or die ("no puc conectar a la base de dades");
+$result = mysql_query("SELECT * FROM categoria order by nom", $link) or die ("no puc fer la query");
+
+$result=mysql_query("select * from categoria order by nom",$link);
+$x=0;
+
+echo "<center><table border=\"1\" cellspacing=\"5\"><tr>";
+
+/*
+recorrem tota la taula categories. Per cada una hem de mirar si es de nivell 0 (llavors li posem bold i tamany 3), fem un <br>. Si no ho es es que es un subnivell (i com que ordenem per nom fijo que pertany al mateix nivell), per tant escribim tots els camps where idsub=$cat[1] (idsub??) amb <p> i lletra=2
+*/
+
+while ($cat=mysql_fetch_row($result)) {
+
+  if ($cat[2]==0) {  // si el nivell es 0 fem bold i lletra 3
+   echo "<td width=45% valign=top><FONT FACE=\"Verdana, Helvetica, Arial\" SIZE=5>
+	 <B><a href=\"directorio.cgi.php?idcat=$cat[0]\">$cat[1]</a></B>";
+  $passem_de_nivell=0;
+  $x++; //una categoria principal mes, a la que portem dos fem una nova linea
+
+  } else {
+	if ($passem_de_nivell==0) {echo "<br>";}
+        echo "<p><FONT FACE=\"Verdana, Helvetica, Arial\" SIZE=3>
+	      <a href=\"directorio.cgi.php?idcat=$cat[0]\">$cat[1]</a></p>";
+	$passem_de_nivell=1;
+  }
+  
+if ($cat[2]!=0 && $x % 2==0) {echo "<tr><tr>";} //xequejem si el nivell ja no es 0 i la x es imparell llavors <tr>
+
+}
+
+echo "</table>";
+
+?>
+
+
+</html>
