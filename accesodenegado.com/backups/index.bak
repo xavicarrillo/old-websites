@@ -1,0 +1,23 @@
+<html>
+<head>
+<title>[accesodenegado]</title>
+<link href="scripts/acceso.css" rel="stylesheet" type="text/css">
+
+</head>
+
+<body bgcolor="#000000" link="#FFFFFF" vlink="#FFFFFF" alink="#FFFFFF">
+<div align="center"> 
+  <p class="text"><br>
+    <br>
+    <img src="ima/logo.gif"><br>
+    <?php
+    $domain = substr ($HTTP_HOST, -3);
+	print "<img src=ima/logo$domain.gif><br><span class=text12>...coming soon...</span><br><br><span class=textaronj>accesodenegado team &copy; 2002</span> <br>";
+	print "<a href=mailto:info@accesodenegado.$domain class=linksblancs>info@accesodenegado.$domain</a>"; 
+	?>
+
+	
+  </p>
+</div>
+</body>
+</html>

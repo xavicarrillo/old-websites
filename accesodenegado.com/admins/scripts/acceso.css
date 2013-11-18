@@ -1,0 +1,22 @@
+a.links{font-family:verdana,arial,helvetica;font-size:10px;color:#993366;text-decoration:underline}
+
+a.linksblancs{font-family:verdana,arial,helvetica;font-size:10px;color:white;text-decoration:underline}
+
+
+.text{font-family:verdana;font-size:10px;color:#FFFFFF;text-decoration:none;line-height: normal}
+
+.textBI{font-family:verdana,arial,helvetica;font-size:10px;color:black;text-decoration:none;line-height: 1; font-weight: bold; font-style: italic}
+
+.textaronj{font-family:verdana,arial,helvetica;font-size:10px;color:#FF6600;text-decoration:none;line-height: 1}
+
+.text12{font-family:verdana,arial,helvetica;font-size:12px;text-decoration:none;line-height: 1}
+
+
+.textBold{font-family:verdana,arial,helvetica;font-size:10px;color:black;text-decoration:none;font-weight: bold}
+
+tr.texttr{font-family:verdana,arial,helvetica;font-size:10px;color:white;text-decoration:none;line-height: 1}
+
+input { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-weight: normal}
+
+select { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-weight: normal; border-style: solid; border-color: black; border-width: 1px}
+

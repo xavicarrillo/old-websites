@@ -1,0 +1,411 @@
+# Webalizer V2.01-09 Incremental Data - 02/12/2003 19:59:59
+2003 2 12 19 59 59
+709 630 20 64 40 12 1474982 132 26 0
+1 42 119 1 12
+8 5 8266 3 3 3
+11 5 4123 7 7 6
+197 193 438970 2 37 2
+101 72 160393 4 27 4
+7 5 8932 2 2 2
+220 202 441464 1 34 1
+3 2 5050 2 1 1
+0 0 0 0 0 0
+0 0 0 0 0 0
+87 75 243179 2 7 1
+20 18 36107 4 9 4
+55 53 128498 1 5 2
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+2 0 427 1
+2 1 769 1
+0 0 0 0
+0 0 0 0
+0 0 0 0
+4 1 1801 1
+1 1 3676 1
+2 0 427 1
+9 4 7485 2
+0 0 0 0
+5 5 8505 1
+15 13 22815 3
+30 23 50933 9
+68 49 106021 18
+16 13 20398 5
+0 0 0 0
+26 24 41045 4
+79 78 190885 18
+154 138 288545 35
+253 238 599443 23
+38 38 119950 5
+5 4 11857 4
+0 0 0 0
+0 0 0 0
+0
+0
+0
+630
+0
+0
+0
+0
+0
+0
+0
+5
+0
+0
+46
+0
+0
+0
+0
+0
+4
+24
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+# -urls- 
+/scripts/accesodenegado.js
+0 8 0 408 0 0
+/
+0 24 0 60441 16 4
+/update.php
+0 3 0 15632 0 0
+/buscador/exploits/clau-pgp
+0 1 0 942 0 0
+/buscador/scripts/acceso.css
+0 2 0 2340 0 0
+/buscador/admins/search.php
+0 1 0 1505 0 0
+/ima/logo.gif
+0 4 0 10482 0 0
+/eunice_proves/appserv/softicon.gif
+0 1 0 474 0 0
+/buscador/scripts/accesodenegado.js
+0 1 0 136 0 0
+/eunice_proves/
+0 1 0 3776 0 0
+/eunice_proves/appserv/account.gif
+0 1 0 744 0 0
+/buscador/admins/insert
+0 1 0 3968 0 0
+/admins/cambiar_exploit.php
+0 37 0 12799 0 0
+/buscador/ima/logocom.gif
+0 1 0 1817 0 0
+/eunice_proves/appserv/members.gif
+0 1 0 755 0 0
+/buscador/admins/scripts/accesodenegado.js
+0 1 0 136 0 0
+/buscador/update.php
+0 43 0 153988 0 0
+/ima/logocom.gif
+0 17 0 16353 0 0
+/admins/update.php
+0 32 0 162125 0 0
+/admins/exploits/59audit.c
+0 2 0 169 0 0
+/admins/exploits/396vuln
+0 1 0 87 0 0
+/admins/exploits/68kk.gpg
+0 2 0 507 0 0
+/ima/logoweb2.gif
+0 10 0 3087 0 0
+/admins/exploits/495webmail.txt
+0 1 0 2439 0 0
+/eunice_proves/appserv/annoicon.gif
+0 1 0 1182 0 0
+/admins/scripts/acceso.css
+0 6 0 3510 0 0
+/ima/logoweb1.gif
+0 14 0 9807 0 0
+/buscador/cambiar_exploit.php
+0 18 0 5153 0 0
+/buscador/exploits/493kk
+0 1 0 73 0 0
+/eunice_proves/appserv/email.gif
+0 1 0 733 0 0
+/eunice_proves/appserv/flag-thai.png
+0 1 0 545 0 0
+/buscador/admins/meter_exploit.php
+0 1 0 1428 0 0
+/eunice_proves/appserv/flag-english.png
+0 1 0 576 0 0
+/buscador/admins/scripts/acceso.css
+0 1 0 1170 0 0
+/admins/insert
+0 8 0 30028 0 0
+/exploits/495webmail.txt
+0 1 0 2439 0 0
+/buscador/
+0 32 0 118320 1 2
+/buscador/insert.php
+0 12 0 47616 0 0
+/admins/insert.php
+0 29 0 115072 0 0
+/admins/exploits/602kk
+0 1 0 42 0 1
+/buscador/admins/
+0 2 0 7376 0 0
+/admins/buscar.php
+0 48 0 177024 0 0
+/browse.php
+0 1 0 1031 0 0
+/search.php
+0 10 0 11749 0 0
+/admins/scripts/accesodenegado.js
+0 5 0 408 0 0
+/admins/exploits/972webmail.txt
+0 1 0 2439 0 0
+/scripts/acceso.css
+0 19 0 12870 0 0
+/buscador/delete.php
+0 2 0 2716 0 0
+/admins/delete.php
+0 14 0 18523 0 0
+/buscador/admins/ima/logoweb2.gif
+0 1 0 441 0 0
+/exploits/396vuln
+0 2 0 87 0 0
+/admins/
+0 38 0 69927 0 2
+/admins/exploits/794a0101.gif
+0 1 0 54049 0 0
+/admins/exploits/962a0101.gif
+0 1 0 44352 0 0
+/buscador/ima/logoweb2.gif
+0 1 0 441 0 0
+/buscador/meter_exploit.php
+0 28 0 38390 0 0
+/admins/ima/logoweb2.gif
+0 10 0 1764 0 0
+/buscador/browse.php
+0 14 0 14213 0 0
+/admins/browse.php
+0 19 0 19664 0 0
+/admins/exploits/116webmail.txt
+0 1 0 2439 0 0
+/admins/meter_exploit.php
+0 46 0 65313 0 0
+/buscador/ima/logoweb1.gif
+0 1 0 1401 0 0
+/buscador/search.php
+0 34 0 50024 0 0
+/admins/search.php
+0 53 0 78229 0 0
+# End Of Table - urls
+# -sites- (monthly)
+200.91.197.52
+0 7 4 7058 1 1044346209
+/
+crawl10-public.alexa.com
+0 2 1 1374 0 0
+-
+200.246.46.189
+0 3 0 640 1 1044144839
+-
+j3121.inktomisearch.com
+0 1 1 565 1 1044149326
+/
+cliente-212079128050.senpa.supercable.es
+0 4 4 7046 1 1044103775
+/
+218.145.25.15
+0 2 0 427 1 1044083173
+-
+212.51.62.153
+0 5 5 8505 1 1044441708
+/
+218.145.25.47
+0 2 0 427 1 1044464185
+-
+107.red-80-58-34.pooles.rima-tde.net
+0 15 13 20185 1 1044974192
+/
+cr012r01.sac2.fastsearch.net
+0 1 0 204 0 0
+-
+202.79.160.4
+0 2 0 427 1 1044190922
+-
+63.148.99.229
+0 1 1 3676 1 1044601026
+/
+copilot.thunderstone.com
+0 2 1 769 1 1044187401
+/
+kh-cs27.hinet.net
+0 2 0 427 1 1044347955
+-
+cache146.156ce.scvmaxonline.com.sg
+0 2 0 427 1 1044251854
+-
+213.194.137.219
+0 649 593 1409033 8 1045079998
+/admins/
+buildrack42.sv.av.com
+0 2 1 793 1 1044136460
+/
+si3007.inktomisearch.com
+0 1 0 204 0 0
+-
+www.whois.sc
+0 4 4 8530 2 1044999991
+/
+38.116.0.6
+0 2 2 4265 2 1044999977
+/
+# End Of Table - sites (monthly)
+# -sites- (daily)
+213.194.137.219
+0 55 53 128498 2 1045079998
+/admins/
+# End Of Table - sites (daily)
+# -referrers- 
+http://www.accesodenegado.com/admins/browse.php
+0 37
+http://www.accesodenegado.com/admins/search.php
+0 65
+- (Direct Request)
+0 78
+http://www.accesodenegado.com/buscador/admins/insert
+0 2
+http://accesodenegado.com/buscador/index.php
+0 33
+http://www.accesodenegado.com/admins/insert
+0 10
+http://accesodenegado.com/buscador/delete.php
+0 2
+http://www.accesodenegado.com/admins/meter_exploit.php
+0 51
+http://www.google.com/search
+0 1
+http://accesodenegado.com/buscador/
+0 3
+http://www.accesodenegado.net/
+0 2
+http://www.accesodenegado.com/admins/
+0 33
+http://www.accesodenegado.com/buscador/admins/meter_exploit.php
+0 1
+http://accesodenegado.com/buscador/meter_exploit.php
+0 21
+http://accesodenegado.com/buscador/browse.php
+0 18
+http://accesodenegado.com/buscador/search.php
+0 50
+http://www.accesodenegado.com/admins/update.php
+0 36
+http://www.virtual-private-server.com/
+0 3
+http://www.accesodenegado.com/admins/index.php
+0 23
+http://www.accesodenegado.com/buscador/admins/search.php
+0 1
+http://accesodenegado.com/index.php
+0 4
+http://accesodenegado.com/search.php
+0 10
+http://accesodenegado.com/
+0 16
+http://www.accesodenegado.com
+0 6
+http://www.accesodenegado.com/admins/insert.php
+0 30
+http://216.239.37.100/search
+0 3
+http://www.accesodenegado.com/admins/cambiar_exploit.php
+0 15
+http://accesodenegado.com/buscador/update.php
+0 31
+http://www.accesodenegado.org/
+0 4
+http://www.accesodenegado.com/admins/buscar.php
+0 42
+http://www.whois.sc/
+0 3
+http://www.accesodenegado.com/buscador/admins/
+0 4
+http://www.accesodenegado.com/admins/delete.php
+0 13
+http://www.accesodenegado.com/
+0 18
+http://www.accesodenegado.com/buscador/admins/index.php
+0 1
+http://accesodenegado.com/buscador/cambiar_exploit.php
+0 10
+http://accesodenegado.com/update.php
+0 6
+http://www.accesodenegado.com/eunice_proves/
+0 7
+http://accesodenegado.com/buscador/insert.php
+0 13
+http://www.accesodenegado.com/search.php
+0 3
+# End Of Table - referrers
+# -agents- 
+FAST-WebCrawler/3.6 (atw-crawler at fast dot no; http://fast.
+0 1
+SurveyBot/2.2 
+0 3
+Mozilla/2.0 (compatible; T-H-U-N-D-E-R-S-T-O-N-E)
+0 2
+Mozilla/5.0 (Slurp/cat; slurp@inktomi.com; http://www.inktomi
+0 1
+Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)
+0 7
+Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
+0 20
+Scooter/3.3
+0 2
+Mozilla/5.0 (Slurp/si; slurp@inktomi.com; http://www.inktomi.
+0 1
+Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)
+0 1
+Mozilla/5.0 Galeon/1.2.6 (X11; Linux i686; U;) Gecko/20020913
+0 649
+ia_archiver
+0 2
+Mozilla/4.0 (compatible; MSIE 5.01; Windows 98; (R1 1.3))
+0 7
+# End Of Table - agents
+# -search strings- 
+accesodenegado.com
+1
+# End Of Table - search strings
+# -usernames- 
+# End Of Table - usernames
