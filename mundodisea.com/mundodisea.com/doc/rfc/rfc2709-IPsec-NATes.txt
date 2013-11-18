@@ -1,0 +1,675 @@
+
+
+
+
+
+
+Network Working Group                                       P. Srisuresh
+Request for Comments: 2709                           Lucent Technologies
+Categoría: Informativo                                      Octubre 1999
+
+
+       Modelo de seguridad con IPsec modo túnel para dominios NAT
+
+Status de este memorándum
+
+   Este memorándum proporciona información a la comunidad Internet. No
+   especifica ningún tipo de estándar de Internet. La distribución de
+   este memorándum es ilimitada.
+
+Nota de Copyright
+
+   Copyright (C) The Internet Society (1999). Todos los derechos
+   reservados.
+
+Resumen
+
+   Hay una variedad de sabores de NAT, como se describe en [Ref 1]. De
+   los dominios soportados por NAT, sólo los clientes IP específicos de
+   dominio son capaces de establecer sesiones seguras IPsec extremo a
+   extremo. Sin embargo, todos los sabores de NAT son capaces de ofrecer
+   seguridad IPsec en modo túnel a las máquinas en el dominio privado
+   que establezcan comunicaciones igual a igual con los nodos en el
+   dominio externo. Este documento describe un modelo de seguridad
+   mediante el cual se puede organizar la seguridad IPsec en modo túnel
+   en los dispositivos NAT. Se dedica una sección a describir cómo se
+   pueden comunicar las políticas de seguridad a IKE de manera
+   transparente (para el intercambio automatizado de claves) durante el
+   modo rápido (Quick Mode). También se indican las aplicaciones que se
+   pueden beneficiar del modelo de seguridad descrito.
+
+1. Introducción y panorama general.
+
+   Los dispositivos NAT proporcionan encaminamiento transparente a las
+   máquinas finales que intentan comunicarse entre dominios de
+   direcciones distintos, modificando durante el camino las cabeceras IP
+   y de transporte. Esta solución funciona mejor cuando el identificador
+   de usuario final (tal como el nombre de máquina) es diferente de la
+   dirección usada para localizar al usuario final.
+
+   Se puede proporcionar seguridad extremo a extremo para la carga útil
+   del nivel de aplicación para aquellas aplicaciones que no inserten
+   información específica de dominio en las cargas útiles, información
+   que puede no tener sentido para alguno de los usuarios finales. Las
+   aplicaciones que incluyan información específica de dominio en la
+
+
+
+Srisuresh                      Informativo                      [Pág. 1]
+
+RFC 2709          Modelo de seguridad para dominios NAT     Octubre 1999
+
+
+   carga útil necesitarán una "Pasarela de Nivel de Aplicación",
+   Application Level Gateway (ALG), para hacer que la carga útil tenga
+   sentido en ambos dominios. Sin embargo, las aplicaciones que
+   necesitan la ayuda de una ALG intermedia no pueden lograr seguridad
+   extremo a extremo en el nivel de aplicación.
+
+   Todas las aplicaciones que atraviesen un dispositivo NAT,
+   independientemente de si necesitan la ayuda de una ALG o no, se
+   pueden beneficiar de la seguridad IPsec en modo túnel, cuando el
+   dispositivo NAT actúe como un extremo final del túnel IPsec.
+
+   La sección 2 siguiente define los términos específicos de este
+   documento.
+
+   La sección 3 describe cómo se puede reconocer la seguridad IPsec en
+   modo túnel en los dispositivos NAT. La arquitectura de seguridad
+   IPsec, su formato y el funcionamiento de varios tipos de mecanismos
+   de seguridad se pueden encontrar en [Ref 2], [Ref 3] y [Ref 4]. Esta
+   sección no trata de cómo se intercambian las claves de sesión y las
+   políticas entre un dispositivo NAT que actúa como pasarela IPsec y
+   los nodos interlocutores externos. El intercambio pudo haber tenido
+   lugar manualmente o usando cualquiera de las técnicas de intercambio
+   automático conocidas.
+
+   La sección 4 asume que el protocolo IKE basado en clave pública [Ref
+   5] se puede usar para automatizar el intercambio de políticas de
+   seguridad, claves de sesión y otros atributos de "Asociación de
+   Seguridad", Security Association (SA). Esta sección describe un
+   método mediante el cual se pueden traducir las políticas de seguridad
+   administradas para un dominio privado, para comunicarse con los nodos
+   externos. Se puede encontrar una descripción detallada del
+   funcionamiento del protocolo IKE en [Ref 5] y [Ref 6].
+
+   La sección 5 describe las aplicaciones del modelo de seguridad
+   descrito en el documento. Las aplicaciones enumeradas incluyen
+   conectividad segura para los dominios externos y acceso remoto seguro
+   a las máquinas móviles de la empresa.
+
+2. Terminología
+
+   Las definiciones de la mayorías de los términos usados en este
+   documento se pueden encontrar en (a) documento de consideraciones y
+   terminología NAT [Ref 1], (b) documento de arquitectura de seguridad
+   IP [Ref 2], o (c) documento de intercambio de claves en Internet [Ref
+   5]. A continuación se muestran los términos definidos específicamente
+   para este documento.
+
+2.1. NAT normal
+
+
+
+Srisuresh                      Informativo                      [Pág. 2]
+
+RFC 2709          Modelo de seguridad para dominios NAT     Octubre 1999
+
+
+   El término "NAT normal" se presenta para distinguir el procesamiento
+   NAT normal del procesamiento NAT usado para los paquetes seguros
+   incluidos en un túnel seguro IPsec. "NAT normal" es el procesamiento
+   NAT normal como se describe en [Ref 1].
+
+2.2. NAT controlado por políticas IPsec (IPC-NAT)
+
+   El término "NAT controlado por políticas IPsec", IPsec Policy
+   Controlled NAT (IPC-NAT para abreviar), se define para describir la
+   transformación NAT aplicada como una extensión de la transformación
+   IPsec de los paquetes incluidos en el interior de un túnel IP-IP,
+   para los que el nodo NAT es un extremo del túnel. La función esencial
+   del IPC-NAT es la adaptación de las extensiones NAT a los paquetes
+   incluidos con IPsec en modo túnel. Los paquetes sujetos al
+   procesamiento IPC-NAT se benefician de la seguridad IPsec entre el
+   dispositivo NAT y una entidad interlocutora externa, sea una máquina
+   final o un nodo pasarela.
+
+   Las políticas IPsec establecen restricciones en qué mapeos NAT se
+   usan. Por ejemplo, las políticas de control de acceso seguro IPsec a
+   una pasarela interlocutora probablemente restringirán la comunicación
+   sólo a ciertas direcciones y/o números de puerto. Así, cuando NAT
+   lleve a cabo traducciones, debe asegurarse que las traducciones que
+   realice cumplen con las políticas de seguridad.
+
+   Al igual que con NAT normal, la función del IPC-NAT puede asumir
+   cualquiera de los sabores de NAT, incluyendo NAT tradicional, NAT
+   bidireccional y NAT doble. Un dispositivo IPC-NAT soportará tanto las
+   funciones de IPC-NAT como las de NAT normal.
+
+3. Modelo de seguridad de IPC-NAT
+
+   El documento de arquitectura de seguridad IP [Ref 2] describe cómo
+   puede lograrse seguridad IP en el nivel de red dentro de un dominio
+   de direcciones globalmente único. Se discute la seguridad en modo
+   transporte y túnel. Para los objetivos de este documento, asumiremos
+   que seguridad IPsec significa seguridad IPsec modo túnel, a menos que
+   se especifique lo contrario. Los elementos fundamentales de esta
+   arquitectura de seguridad son (a) Políticas de seguridad, que
+   determinan qué paquetes se permite que estén sujetos al procesamiento
+   de seguridad, y (b) Atributos de asociación de seguridad, que
+   identifican los parámetros para el procesamiento de seguridad,
+   incluyendo los protocolos IPsec, algoritmos y claves de sesión que
+   aplicar.
+
+   El funcionamiento de la seguridad del modo túnel IPsec en un
+   dispositivo que no soporte Traducción de Direcciones de Red (NAT)
+   puede describirse como se muestra en las figuras 1 y 2 siguientes.
+
+
+
+Srisuresh                      Informativo                      [Pág. 3]
+
+RFC 2709          Modelo de seguridad para dominios NAT     Octubre 1999
+
+
+            +----------------+  No  +------------------------------+
+            | ¿ Cumple el    | +--->| Reenviar el paquete en claro |
+   Paquete  | paquete        | |    | o descartarlo, según proceda |
+   -------->| saliente       |-|    +------------------------------+
+   Saliente | las políticas  | |    +--------------+
+            | de seguridad ? | |Sí  | Ejecutar     | Reenviar
+            |                | +--->| Seguridad    |--------->
+            +----------------+      | Saliente     | Paquete IPsec
+                                    | (Modo Túnel) |
+                                    +--------------+
+
+   Figura 1. Funcionamiento del modo túnel IPsec en los paquetes salientes.
+
+   Paquete IPsec  +------------+          +--------------+
+   destinado al   | Ejecutar   | Paquete  | ¿ Cumple el  | No (Descartar)
+   -------------->| Seguridad  |--------->| paquete las  |-------->
+   dispositivo    | Entrante   | Embebido | políticas SA | Sí (Reenviar)
+                  | (Destunel) |          | de entrada ? |
+                  +------------+          +--------------+
+
+   Figura 2. Funcionamiento del modo túnel IPsec en los paquetes entrantes.
+
+   Se necesitará un dispositivo NAT que proporcione seguridad IPsec en
+   modo túnel para administrar las políticas de seguridad basadas en el
+   direccionamiento del dominio privado. Además, las políticas de
+   seguridad determinan el extremo interlocutor del túnel IPsec. Como
+   resultado, podría ser necesario que un paquete fuera sometido a
+   diferentes tipos de traducciones NAT dependiendo del extremo del
+   túnel IPsec con el que esté asociado. En otras palabras, el IPC-NAT
+   necesitará un conjunto único de mapeos NAT para cada política de
+   seguridad configurada. El IPC-NAT llevará a cabo traducción de
+   direcciones junto con el diferente procesamiento IPsec con cada
+   interlocutor, basándose en las políticas de seguridad. Los siguientes
+   diagramas (figura 3 y figura 4) ilustran el funcionamiento de los
+   túneles IPsec junto con NAT. Se puede diferenciar el funcionamiento
+   del dispositivo IPC-NAT del de una pasarela IPsec que no soporta NAT
+   en lo siguiente:
+
+      (1) Las políticas de seguridad del dispositivo IPC-NAT son
+          administradas usando direccionamiento del dominio privado. Las
+          políticas de seguridad de una pasarela IPsec tradicional serán
+          administradas usando direccionamiento de un único dominio
+          (digamos, un dominio externo).
+
+      (2) Los elementos fundamentales para el modelo de seguridad de un
+          dispositivo IPC-NAT incluyen mapeo de direcciones IPC-NAT (y
+          otras definiciones de parámetros NAT) junto con las políticas
+          de seguridad y atributos SA. Los elementos fundamentales de
+
+
+
+Srisuresh                      Informativo                      [Pág. 4]
+
+RFC 2709          Modelo de seguridad para dominios NAT     Octubre 1999
+
+
+          seguridad de una pasarela IPsec tradicional se limitan sólo a
+          las políticas de seguridad y a los atributos SA.
+
+             +---------------+      +------------------------------+
+   Paquete   |               |  No  | Aplicar NAT normal o         |
+   Saliente  | ¿ Cumple el   | +--->| descartar, según corresponda |
+   --------->| paquete las   | |    +------------------------------+
+   (Dominio  | políticas de  |-|    +----------+   +-------------+
+   Privado)  | seguridad     | |    | Ejecutar |   | Ejecutar    | Reenviar
+             | salientes ?   | |Sí  | NAT      |-->| Seguridad   |---------->
+             |               | +--->| Saliente |   | Saliente    | Paq. IPsec
+             +---------------+      | (IPC-NAT)|   | (Modo túnel)|
+                                    +----------+   +-------------+
+
+   Figura 3. IPsec modo túnel para paquetes salientes en un dispositivo IPC-NAT
+
+
+   Paquete IPsec +-----------+          +---------+  +-------------+No,
+   destinado al  | Ejecutar  | Paquete  |Ejecutar |  | ¿Cumple el  |Descartar
+   ------------->| Seguridad |--------->|  NAT    |->| paquete las |-------->
+   dispositivo   | Entrante  | Embebido |Entrante |  | políticas SA|Sí,
+   (Dominio      |(Destunel) |          |(IPC-NAT)|  | entrantes?  |Reenviar
+   Externo)      +-----------+          +---------+  +-------------+
+
+   Figura 4. IPsec modo túnel en un dispositivo IPC-NAT para paquetes entrantes
+
+   El NAT tradicional está orientado a sesión, permitiendo la traducción
+   de sesiones con tráfico sólo de salida. El resto de sabores de NAT
+   son bidireccionales. Los mapeos de cualquier variante de NAT se
+   pueden usar junto con las políticas de seguridad y el procesamiento
+   seguro en un dispositivo IPC-NAT. En este documento, y con fines
+   ilustrativos, asumiremos modo túnel de IPsec en un dispositivo NAT
+   bidireccional.
+
+   Sin embargo, dese cuenta que un dispositivo NAT capaz de proporcionar
+   seguridad a lo largo de túneles IPsec puede seguir soportando NAT
+   normal para los paquetes que no necesiten IPC-NAT. Los mapeos de
+   direcciones y otras definiciones de parámetros NAT para NAT normal e
+   IPC-NAT son distintos. La figura 3 identifica cómo NAT distingue
+   entre los paquetes salientes que necesitan ser procesados mediante
+   NAT normal frente a los que necesitan ser procesados mediante IPC-
+   NAT. Como en el caso de los paquetes entrantes desde el dominio
+   externo, la figura 4 indica los paquetes que deben someterse a IPC-
+   NAT. El resto de paquetes sólo serán sometidos al procesamiento NAT
+   normal.
+
+4. Funcionamiento del protocolo IKE en un dispositivo IPC-NAT.
+
+
+
+
+Srisuresh                      Informativo                      [Pág. 5]
+
+RFC 2709          Modelo de seguridad para dominios NAT     Octubre 1999
+
+
+   El funcionamiento de IPC-NAT descrito en la sección anterior se puede
+   conseguir basándose en un intercambio manual de claves de sesión o
+   usando un protocolo automatizado de intercambio de claves entre las
+   entidades gemelas. En esta sección consideraremos la adaptación del
+   protocolo de "Intercambio de Claves en Internet", Internet Key
+   Exchange (IKE), recomendado por el IETF, en un dispositivo IPC-NAT
+   para el intercambio automático de políticas de seguridad y parámetros
+   SA. En otras palabras, nos centraremos en el funcionamiento de IKE
+   junto con IPsec modo túnel en los dispositivos NAT. Para el resto de
+   esta sección, cuando hablemos de un dispositivo NAT nos estaremos
+   refiriendo a un dispositivo IPC-NAT, salvo que se diga lo contrario.
+
+   IKE está basado en el protocolo UDP y usa cifrado de clave pública
+   para intercambiar de manera segura claves de sesión y otros atributos
+   a lo largo de un dominio de direcciones. El protocolo y
+   funcionamiento detallados de IKE en el contexto de IP se encuentra en
+   [Ref 3] y [Ref 4]. Esencialmente, IKE tiene 2 fases.
+
+   En la primera fase, los interlocutores IKE trabajan en modo principal
+   o agresivo para identificarse mutuamente y establecer un canal seguro
+   entre ellos. Un dispositivo NAT tiene una interfase hacia el dominio
+   externo y no es diferente de cualquier otro nodo en el dominio para
+   negociar la fase I con nodos interlocutores externos. El dispositivo
+   NAT puede asumir cualquiera de los tipos válidos Identity y
+   metodologías de acceso necesarias para comunicarse con los
+   interlocutores en el dominio. El dispositivo NAT también puede hacer
+   de interfase con una "Autoridad de Certificación", Certification
+   Authority (CA), en el dominio para obtener certificados y llevar a
+   cabo validación de firmas.
+
+   En la segunda fase, los interlocutores IKE trabajan en modo rápido
+   (Quick Mode) para intercambiar políticas y propuestas de seguridad
+   IPsec, para negociar y ponerse de acuerdo en los algoritmos de
+   seguridad, políticas, claves, tiempo de vida y otros atributos de
+   seguridad. Durante esta fase, el proceso IKE debe comunicarse con la
+   entidad IPsec para (a) recabar atributos de sesión segura y otros
+   parámetros que negociar con los nodos interlocutores IKE, y para (b)
+   notificar parámetros de seguridad acordados (con el interlocutor)
+   durante la negociación.
+
+   Las políticas de seguridad de un dispositivo IPC-NAT, funcionando
+   como una pasarela IPsec, son administradas basándose en el
+   direccionamiento de un dominio privado. A una ALG se le pedirá
+   traducir políticas desde un dominio de direcciones privado a
+   direccionamiento externo, porque el proceso IKE necesita comunicar
+   estas políticas a los interlocutores en el dominio externo. Dese
+   cuenta que los datagramas IKE no están sometidos al procesamiento
+   NAT. La IKE-ALG simplemente traduce porciones seleccionadas de la
+
+
+
+Srisuresh                      Informativo                      [Pág. 6]
+
+RFC 2709          Modelo de seguridad para dominios NAT     Octubre 1999
+
+
+   carga útil de IKE como se diga en el mapa NAT que define las
+   políticas. El siguiente diagrama ilustra cómo un proceso IKE-ALG hace
+   de interfase con IPC-NAT para tomar las políticas de seguridad y los
+   mapas IPC-NAT, y generar políticas de seguridad que IKE podría
+   comunicar a sus interlocutores durante el modo rápido en el dominio
+   externo.
+
+   Las políticas en modo rápido se intercambian con un interlocutor como
+   una combinación de cargas útiles IDci e IDcr. La combinación de
+   IDentificadores (políticas) intercambiados por cada interlocutor debe
+   coincidir para que en cada extremo los parámetros SA se apliquen de
+   manera uniforme. Si no se intercambian los ID, se podría suponer que
+   los parámetros SA negociados en el modo rápido son aplicables entre
+   las direcciones IP asumidas por el nodo principal.
+
+   Dependiendo de la naturaleza de las políticas de seguridad en uso
+   (por ejemplo, sesiones extremo a extremo entre un par de nodos frente
+   a sesiones con un rango de direcciones), podría ser necesario que la
+   IKE-ALG pida al NAT que establezca asociaciones de direcciones y/o
+   transporte durante la duración (en segundos o Kilo-Bytes) de la
+   negociación de las sesiones. En el caso de que la ALG no sea capaz de
+   establecer las asociaciones de direcciones o transporte, la IKE-ALG
+   no será capaz de traducir las políticas de seguridad y dará como
+   resultado que IKE no intente la fase de negociación II para las
+   políticas afectadas.
+
+   Cuando la negociación haya terminado satisfactoriamente, IKE
+   comunicará los parámetros de seguridad negociados directamente al
+   proceso de la pasarela IPC-NAT como se describe en el diagrama
+   siguiente.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Srisuresh                      Informativo                      [Pág. 7]
+
+RFC 2709          Modelo de seguridad para dominios NAT     Octubre 1999
+
+
+                                            +---------+
+                                            |         |
+        Parámetros de Seguridad Negociados  | Proceso |
+       +------------------------------------|   IKE   |
+       |   (incluyendo claves de sesión)    |         |
+       |                                    +---------+
+       |                                       ^   ^
+       |                             Políticas |   |
+       |                               Seguras |   | Propuestas de
+       |                            Traducidas |   | Seguridad
+       v                                       |   |
+   +---------+ Políticas Seguridad basadas  +---------+
+   |         |----------------------------->|         |
+   |         | en direcc. dominio privado   |         |
+   | IPC-NAT |                              |         |
+   |(Pasarela|  Mapas IPC-NAT               | IKE-ALG |
+   |  IPsec) |----------------------------->|         |
+   |         |                              |         |
+   |         |  Propuestas de Seguridad     |         |
+   |         |----------------------------->|         |
+   |         |                              |         |
+   |         |  Intercambio de Control NAT  |         |
+   |         |<---------------------------->|         |
+   +---------+                              +---------+
+
+   Figura 5. IKE-ALG traduce las políticas de seguridad, usando los mapas NAT
+
+
+5. Aplicaciones del modelo de seguridad IPC-NAT
+
+   El modelo de funcionamiento de IPC-NAT descrito hasta ahora ilustra
+   cómo se puede usar un dispositivo NAT como un extremo de un túnel
+   IPsec para proporcionar transferencia segura de datos en un dominio
+   externo. Esta sección intentará ilustrar dos aplicaciones de dicho
+   modelo.
+
+5.1. Conectividad segura en extranet
+
+   El modelo IPC-NAT tiene una aplicación directa en la capacidad de
+   proporcionar conectividad clara y segura con un dominio externo
+   usando un dispositivo NAT. En particular, el dispositivo IPC-NAT en
+   la frontera de un dominio privado puede asociarse con una pasarela
+   IPsec de un dominio externo para asegurar la conexión de la extranet.
+   El término "extranet" se refiere a la parte del camino entre ambos
+   nodos pasarela asociados que discurre por Internet.
+
+5.2. Acceso remoto seguro para los usuarios móviles de una empresa
+
+
+
+
+Srisuresh                      Informativo                      [Pág. 8]
+
+RFC 2709          Modelo de seguridad para dominios NAT     Octubre 1999
+
+
+   Digamos que un nodo de una empresa se desplaza fuera de la empresa, e
+   intenta conectarse a la empresa desde una ubicación remota, usando la
+   dirección temporal asignada por un proveedor de servicios (Care-of-
+   Address). En tal caso, el usuario móvil podría establecer una sesión
+   con el dispositivo IPC-NAT corporativo mediante un túnel IPsec,
+   usando un identificador de usuario y un mecanismo de identificación
+   acordados de antemano. Además, el usuario podría estar configurado en
+   el servidor DNS de la empresa, como una extensión de la
+   identificación siguiente a la fase I de IKE. Esto permitiría que el
+   usuario accediera a los recursos de la empresa por su nombre.
+
+   Sin embargo, los servidores y aplicaciones de muchas empresas confían
+   en la dirección IP origen para identificar y denegar el acceso a los
+   paquetes que no provengan del espacio de direcciones de la empresa.
+   En estos escenarios, IPC-NAT tiene la capacidad (a diferencia de las
+   pasarelas IPsec tradicionales) de llevar a cabo "Traducción de
+   Direcciones de Red", Network Address Translation (NAT), para los
+   usuarios de acceso remoto, para que su dirección temporal en el
+   dominio externo se traduzca a una dirección del dominio de la
+   empresa, mientras que los paquetes están en el dominio privado. La
+   variante de IPC-NAT desarrollada sería NAT tradicional (es decir,
+   asumiendo que el espacio de direcciones de los usuarios móviles sea
+   un dominio privado y el espacio de direcciones de la empresa sea un
+   dominio externo), que puede ser bien NAT básico (usando un bloque de
+   direcciones de la empresa para la traducción) o NAPT (usando una
+   única dirección de la empresa para la traducción).
+
+   La aplicación de acceso remoto seguro descrita es posible en todas
+   las empresas, independientemente de si la empresa usa direcciones
+   registradas por el IANA o no.
+
+   La aplicación de acceso remoto seguro descrita es diferente de IP-
+   móvil, porque el nodo móvil (descrito en esta aplicación) no mantiene
+   la dirección de la red doméstica (de la empresa) y simplemente usa la
+   Care-of-Address para comunicarse. Es concebible que la pasarela IPC-
+   NAT proporcione conectividad tipo IP-móvil de forma transparente al
+   nodo móvil asociando la Care-of-Address del nodo móvil con su
+   dirección doméstica. Sin embargo, la provisión de tal mapeo de
+   direcciones a una pasarela IPC-NAT queda fuera del ámbito de este
+   documento.
+
+6. Consideraciones de seguridad
+
+   Si los NAT y las ALG no están dentro de los límites de confianza,
+   esto constituye un problema de seguridad, puesto que los ALG
+   inspeccionan la carga útil del tráfico de usuario final. La carga
+   útil de nivel de aplicación puede ser encriptada extremo a extremo,
+   mientras que la carga útil no contenga direcciones IP y/o
+
+
+
+Srisuresh                      Informativo                      [Pág. 9]
+
+RFC 2709          Modelo de seguridad para dominios NAT     Octubre 1999
+
+
+   identificadores de transporte que sean válidos sólo en uno de los
+   dominios. Con la excepción de IP específico de dominio, la seguridad
+   de nivel de red extremo a extremo garantizada por las actuales
+   técnicas IPsec no puede lograrse con NAT intermedios. El modelo IPC-
+   NAT descrito en este documento perfila una aproximación mediante la
+   cual se puede obtener seguridad de nivel de red dentro del dominio
+   externo.
+
+   Los NAT, cuando se combinan con ALG, pueden garantizar que los
+   datagramas enviados a Internet no tienen direcciones privadas en las
+   cabeceras ni en la carga útil. Las aplicaciones que no cumplan con
+   estos requisitos pueden ser descartadas usando filtros del
+   cortafuegos. Por esta razón, no es infrecuente encontrarse que los
+   IPC-NAT, ALG y cortafuegos coexisten para proporcionar seguridad en
+   el extremo de una red privada.
+
+REFERENCIAS
+
+   [1]  Srisuresh, P. and M. Holdrege, "IP Network Address Translator
+        (NAT) Terminology and Considerations", RFC 2663, Agosto 1999.
+
+   [2]  Kent, S. and R. Atkinson, "Security Architecture for the Inter­
+        net Protocol", RFC 2401, Noviembre 1998
+
+   [3]  Kent, S. and R. Atkinson, "IP Encapsulating Security Payload
+        (ESP)", RFC 2406, Noviembre 1998
+
+   [4]  Kent, S. and R. Atkinson, "IP Authentication Header", RFC 2402,
+        Noviembre 1998.
+
+   [5]  Harkins, D. and D. Carrel, "The Internet Key Exchange (IKE)",
+        RFC 2409, Noviembre 1998.
+
+   [6]  Piper, D., "The Internet IP Security Domain of Interpretation
+        for ISAKMP", RFC 2407, Noviembre 1998.
+
+   [7]  Carpenter, B., Crowcroft, J. and Y. Rekhter, "IPv4 Address
+        Behavior Today", RFC 2101, Febrero 1997.
+
+   [8]  Rekhter, Y., Moskowitz, B., Karrenberg, D., de Groot G. and E.
+        Lear, "Address Allocation for Private Internets", BCP 5, RFC
+        1918, Febrero 1996.
+
+
+
+
+
+
+
+
+
+Srisuresh                      Informativo                     [Pág. 10]
+
+RFC 2709          Modelo de seguridad para dominios NAT     Octubre 1999
+
+
+Direcciones de los autores
+
+   Pyda Srisuresh
+   Lucent technologies
+   4464 Willow Road
+   Pleasanton, CA 94588-8519
+   U.S.A.
+
+   Teléfono: (925) 737-2153
+   Fax:      (925) 737-2110
+   EMail:    srisuresh@lucent.com
+
+
+Traducción al castellano:
+
+   José Luis Domingo López
+   c/ Cruz del Sur 22
+   28007 Madrid - España
+
+   EMail: jdomingo@internautas.org
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Srisuresh                      Informativo                     [Pág. 11]
+
+RFC 2709          Modelo de seguridad para dominios NAT     Octubre 1999
+
+
+Declaración completa de copyright
+
+   Copyright (C) The Internet Society (1999). Todos los derechos reser­
+   vados.
+
+   Este documento y sus traducciones puede ser copiado y facilitado a
+   otros, y los trabajos derivados que lo comentan o lo explican o ayu­
+   dan a su implementación pueden ser preparados, copiados, publicados y
+   distribuídos, enteros o en parte, sin restricción de ningún tipo,
+   siempre que se incluyan este párrafo y la nota de copyright expuesta
+   arriba en todas esas copias y trabajos derivados. Sin embargo, este
+   documento en sí no debe ser modificado de ninguna forma, tal como
+   eliminando la nota de copyright o referencias a la 'Internet Society'
+   u otras organizaciones de Internet, excepto cuando sea necesario en
+   el desarrollo de estándares Internet, en cuyo caso se seguirán los
+   procedimientos para copyrights definidos en el proceso de Estándares
+   Internet, o con motivo de su traducción a otras lenguas aparte del
+   Inglés.
+
+   Este documento y la información contenida en él se proporcionan en su
+   forma "TAL CUAL" y LA INTERNET SOCIETY Y LA INTERNET ENGINEERING TASK
+   FORCE RECHAZAN CUALESQUIERA GARANTIAS, EXPRESAS O IMPLICITAS,
+   INCLUYENDO, PERO NO LIMITADAS A, CUALQUIER GARANTIA DE QUE EL USO DE
+   LA INFORMACION AQUI EXPUESTA NO INFRINGIRA NINGUN DERECHO O GARANTIAS
+   IMPLICITAS DE COMERCIALIZACION O IDONEIDAD PARA UN PROPOSITO ESPECI­
+   FICO.
+
+Reconocimientos
+
+   En la actualidad, la financiación para las funciones del editor RFC
+   es proporcionada por la Internet Society.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Srisuresh                      Informativo                     [Pág. 12]
+

@@ -1,0 +1,1408 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+
+<!-- $Author: reggers $ -->
+<!-- $Date: 1997/05/02 20:17:16 $ -->
+<!-- $Source: /usr/src/usr.local/doc/courses/socket/RCS/socket.html,v $ -->
+
+<HTML>
+<HEAD>
+<TITLE>An Introduction to Socket Programming</TITLE>
+</HEAD>
+
+<BODY>
+<TABLE>
+<TR>
+<TD><IMG SRC="http://www.uwo.ca/images/bitmaps/network.bm" ALIGN=left ALT="">
+<TD><strong><font size="+2">An Introduction to Socket Programming</font></strong><br>
+(by) Reg Quinton <A HREF="#AUTHOR">&lt;reggers@julian.uwo.ca&gt;</A>
+<br> &copy; <i>$Id: socket.html,v 1.8 1997/05/02 20:17:16 reggers Exp $</i>
+</table>
+<hr>
+<h3>Contents:</h3>
+<ul>
+<li> <A HREF="#INTRO">Introduction</A>
+	<ul>
+	<li> <A HREF="#BEWARE"> BEWARE</A>
+	</ul>
+<li> <A HREF="#EXISTING">Existing Services</A>
+	<ul>
+	<li> <A HREF="#NETSTAT"> Netstat Observations</A>
+	</ul>
+<li> <A HREF="#HOSTNAMES">Host names and IP numbers</A>
+	<ul>
+	<li> <A HREF="#HOSTAPI">Programming Calls</A>
+	</ul>
+<li> <A HREF="#SERVICE">Services and Ports</A>
+	<ul>
+	<li> <A HREF="#SERVICEAPI">Programming Calls</A>
+	</ul>
+<li> <A HREF="#SOCKETADDR">Socket Addressing</A>
+<li> <A HREF="#SOCKANDFILE">File Descriptors and Sockets</A>
+	<ul>
+	<li> <A HREF="#FILEDESC">File Descriptors</A>
+	<li> <A HREF="#SOCKETS">Sockets</A>
+	</ul>
+<li> <A HREF="#CLIENT">Client Connect</A>
+	<ul>
+	<li> <A HREF="#CLIENTCOMM">Client Communication</A>
+	<li> <A HREF="#STDIO">Stdio Buffers</A>
+	</ul>
+<li> <A HREF="#SERVER">Server Applications</A>
+	<ul>
+	<li> <A HREF="#SERVERBIND">Server Bind</A>
+	<li> <A HREF="#SERVERLISTEN">Listen and Accept</A>
+	</ul>
+<li> <A HREF="#INETD">Inetd Services</A>
+	<ul>
+	<li> <A HREF="#INETDCOMMENT">Inetd Comments</A>
+	<li> <A HREF="#WHOISD">Whois Daemon</A>
+	</ul>
+<li> <A HREF="#RUNNING">Running the Daemon</A>
+	<ul>
+	<li> <A HREF="#CODE">The Code</A>
+	<li> <A HREF="#CONNECT">Connecting to the Server</A>
+	<li> <A HREF="#WHOIS">Whois Client</A>
+	<li> <A HREF="#PERL">Perl Socket Programming</A>
+	</ul>
+<li> <A HREF="#FINAL">Final Comments</A>
+	<ul>
+	<li> <A HREF="#NOTES">Note Well</A>
+	</ul>
+<li> <A HREF="#READINGS">Suggested Reading</A>
+<li> <A HREF="#AUTHOR">Author</A>
+</ul>
+<p>
+
+<A NAME="INTRO"></A>
+<hr>
+<h3>Introduction:</h3>
+
+<p>
+
+These course notes are directed at Unix application <i>programmers</i>
+who want to develop client/server applications in the <b>TCP/IP</b>
+domain (with some hints for those who want to write <b>UDP/IP</b>
+applications). Since the Berkeley socket interface has become
+something of a standard these notes will apply to programmers on other
+platforms.
+
+<p> Fundamental concepts are covered including network addressing,
+well known services, sockets and ports.  Sample applications are
+examined with a view to developing similar applications that serve
+other contexts. Our goals are
+<ul>
+<li> to develop a function, 
+<b><tt>tcpopen(server,service)</tt></b>, to connect to service.
+<li> to develop a server that we can connect to.
+</ul>
+<p>
+
+This course requires an <i>understanding</i> of the C programming
+language and an <i>appreciation</i> of the programming environment
+(ie. compilers, loaders, libraries, Makefiles and the RCS revision
+control system). If you want to know about socket programming with <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=perl/section=1">perl(1)</A>
+then see <A HREF="#PERL">below</A> but you should read everything
+first.
+
+<p>
+
+Our example is the UWO/ITS <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=whois/section=1">whois(1)</A>
+service -- client and server sources available in:
+
+<p>
+<blockquote>
+Network Services:
+<A HREF="http://www.uwo.ca/its/network">
+http://www.uwo.ca/its/network</A>
+</blockquote>
+
+<p>
+
+Look for the <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=whois/section=1">
+whois(1)</A> client and the <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=whoisd/section=8">
+whoisd(8)</A> server.  You'll find extensive documentation on the <A
+HREF="http://www.uwo.ca/its/network/whoisd/">UWO/ITS
+Whois/CSO server</A> -- that's the <b>whoisd(8)</b> server. It also
+includes some Perl clients which access the server to provide a
+gateway service (for the <A HREF="http://www.uwo.ca/whois">Finding
+People</A> Web page and for CSO/PH clients). The Unix <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=whois/section=1">
+whois(1)</A> client will be pretty obvious after you've read these
+notes.
+
+<p>
+<A NAME="BEWARE"></A>
+<p>
+<h4>BEWARE:</h4>
+<blockquote> If C code scares you, then you'll get
+             some concepts but you might be in the wrong course.
+             You need to be a programmer to write programs (of
+             course). This <i>isn't</i> an Introduction to C (or Perl)!
+
+</blockquote>
+
+<p>
+<A NAME="EXISTING"></A>
+<hr>
+<h3>Existing Services:</h3>
+
+<p> Before starting, let's look at existing services.  On a Unix
+machine there are usually lots of TCP/IP and UDP/IP services installed
+and running:
+
+<blockquote>
+<pre>
+[1:17pm julian] <b>netstat -a</b>
+Active Internet connections (including servers)
+Proto R-Q S-Q  Local Address Foreign Address    (state)
+tcp     0   0  julian.2717   vnet.ibm.com.smtp  ESTABLISHED
+tcp     0   0  julian.smtp   uacsc2.alban.55049 TIME_WAIT
+tcp     0  13  julian.nntp   watserv1.wat.3507  ESTABLISHED
+tcp     0   0  julian.nntp   gleep.csd.uw.3413  ESTABLISHED
+tcp     0   0  julian.telnet uwonet-serve.55316 ESTABLISHED
+tcp     0   0  julian.login  no8sun.csd.u.1023  ESTABLISHED
+tcp     0   0  julian.2634   Xstn15.gaul..6000  ESTABLISHED
+          <i>etc...</i>
+tcp     0   0  *.printer     *.*                LISTEN
+tcp     0   0  *.smtp        *.*                LISTEN
+tcp     0   0  *.waisj       *.*                LISTEN
+tcp     0   0  *.account     *.*                LISTEN
+tcp     0   0  *.whois       *.*                LISTEN
+tcp     0   0  *.nntp        *.*                LISTEN
+          <i>etc...</i>
+udp     0   0  *.ntp         *.*
+udp     0   0  *.syslog      *.*
+udp     0   0  *.xdmcp       *.*
+</pre>
+</blockquote>
+
+<A NAME="NETSTAT"></A>
+<p>
+<h4> Netstat Observations:</h4>
+<p>
+
+Inter Process Communication (or IPC) is between <b>host.port</b> pairs
+(or <b>host.service</b> if you like).  A process <i>pair</i> uses the
+connection -- there are client and server applications on each end of
+the IPC connection.
+
+
+<p>
+
+Note the two protocols on IP -- <b>TCP</b> (Transmission Control
+Protocol) and <b>UDP</b> (User Datagram Prototocol). There's a third
+protocl <b>ICMP</b> (Internet Control Message Protocol) which we'll
+not look at -- it's what makes IP work in the first place!
+
+<P>
+
+<A NAME="ACL">
+We'll be looking in more detail at TCP services and will not look at
+UDP -- but see a sample Access Control List client/server pair which
+uses UDP services, you'll find that in:</A>
+
+<p>
+<blockquote>
+Access Control Lists: <A HREF="http://www.uwo.ca/its/network/security/acl">http://www.uwo.ca/its/network/security/acl</A>
+</blockquote>
+
+<p>
+
+TCP services are connection orientated (like a stream, a pipe or a tty
+like connection) while UDP services are connectionless (more like
+telegrams or letters).
+
+<p>
+
+We recognize many of the services -- SMTP (Simple Mail Transfer
+Protocol as used for <A
+HREF="http://www.uwo.ca/its/network/backbone/nic/sendmail/">
+E-mail</A>), NNTP (Network News Transfer Protocol service as used by
+<A HREF="http://www.uwo.ca/its/news">Usenet News</A>), NTP (Network
+Time Protocol as used by <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=xntpd/section=8">
+xntpd(8)</A>), and SYSLOG is the BSD service implemented by <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=syslogd/section=1M">
+syslogd(1M)</A>.
+
+
+<p>
+
+The <A HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=netstat/section=1M">
+netstat(1M)</A>
+display shows many TCP services as ESTABLISHED (there is a
+connection between <b>client.port</b> and <b>server.port</b>) and
+others in a LISTEN state (a server application is listening at a port
+for client connections). You'll often see connections in a CLOSE_WAITE
+state -- they're waiting for the socket to be torn down.
+
+
+<A NAME="HOSTNAMES"></A>
+<p>
+<hr>
+<h3>Host names and IP numbers:</h3>
+
+<p>
+
+Hosts have <i>names</i> (eg. julian.uwo.ca) but IP addressing is by
+<i>number</i> (eg. [129.100.2.12]). In  the  old  days  name/number
+translations were tabled in  <A HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=hosts/section=4">
+/etc/hosts</A>.
+
+<blockquote><pre>
+[2:38pm julian] <b>page /etc/hosts</b>
+# /etc/hosts: constructed out of private data and DNS. Some machines
+# need to know some things at boot time. Otherwise, rely on DNS.
+#
+127.0.0.1       localhost
+129.100.2.12    julian.uwo.ca
+129.100.2.26    backus.ccs.uwo.ca loghost.its.uwo.ca
+129.100.2.33    filehost.ccs.uwo.ca
+129.100.2.14    panther.uwo.ca
+          <i>etc...</i>
+</pre></blockquote>
+
+
+<p>
+
+These days name to number translations are implemented by the <A
+HREF="http://www.uwo.ca/its/doc/courses/notes/dns/">Domain Name
+Service</A> (or DNS) -- see <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=named/section=8">named(8)</A>.
+and <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=resolv.conf/section=4">resolv.conf(4)</A>.
+
+<blockquote><pre>
+[2:43pm julian] <b>page /etc/resolv.conf</b>
+# $Author: reggers $
+# $Date: 1997/05/02 20:17:16 $
+# $Id: socket.html,v 1.8 1997/05/02 20:17:16 reggers Exp $
+# $Source: /usr/src/usr.local/doc/courses/socket/RCS/socket.html,v $
+# $Locker:  $
+#
+# The default /etc/resolv.conf for the ITS solaris systems.
+#
+nameserver 129.100.2.12
+nameserver 129.100.2.51
+nameserver 129.100.10.252
+domain its.uwo.ca
+search ncsm.its.uwo.ca its.uwo.ca uwo.ca 
+</pre></blockquote>
+
+
+<A NAME="HOSTAPI"></A>
+<p>
+<h4>Programming Calls:</h4>
+
+<p>
+
+Programmers don't scan <A HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=hosts/section=4">
+/etc/hosts</A>
+nor do they communicate with the
+DNS.  The C library routines <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=gethostbyname/section=3">
+gethostbyname(3)</A> (and gethostbyaddr(3) on the same page) each
+return a pointer to an object with the following structure:
+
+<blockquote><pre>
+struct     hostent {
+   char   *h_name;        /* official name */
+   char   **h_aliases;    /* alias list */
+   int    h_addrtype;     /* address type */
+   int    h_length;       /* address length */
+   char   **h_addr_list;  /* address list */
+};
+#define h_addr h_addr_list[0]
+  /* backward compatibility */
+</pre></blockquote>
+
+<p>
+
+The  structure  <b><tt>h_addr_list</tt></b>  is a list of IP numbers (recall
+that a machine might have several interfaces, each will have
+a number).
+
+
+<p> <i>Good programmers</i> would try to connect to each address listed in
+turn (eg. some versions of 
+<A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=ftp/section=1">ftp(1)</A>
+do that). <i>Lazy programmers</i> (like me) just use
+<b><tt>h_addr</tt></b> -- the first address listed. But see the <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=acl/section=1">acl(1)</A>
+and <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=acld/section=8">acld(8)</A>
+example noted <A HREF="#ACL">earlier</A> -- the client will try each
+server until it gets an answer or runs out of servers to ask.
+
+<p>
+
+Client applications connect to a <b>host.port</b> (cf. netstat output)
+for a service provided by the application found at that address.
+
+<blockquote><pre>
+Proto R-Q S-Q  Local Address  Foreign Address    (state)
+tcp     0   0  julian.2717    vnet.ibm.com.smtp  ESTABLISHED
+tcp     0  13  julian.nntp    watserv1.wat.3507  ESTABLISHED
+
+</pre></blockquote>
+
+<p>
+The connection is usually prefaced by translating a <i>host
+name</i> into  an  <i>IP number</i> (but if you knew the IP number you
+could carefully skip that step).
+
+<blockquote><pre>
+int     tcpopen(host,service)
+char    *service, *host;
+{
+    struct  hostent         *hp;
+          <i>etc...</i>
+    if ((hp=<b>gethostbyname(host)</b>) == NULL) then <i>error...</i>
+
+</pre></blockquote>
+
+<p>
+
+I say "carefully" because the IP address is a structure of 4 octets.
+Watch out for byte ordering.  An unsigned long isn't the same octet
+sequence on all machines.  See <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=byteorder/section=3N">
+byteorder(3N)</A> for host to net conversions (host format to/from
+network format).
+
+<A NAME="SERVICE"></A>
+<p>
+<hr>
+<h3>Services and Ports:</h3>
+<p>
+
+Services have <i>names</i> (eg. SMTP the Simple Mail Transfer
+Protocol). Ports have <i>numbers</i> (eg. SMTP is a service on port
+25).  The mapping from service names to port numbers is listed in
+<A HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=services/section=4">
+/etc/services</A>.
+
+<blockquote><pre>
+[1:22pm julian] page /etc/services
+# $Author: reggers $
+# $Date: 1997/05/02 20:17:16 $
+#
+# Network services, Internet style
+          <i>etc...</i>
+ftp             21/tcp
+telnet          23/tcp
+smtp            25/tcp          mail
+whois           43/tcp          nicname
+domain          53/tcp          nameserver
+domain          53/udp          nameserver
+tftp            69/udp
+finger          79/tcp
+nntp            119/tcp         readnews untp
+ntp             123/udp
+snmp            161/udp
+xdmcp           177/udp         xdm
+          <i>etc...</i>
+</pre></blockquote>
+
+<A NAME="SERVICEAPI"></A>
+<p>
+<h4>Programming Calls:</h4>
+
+
+<p> But programmers don't scan <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=services/section=4">
+/etc/services</A>, they use library routines.  The C library routines
+<A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=getservbyname/section=3N">
+getservbyname(3N)</A> (and getservbyport(3N) on the same page) each
+return a pointer to an object with the following structure containing
+the broken-out fields of a line in <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=services/section=4">
+/etc/services</A>.
+
+<blockquote><pre>
+struct   servent {
+   char   *s_name;      /* name of service */
+   char   **s_aliases;  /* alias list */
+   int    s_port;       /* port for service */
+   char   *s_proto;     /* protocol to use */
+};
+
+</pre></blockquote>
+
+<p>
+
+Client applications connect to a service port. Usually this is
+prefaced by translating a <i>service name</i> (eg.  SMTP) into the
+<i>port number</i> (but if you knew the port number you could
+carefully skip that step).
+
+<blockquote><pre>
+int     tcpopen(host,service)
+char    *service, *host;
+{
+    struct  servent         *sp;
+          <i>etc...</i>
+    if ((sp=<b>getservbyname(service,"tcp")</b>) == NULL) then <i>error...</i>
+
+</pre></blockquote>
+
+<p> Ie. to determine the port number for a particular <b>tcp
+service</b>. Note that you'd do the same to determine port numbers for
+UDP services.
+
+<A NAME="SOCKETADDR"></A>
+<p>
+<hr>
+<h3>Socket Addressing:</h3>
+<p>
+
+A Socket Address is a <b>host.port</b> pair (communication is between
+<b>host.port</b> pairs -- one on the server, the other on the
+client). We know how to determine host numbers and service numbers so
+we're well on our way to filling out a structure were we specify those
+numbers.  The structure is <b><tt>sockaddr_in</tt></b>, which has the
+address family is <b><tt>AF_INET</tt></b> as in this fragment:
+
+<blockquote><pre>
+int     tcpopen(host,service)
+char    *service, *host;
+{   int     unit;
+    <b>struct  sockaddr_in     sin;</b>
+    struct  servent         *sp;
+    struct  hostent         *hp;
+          <i>etc...</i>
+    if ((sp=getservbyname(service,"tcp")) == NULL) then <i>error...</i>
+    if ((hp=gethostbyname(host)) == NULL) then <i>error...</i>
+
+    <b>bzero((char *)&amp;sin, sizeof(sin));
+    sin.sin_family=AF_INET;
+    bcopy(hp->h_addr,(char *)&amp;sin.sin_addr, hp->h_length);
+    sin.sin_port=sp->s_port;</b>
+          <i>etc...</i>
+
+</pre></blockquote>
+
+<p> The code fragment is filling in the IP address type
+<b><tt>AF_INET</tt></b>, port number and IP address in the Socket
+Address structure -- the address of the remote <b>host.port</b> where
+we want to connect to find a service.
+
+
+<p> There's a generic Socket Address structure, a
+<b><tt>sockaddr</tt></b>, used for communication in <i>arbitrary</i>
+domains. It has an address family field and an address (or data)
+field:
+
+<blockquote><pre>
+/* from: /usr/include/sys/socket.h */
+struct sockaddr {
+    u_short sa_family;   /* address family */
+    char    sa_data[14]; /* max 14 byte addr */
+};
+
+</pre></blockquote>
+<p>
+
+The <b><tt>sockaddr_in</tt></b> structure is for Internet Socket
+Addresses (address family <b><tt>AF_INET</tt></b>).  An instance of
+the <i>generic</i> socket address.
+
+<blockquote><pre>
+/* from: /usr/include/netinet/in.h */
+struct sockaddr_in {
+    short   sin_family;       /* AF_INET      */
+    u_short sin_port;         /* service port */
+    struct  in_addr sin_addr; /* host number  */
+    char    sin_zero[8];      /* not used     */
+};
+</pre></blockquote>
+
+<p> The family defines the interpretation of the data. In other
+domains addressing will be different -- services in the UNIX domain
+are names (eg. /dev/printer).  In the <b><tt>sockaddr_in</tt></b>
+structure we've got fields to specify a port and a host IP number (and
+8 octets that aren't used at all!). That structure specifies one end
+of an IPC connection. Creating that structure and filling in the right
+numbers has been pretty easy so far.
+
+<A NAME="SOCKANDFILE"></A>
+<p>
+<hr>
+<h3>File Descriptors and Sockets:</h3>
+
+<A NAME="FILEDESC"></A>
+<p>
+<h4>File Descriptors:</h4>
+
+
+<p>
+File Descriptors are the fundamental I/O object. You 
+<A HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=read/section=2">
+read(2)</A>
+and
+<A HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=write/section=2">
+write(2)</A>
+to file descriptors.
+
+<blockquote><pre>
+    int cc, fd, nbytes;
+    char *buf;
+
+    cc = read(fd, buf, nbytes);
+    cc = write(fd, buf, nbytes)
+</pre></blockquote>
+
+<p>
+
+The <b><tt>read</tt></b> attempts to read <b><tt>nbytes</tt></b> of
+data from the object referenced by the file descriptor
+<b><tt>fd</tt></b> into the buffer pointed to by <b><tt>buf</tt></b>.
+The write does a write to the file descriptor from the buffer. Unix
+I/O is a byte stream. 
+
+<p>
+
+File descriptors are numbers used for I/O.  Usually the result of <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=open/section=2">
+open(2)</A> and <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=creat/section=2">
+creat(2)</A> calls.
+
+
+<p>
+
+All Unix applications run with <b><tt>stdin</tt></b> as file
+descriptor 0, <b><tt>stdout</tt></b> as file descriptor 1, and
+<b><tt>stderr</tt></b> as file descriptior 3.  But
+<b><tt>stdin</tt></b> is a <b><tt>FILE</tt></b> (see <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=stdio/section=3S">stdio(3S)</A>)
+not a file descriptor.  If you want a stdio <b><tt>FILE</tt></b> on a
+file descriptor use <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=fdopen/section=3S">fdopen(3S)</A>.
+
+<A NAME="SOCKETS"></A>
+<p>
+<h4>Sockets:</h4>
+
+
+<p>
+
+A Socket is a Unix file descriptor created by the <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=socket/section=3N">socket(3N)</A>
+call -- you don't <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=open/section=2">
+open(2)</A> or <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=creat/section=2">
+creat(2)</A> a socket. By way of comparison <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=pipe/section=2">pipe(2)</A>
+creates file descriptors too -- you might be familiar with pipes which
+predate sockets in the development of the Unix system.
+
+<blockquote><pre>
+   int s, domain, type, protocol;
+   s = <b>socket(domain, type, protocol)</b>;
+          <i>etc...</i>
+   cc = read(s, buf, nbytes);
+</pre></blockquote>
+
+<p>
+
+The <b><tt>domain</tt></b> parameter specifies a communications domain
+(or address family). For IP use <b><tt>AF_INET</tt></b> but note that
+<b><tt>socket.h</tt></b> lists all sorts of address families. This is
+to inform the system <i>how</i> an address should be <i>understood</i>
+-- on different networks, like <b><tt>AF_DECnet</tt></b>, addressing
+may be longer than the four octets of an IP number. We're only
+concerned with IP and the <b><tt>AF_INET</tt></b> address family.
+
+
+<p> The <b><tt>type</tt></b> parameter specifies the semantics of
+communication (sometimes know as a specification of <i>quality of
+services</i>).  For TCP/IP use <b><tt>SOCK_STREAM</tt></b> (for UDP/IP
+use <b><tt>SOCK_DGRAM</tt></b>). Note that <i>any</i> address family
+might support those service types. See <b><tt>socket.h</tt></b> for a
+list of service types that might be supported.
+
+
+<p> A <b><tt>SOCK_STREAM</tt></b> is a sequenced, reliable, two-way
+connection based byte stream.  If a data cannot be successfully
+transmitted within a reasonable length of time the connection is
+considered broken and I/O calls will indicate an error.
+
+
+<p> The <b><tt>protocol</tt></b> specifies a particular protocol to be
+used with the socket -- for TCP/IP use 0.  Actually there's another
+programmers interface <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=getprotobyname/section=3N">
+getprotobyname(3N)</A> that provides translates protocol names to
+numbers. It's an interface to the data found in <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=protocols/section=4">
+/etc/protocols</A> -- compare with the translation of service
+<i>names</i> to port <i>numbers</i> discussed <A
+HREF="#SERVICE">above</A>.
+
+
+<A NAME="CLIENT"></A>
+<p>
+<hr>
+<h3>Client Connect:</h3>
+<p>
+
+A client application creates a <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=socket/section=3N">
+socket(3N)</A>and then issues a <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=connect/section=3N">
+connect(3N)</A> to a service specified in a
+<b><tt>sockaddr_in</tt></b> structure:
+
+<blockquote><pre>
+int     tcpopen(host,service)
+char    *service, *host;
+{   int     unit;
+    <b>struct  sockaddr_in     sin;</b>
+    struct  servent         *sp;
+    struct  hostent         *hp;
+
+    if ((sp=getservbyname(service,"tcp")) == NULL) then <i>error...</i>
+    if ((hp=gethostbyname(host)) == NULL) then I<i>error...</i>
+    bzero((char *)&amp;sin, sizeof(sin))
+          <i>etc...</i>
+    if ((unit=<b>socket(AF_INET,SOCK_STREAM,0)</b>) < 0) then <i>error...</i>
+    if (<b>connect(unit,&amp;sin,sizeof(sin))</b> < 0) then <i>error...</i>
+    return(unit);
+}
+</pre></blockquote>
+
+
+<p>
+
+The result returned is a file descriptor which is connected to a
+server process. A communications channel on which one can conduct an
+application specific protocol.
+
+<A NAME="CLIENTCOMM"></A>
+<p>
+<h4>Client Communication:</h4>
+<p>
+
+Having connected a socket to a server to establish a file descriptor
+communication is with the usual Unix I/O calls.  You have Inter
+Process Communication (or IPC) to a server.
+
+<p>
+
+Many programmers turn file descriptors into <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=stdio/section=3S">
+stdio(3S)</A> streams so they can use fputs, fgets, fprintf, etc.  --
+use <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=fdopen/section=3S">
+fdopen(3S)</A>.
+
+<blockquote><pre>
+main(argc,argv)
+int     argc;
+char    *argv[];
+{
+    int     unit,i;
+    char    buf[BUFSIZ];
+    FILE    *sockin,*sockout;
+
+    if ((unit=tcpopen(WHOHOST,WHOPORT))
+         < 0) then <i>error...</i>
+    sockin=<b>fdopen(unit,"r")</b>;
+    sockout=<b>fdopen(unit,"w")</b>;
+          <i>etc...</i>
+    fprintf(sockout,"%s\n",argv[i]);
+          <i>etc...</i>
+    while (fgets(buf,BUFSIZ,sockin)) <i>etc...</i>
+</pre></blockquote>
+
+
+<A NAME="STDIO"></A>
+<p>
+<h4>Stdio Buffers:</h4>
+<p>
+
+Stdio  streams  have powerful manipulation tools (eg. fscanf
+is amazing). But beware, streams are buffered!
+This means a well placed <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=fflush/section=3S">
+fflush(3S)</A> is often required to flush a buffer to the peer.
+
+<blockquote><pre>
+    fprintf(sockout,"%s\n",argv[i]);
+    <b>fflush(sockout)</b>;
+
+    while (fgets(buf,BUFSIZ,sockin)) <i>etc...</i>
+</pre></blockquote>
+
+
+<p>
+Many client/server protocols are client driven -- the client
+sends a command and expects an answer.
+The server won't see the command if the client doesn't flush
+the output. Likewise, the client won't see the answer if the
+server doesn't flush it's output.
+
+
+<p>
+Watch out for client and server blocking -- both waiting for
+input from the other.
+
+<A NAME="SERVER"></A>
+<p>
+<hr>
+<h3>Server Applications:</h3>
+<p>
+
+A system offers a service by having an application running that is
+<i>listening</i> at the service port and willing to <i>accept</i> a
+connection from a client.  If there is no application listening at the
+service port then the machine doesn't offer that service.
+
+
+<p>
+The SMTP service is provided by an application listening  on
+port 25. On Unix systems this is usually the 
+<A HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=sendmail/section=1M">
+sendmail(1M)</A>
+application which is started at boot time.
+
+<blockquote><pre>
+[2:20pm julian] <b>ps -agx | grep sendmail</b>
+  419   ? SW    0:03 /usr/lib/sendmail -bd -q15m
+18438   ? IW    0:01 /usr/lib/sendmail -bd -q15m
+
+[2:28pm julian] <b>netstat -a | grep smtp</b>
+tcp  0 0 julian.3155 acad3.alask.smtp SYN_SENT
+tcp  0 0 *.smtp      *.*              LISTEN
+
+</pre></blockquote>
+
+<p>
+In the example we have a process <i>listening</i> to the smtp  port
+(for  inbound  mail) and another process <i>talking</i> to the smtp
+port on <b><tt>acad3.alaska.edu</tt></b> (ie. sending mail to that  system).
+
+<p>
+So how do we get a process bound behind a port?
+
+<A NAME="SERVERBIND"></A>
+<p>
+<h4>Server Bind:</h4>
+<p>
+
+A Server uses <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=bind/section=3N">
+bind(3N)</A> to establish the local <b>host.port</b> assignment --
+ie. so it is the process behind that port.  That's really only
+required for servers -- applications which <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=accept/section=3N">
+accept(3N)</A> connections to provide a service.
+
+<blockquote><pre>
+    struct servent    *sp;
+    struct sockaddr_in sin;
+
+    if ((sp=getservbyname(service,"tcp")) == NULL) then <i>error...</i>
+
+    sin.sin_family=AF_INET;
+    sin.sin_port=sp->s_port;
+    sin.sin_addr.s_addr=htonl(INADDR_ANY);
+
+    if ((s=socket(AF_INET,SOCK_STREAM,0)) < 0) then <i>error...</i>
+    if (<b>bind(s, &amp;sin, sizeof(sin))</b> < 0) then <i>error...</i>
+</pre></blockquote>
+
+
+<p> <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=byteorder/section=3N">
+htonl(3N)</A> converts a long to the right sequence (given different
+byte ordering on different machines).  The IP address
+<b><tt>INADDR_ANY</tt></b> means <i>all interfaces</i>. You could, if
+you wanted, provide a service only on <i>some</i> interfaces -- eg. if
+you only provided the service on the loopback interface (127.0.0.1)
+then the service would only be available to clients on the same
+system.
+
+<p> What this code fragment does is specify a <i>local</i> interface
+and port (into the <b><tt>sin</tt></b> structure). The process is
+bound to that port -- it's now the process behind the local port.
+
+<p> Client applications usually aren't concerned about the local
+<b>host.port</b> assignment (the <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=connect/section=3N">
+connect(3N)</A> does a bind o some random but unused local port on the
+right interface).  But <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=rcp/section=1">
+rcp(1)</A> and related programs (like <b>rlogin(1)</b> and
+<b>rsh(1)</b>) do connect from reserved port numbers.
+
+<p> I've done the same in some of my programming.  See, for example,
+the version of <A
+HREF="http://www.uwo.ca/its/network/security/passwd-suite/tcpopen.c">
+tcpopen.c</A> used in our <A
+HREF="http://www.uwo.ca/its/network/security/passwd-suite/">
+Passwdd/Passwd -- An authentication Daemon/Client</A>. There's an
+instance where a client application connects from a reserved port.
+
+<A NAME="SERVERLISTEN"></A>
+<p>
+<h4>Listen and Accept:</h4>
+<p>
+
+To accept connections, a socket is created with <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=socket/section=3N">
+socket(3N)</A>, it's bound to a service port with <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=bind/section=3N">bind(3N)</A>,
+a queue for incoming connections is specified with <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=listen/section=3N">
+listen(3N)</A> and then the connections are accepted with <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=accept/section=3N">
+accept(3N)</A> as in this fragment:
+
+<blockquote><pre>
+    struct servent    *sp;
+    struct sockaddr_in sin,from;
+
+    if ((sp=getservbyname(service,"tcp")) == NULL) then <i>error...</i>
+    sin.sin_family=<i>etc...</i>
+    if ((s=<b>socket(AF_INET,SOCK_STREAM,0)</b>) < 0) then <i>error...</i>
+    if (<b>bind(s, &amp;sin, sizeof(sin))</b> < 0) then <i>error...</i>
+    if (<b>listen(s,QUELEN)</b> < 0) then <i>error...</i>
+    for (;;) {
+       if ((g=<b>accept(f,&amp;from,&amp;len)</b>) < 0) then <i>error...</i>
+       if (!fork()) {
+          <i>child handles request...
+             ...and exits</i>
+           exit(0);
+       }
+       close(g);   /* parent releases file */
+    }
+
+</pre></blockquote>
+
+<p> This is the programming schema used by utilities like <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=sendmail/section=1M">
+sendmail(1M)</A> and others -- they create their socket and listen for
+connections. When connections are made, the process forks off a child
+to handle that service request and the parent process continues to
+listen for and accept further service requests.
+
+<p> <B><i>But, you really don't want to use that programming paradigm
+unless you really have to.</i></b> There are lots of hidden issues (like
+becoming a detached process and more) that you'd rather avoid.
+
+<p> Fortunately, there's an easier method.
+
+<A NAME="INETD"></A>
+<p>
+<hr>
+<h3>Inetd Services:</h3>
+<p>
+
+Not  all  services  are  started  at  boot time by running a
+server application. Eg.  you won't  usually  see  a  process
+running for the finger service like you do for the smtp service. Many
+are handled by the InterNet Daemon 
+<A HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=inetd/section=1M">
+inetd(1M)</A>.
+This
+is a generic service configured by the file 
+<A HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=inetd.conf/section=4">
+inetd.conf(4)</A>.
+
+
+<blockquote><pre>
+[2:35pm julian] <b>page /etc/inetd.conf</b>
+# $Author: reggers $
+# $Date: 1997/05/02 20:17:16 $
+#
+# Internet server configuration database
+ftp     stream tcp nowait root   /usr/etc/ftpd      ftpd
+telnet  stream tcp nowait root   /usr/etc/telnetd   telnetd
+shell   stream tcp nowait root   /usr/etc/rshd      rshd
+login   stream tcp nowait root   /usr/etc/rlogind   rlogind
+exec    stream tcp nowait root   /usr/etc/rexecd    rexecd
+uucpd   stream tcp nowait root   /usr/etc/uucpd     uucpd
+finger  stream tcp nowait nobody /usr/etc/fingerd   fingerd
+          <i>etc...</i>
+whois   stream tcp nowait nobody /usr/lib/whois/whoisd whoisd
+          <i>etc...</i>
+
+</pre></blockquote>
+<A NAME="INETDCOMMENT"></A>
+<p>
+<h4>Inetd Comments:</h4>
+<p>
+
+For each service listed in <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=inetd.conf/section=4">
+/etc/inetd.conf</A> the <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=inetd/section=1M">
+inetd(1M)</A> process, and that is a process is started at boot time, executes
+the <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=socket/section=3N">
+socket(3N)</A>, <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=bind/section=3N">
+bind(3N)</A>, <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=listen/section=3N">
+listen(3N)</A> and <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=accept/section=3N">
+accept(3N)</A> calls as discussed above. Inetd also handles many of
+the daemon issues (signal handling, set process group and controlling
+tty) which we've studiously avoided.
+
+<p> The <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=inetd/section=1M">
+inetd(1M)</A> process spawns the appropriate server application (with
+<A HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=fork/section=2">
+fork(2)</A> and <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=exec/section=2">
+exec(2)</A>) when a client connects to the service port.  The daemon
+continues to listen for further connections to the service while the
+spawned child process handles the request which just came in.
+
+<p>
+
+The server application (ie. the child spawned by <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=inetd/section=1M">
+inetd(1M)</A>) is started with <b><tt>stdin</tt></b> and
+<b><tt>stdout</tt></b> connected to the remote <b>host.port</b> of the
+client process which made the connection. Any input/output by the
+server appliation on <b><tt>stdin/stdout</tt></b> are sent/received by
+the client application. You have Inter Process Communication (or IPC)!
+
+<p>
+
+This means, any application written to use
+<b><tt>stdin/stdout</tt></b> can be a server application.  Writing a
+server application should therefore be fairly simple.
+
+<A NAME="WHOISD"></A>
+<p>
+<h4>Whois Daemon:</h4>
+<p>
+
+On  julian  we  have an entry in /etc/inetd.conf for the UWO/ITS
+whois service:
+
+<blockquote><pre>
+[3:25pm julian] <b>grep whois /etc/inetd.conf</b>
+whois   stream tcp nowait nobody /usr/lib/whois/whoisd   whoisd
+</pre></blockquote>
+
+
+<p> This is our local directory service -- it's implemented on a
+TCP/IP stream (all whois services are), at the <b><tt>whois</tt></b>
+port (all whois services should be at that port), it's ran as user
+<b><tt>nobody</tt></b> (you don't need to run servers as user
+<b><tt>root</tt></b>), the program to run is
+<b><tt>/usr/lib/whois/whoisd</tt></b>, and the command line to the
+program is just <b><tt>whoisd</tt></b>.
+
+<p> This is a standard <b>whois</b> service -- it implements the
+trivial protocol required of <i>all</i> <b>whois</b> servers. Any
+<b>whois</b> client can use the service.  The program conducts an
+application protocol on <b><tt>stdin/stdout</tt></b> (which is usually
+connected by a TCP/IP socket to a client application). The protocol is
+trivial -- server accepts a one line query, answers back and exits.
+
+<A NAME="RUNNING"></A>
+<p>
+<hr>
+<h3>Running the Daemon:</h3>
+<p>
+
+
+You  can run the whois daemon (on the server) to see what it
+does:
+
+<blockquote><pre>
+[3:27pm julian] <b>echo reggers | /usr/lib/whois/whoisd</b>
+There were 1 matches on your request.
+
+           Full Name: Quinton, Reg
+          Department: Info Tech Svcs
+                Room: NSC 214
+               Phone: 679-2111x(6026)
+           Index Key: 481800
+     Machine Address: reggers@julian.uwo.ca
+ Directory Addresses: reg.quinton@uwo.ca
+                    : r.quinton@uwo.ca
+                    : reggers@uwo.ca
+                    : quinton@uwo.ca
+
+For more information try 'whois help'.
+</pre></blockquote>
+
+<p>
+
+The program is command driven -- you give a command (or query string)
+on <b><tt>stdin</tt></b>, it produces results on
+<b><tt>stdout</tt></b>, and exits. This is a very simple protocol,
+compare with <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=fingerd/section=1M">
+fingerd(1M)</A>.
+
+<p> Actually the example is a misrepresentation -- our server will
+only answer questions if it's input is a <b><tt>socket</tt></b> in the
+<b><tt>AF_INET</tt></b>. That's because we want to <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=syslog/section=3">
+syslog(3)</A> all transactions -- we want to know where the connection
+came from.
+
+
+<p>
+<A NAME="CODE"></A>
+<p>
+<h4>The Code:</h4>
+<p>
+
+
+The server program is easy enough -- read a line, switch on command,
+and exit.
+
+<blockquote><pre>
+<b>fgets(string,BUFSIZ,stdin)</b>; <i>read from socket...</i>
+
+/* for some reason people send the whois phrase */
+
+again:
+     strcpy(verb,""); strcpy(args,"");
+     sscanf(buf,"%[^ \t\r\n]%*c%[^\r\n]",verb,args);
+     if (!strcasecmp(verb,"whois")) {
+       strcpy(buf,args);
+       goto again;
+     }
+     sscanf(buf,"%[^\r\n]",buf);
+
+/* switch on command verbs */
+if (!strcasecmp(verb,"help"))
+       givehelp(args);       <i> output sent to stdout...</i>
+else   <i>etc...</i>
+
+/* or just display a person */
+else    listdisplay(lookbyname(buf));
+                             <i> output sent to stdout...</i>
+
+<b>fflush(stdout)</b>;       <i>push output to client ...</i>
+</pre></blockquote>
+
+<p>
+Server programs can be that simple.
+
+<p>
+
+<A NAME="CONNECT"></A>
+<p>
+<h4>Connecting to the Server:</h4>
+<p>
+
+You can make a 
+<A HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=telnet/section=1">
+telnet(1)</A> connection to the <b><tt>whois</tt></b> service on the server.
+
+<blockquote><pre>
+[3:47pm julian] <b>telnet julian whois</b>
+Trying 129.100.2.12 ... Connected to julian.uwo.ca.
+Escape character is '^]'.
+<b>reggers</b> <i>.... my command input</i>
+There were 1 matches on your request.
+
+           Full Name: Quinton, Reg
+          Department: Info Tech Svcs
+                Room: NSC 214
+               Phone: 679-2111x(6026)
+           Index Key: 481800
+     Machine Address: reggers@julian.uwo.ca
+ Directory Addresses: reg.quinton@uwo.ca
+                    : r.quinton@uwo.ca
+                    : reggers@uwo.ca
+                    : quinton@uwo.ca
+
+For more information try 'whois help'.
+Connection closed by foreign host.
+</pre></blockquote>
+
+<p>
+But we wouldn't normally use telnet as the client
+application (although in this case we could).
+
+<p>
+<A NAME="WHOIS"></A>
+<p>
+<h4>Whois Client:</h4>
+<p>
+
+The <A HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=whois/section=1">
+whois(1)</A> client makes a TCP/IP connection to the server (using the
+<A HREF="http://www.uwo.ca/its/network/whois/tcpopen.c">
+tcpopen</A> function we've developed here) and conducts the kind of
+protocol that you would type if you where to make a connection by
+hand:
+
+<blockquote><pre>
+[7:30am julian] <b>whois reggers</b>
+There were 1 matches on your request.
+
+           Full Name: Quinton, Reg
+          Department: Info Tech Svcs
+                Room: NSC 214
+               Phone: 679-2111x(6026)
+           Index Key: 481800
+     Machine Address: reggers@julian.uwo.ca
+ Directory Addresses: reg.quinton@uwo.ca
+                    : r.quinton@uwo.ca
+                    : reggers@uwo.ca
+                    : quinton@uwo.ca
+
+For more information try 'whois help'.
+</pre></blockquote>
+
+
+<p> The client sends the command <b>"reggers"</b>, the server sends
+back the answer and the client displays the answer received to the
+user.  When the server is finished the connection is closed.
+
+<p> If you understand the development of the <A
+HREF="http://www.uwo.ca/its/network/whois/tcpopen.c">
+tcpopen</A> function then the rest of the code for that client should
+not be too difficult. See the entire <A
+HREF="http://www.uwo.ca/its/network/whois">
+distribution</A> for that application -- there's only one main program
+to complete the kit.
+
+<p>
+<A NAME="PERL"></A>
+<p>
+<h4>Perl Socket Programming:</h4>
+
+<p>
+
+These days it's not unusal to see socket programming in <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=perl/section=1">
+perl(1)</A> as well as C programs. Assuming you have been able to
+follow the notions presented above in the development of a <A
+HREF="http://www.uwo.ca/its/network/whois/tcpopen.c">
+tcpopen</A> function written in C as used by our <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=whois/section=1">whois(1)</A>
+client the following is for the Perl enthusiast:
+
+<blockquote><pre>
+sub tcpopen {
+   use Socket;                        # need socket interface
+   my($server, $service) = @_;        # args to this function
+   my($proto, $port, $iaddr);         # local variables
+   my($handle)="$server\:\:$service"; # localized obscure handle
+
+   die("550:Cannot getprotobyname('tcp')\r\n")
+      unless ($proto = <b>getprotobyname('tcp')</b>);
+
+   die("550:Cannot getservbyname($service)\r\n")
+      unless ($port = <b>getservbyname($service, 'tcp')</b>);
+
+   die("550:Cannot gethostbyname($server)\r\n")
+      unless ($iaddr = <b>gethostbyname($server)</b>);
+
+   die("550:Cannot create socket\r\n")
+      unless <b>socket($handle, PF_INET, SOCK_STREAM, $proto)</b>;
+
+   die("550:Cannot connect($service://$server)\r\n")
+      unless <b>connect($handle, sockaddr_in($port, $iaddr))</b>;
+
+   # unbuffered I/O to that service
+
+   select($handle); $| = 1; select(STDOUT); $| = 1;
+
+   return($handle);
+}
+</pre></blockquote>
+
+<p>
+
+See <A
+HREF="http://www.uwo.ca/its/network/whoisd/whois2ph.html">
+whois2ph(8)</A>, the <A
+HREF="http://www.uwo.ca/its/network/whoisd/whois2ph">
+whois2ph source</A>, <A
+HREF="http://www.uwo.ca/its/network/whoisd/whois2html.html">
+whois2html(8)</A>, and the <A
+HREF="http://www.uwo.ca/its/network/whoisd/whois2html">
+whois2html source</A> -- both are <i>production gateways</i> in Perl
+to interface with our <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=whoisd/section=8">
+whoisd(8)</A> server.
+
+
+<A NAME="FINAL"></A>
+<p>
+<hr>
+<h3>Final Comments:</h3>
+<p>
+
+The whois example uses a line based protocol.  The  strategy
+is  common  but  by no means universal. For example, the lpd
+protocols use octets (ie. single characters)  for  the  commands.
+
+<p>
+
+Inetd  servers  are the simplest to implement. However, this
+may not be optimal. Especially if the server has to do a lot
+of work first (eg.  loading in a big data base).
+
+<p>
+
+Stand  alone servers have to deal with many daemon issues -they should ignore most signals, set a unique process  group
+and get rid of the controlling terminal.
+
+
+<p>
+Daemons like nntp could (in theory) handle many clients from
+a single daemon using interrupt  driven  I/O.  As  currently
+implemented  most  have  an nntp daemon for each client (but
+INN uses a single daemon for flooding).
+
+<p>
+
+You'll note that Socket programmers use <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=alarm/section=2">
+alarm(2)</A>, <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=setjmp/section=2">
+setjmp(2)</A>, and <A
+HREF="http://www.uwo.ca/cgi-bin/rman.pl?topic=signal/section=2">
+signal(2)</A> calls.  The intent is to prevent a process (client or
+server) from hanging in a wait for I/O state by setting and trapping
+on an alarm.
+
+<A NAME="NOTES"></A>
+<p>
+<h4>Note Well:</h4>
+<ul>
+<li>
+
+
+The best way to code a client/server  program  is  to  reuse
+code from an existing service. There's lots of public domain
+examples to work from -- nntp, lpd, sendmail, and  even  our
+whois service.
+
+
+<li>
+A  simple  solution  that  works is much better than a fancy
+solution that doesn't -- <b><i>keep it simple.</i></b>
+
+<li>
+
+Presentation  issues,  ie.  the display for the user, should
+not effect the protocol or server. Again, protocols have  to
+be simple!
+
+
+<li>
+Don't ever assume the client or server applications are well
+behaved!
+</ul>
+
+<p>
+<A NAME="READINGS"></A>
+<hr>
+<h3>Suggested Reading:</h3>
+
+It shoud be clear that we have lots of real world examples you can
+look at and work from:
+
+<ul>
+<li><A
+HREF="http://www.uwo.ca/its/network/whoisd/"><i>UWO/ITS
+Whois/CSO server</i></A>, by <A
+HREF="mailto:reggers@julian.uwo.ca">Reg Quinton</A>, UWO/ITS, 1992-97
+<li><A
+HREF="http://www.uwo.ca/its/network/whois/"><i>UWO/ITS
+Whois client</i></A>, by <A
+HREF="mailto:reggers@julian.uwo.ca">Reg Quinton</A>, UWO/ITS, 1992-97
+<li><A
+HREF="http://www.uwo.ca/its/network/security/passwd-suite/">
+<i>Passwdd/Passwd -- An authentication Daemon/Client</i></A>,
+by <A
+HREF="mailto:reggers@julian.uwo.ca">Reg Quinton</A>, UWO/ITS, 1992-97
+
+<li><A
+HREF="http://www.uwo.ca/its/network/security/acl/">
+<i>ACL -- Access Control Lists</i></A>,
+by <A
+HREF="mailto:reggers@julian.uwo.ca">Reg Quinton</A>, UWO/ITS, 1995-97
+</ul>
+
+More detailed documentation, should you need it, can be found at:
+
+<ul>
+<li>
+<i>Introductory 4.3BSD Interprocess  Communication</i>,  by  Stuart
+Sechrest,  (in)  UNIX  Programmer's Supplementary Documents,
+Vol1, 4.3 Berkeley Software Distribution, PS1:7.
+
+<li>
+<i>Advanced 4.3BSD Interprocess  Communication</i>,  by  Samuel  J.
+Leffler  et  al,  (in) UNIX Programmer's Supplementary Documents, Vol1, 4.3 Berkeley Software Distribution, PS1:8.
+
+<li>
+<i>Introduction to the  Internet  Protocols</i>,  Computer  Science
+Facilities Group, Rutgers. (See 
+<A HREF="ftp://ftp.uwo.ca/nic/tcpip.intro">ftp:/ftp.uwo.ca/nic</A>)
+
+<li>
+<i>Networking with BSD-style Sockets</i>, by John Romkey, (in) Unix
+World, July-Aug. 1989.
+
+<li>
+<i>How to Write Unix Daemons</i>, by Dave Lennert, (in) Unix World,
+Dec. 1988.
+
+<li>
+<i>A  Socket-Based  Interprocess Communications Tutorial</i>, Chpt.
+10 of SunOS Network Programming Guide.
+
+<li>
+<i>An Advanced Socket-Based Interprocess  Communications  Tutorial</i>, Chpt. 11 of SunOS Network Programming Guide.
+</ul>
+<p>
+<A NAME="AUTHOR"></A>
+<hr>
+<h3>Author:</h3>
+<p>
+Comments, concerns, questions, etc. about these notes should be directed
+to the author:
+<p>
+<blockquote>
+Reg Quinton 
+<A HREF="mailto:reggers@julian.uwo.ca">&lt;reggers@julian.uwo.ca&gt;</A><br>
+(for) The UWO Network Information Centre<br>
+Information Technology Services<br>
+The University of Western Ontario<br>
+London, Ontario N6A 5B7 Canada<br>
++1 519 661-2151x6026<br>
+</blockquote>
+<A NAME="COPYRIGHT"></A>
+<hr> 
+<h3>Copyright 1991-97:</h3>
+<p> These notes are the property of
+the <A HREF="#AUTHOR">author</A>, the <A
+HREF="http://www.uwo.ca/its"><i>Division of Information Technology
+Services</i></A> (ITS), and <A HREF="http://www.uwo.ca/"><i>the</i>
+University <i>of</i> Western Ontario</A> (UWO), London, Ontario
+Canada.&nbsp;&nbsp; Permission is granted to freely copy and
+distribute provided that
+<b><i>No charge is applied and due credit is given to the author, ITS and UWO.</i></b>
+
+<p>
+&copy; <i>$Id: socket.html,v 1.8 1997/05/02 20:17:16 reggers Exp $</i>
+
+</BODY>
+</HTML> 

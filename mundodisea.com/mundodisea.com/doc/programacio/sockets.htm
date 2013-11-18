@@ -1,0 +1,686 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0049)http://scfie.fie.umich.mx/socket_programming.html -->
+<HTML><HEAD><TITLE>Socket Programming</TITLE>
+<META content="text/html; charset=windows-1252" http-equiv=Content-Type>
+<META content="MSHTML 5.00.2614.3500" name=GENERATOR></HEAD>
+<BODY aLink=#ff0000 bgColor=#ffffff link=#0000ee text=#000000 vLink=#551a8b><PRE>                                     An Introduction
+                                            to
+                                    Socket Programming
+</PRE><PRE>                                        Last Edit
+                                      March 23, 1992
+</PRE><PRE>                           Reg Quinton &lt;<A href="mailto:reggers@julian.uwo.ca">reggers@julian.uwo.ca</A>&gt;
+                          Computing and Communications Services
+                            The University of Western Ontario
+                                 London, Ontario N6A 5B7
+                                          Canada</PRE><PRE><HR width="100%"></PRE>
+<UL>
+  <P><A href="http://scfie.fie.umich.mx/socket_programming.html#1">1. Socket 
+  Programming </A></P></UL>
+<UL>
+  <P><A href="http://scfie.fie.umich.mx/socket_programming.html#2">2. Existing 
+  Services </A></P>
+  <UL>
+    <P><A href="http://scfie.fie.umich.mx/socket_programming.html#2.1">2.1. 
+    Netstat Observations </A></P></UL>
+  <P><A href="http://scfie.fie.umich.mx/socket_programming.html#3">3. Host names 
+  and IP numbers</A></P>
+  <UL>
+    <P><A href="http://scfie.fie.umich.mx/socket_programming.html#3.1">3.1. 
+    Programming Calls</A></P></UL>
+  <P><A href="http://scfie.fie.umich.mx/socket_programming.html#4.">4. Services 
+  and Ports </A></P>
+  <UL>
+    <P><A href="http://scfie.fie.umich.mx/socket_programming.html#4.1">4.1. 
+    Programming Calls</A></P></UL>
+  <P><A href="http://scfie.fie.umich.mx/socket_programming.html#5.">5. Socket 
+  Addressing </A></P>
+  <P><A href="http://scfie.fie.umich.mx/socket_programming.html#6">6. File 
+  Descriptors and Sockets </A></P>
+  <UL>
+    <P><A href="http://scfie.fie.umich.mx/socket_programming.html#6.1">6.1. File 
+    Descriptors </A></P>
+    <P><A href="http://scfie.fie.umich.mx/socket_programming.html#6.2">6.2. 
+    Sockets </A></P></UL>
+  <P><A href="http://scfie.fie.umich.mx/socket_programming.html#7.">7. Client 
+  Connect</A></P>
+  <UL>
+    <P><A href="http://scfie.fie.umich.mx/socket_programming.html#7.1">7.1. 
+    Client Communication </A></P>
+    <P><A href="http://scfie.fie.umich.mx/socket_programming.html#7.2">7.2. 
+    Stdio Buffers </A></P></UL>
+  <P><A href="http://scfie.fie.umich.mx/socket_programming.html#8">8. Server 
+  Applications </A></P>
+  <UL>
+    <P><A href="http://scfie.fie.umich.mx/socket_programming.html#8.1">8.1. 
+    Server Bind </A></P>
+    <P><A href="http://scfie.fie.umich.mx/socket_programming.html#8.2">8.2. 
+    Listen and Accept </A></P></UL>
+  <P><A href="http://scfie.fie.umich.mx/socket_programming.html#9">9. Inetd 
+  Services </A></P>
+  <UL>
+    <P><A href="http://scfie.fie.umich.mx/socket_programming.html#9.1">9.1. 
+    Inetd Comments </A></P>
+    <P><A href="http://scfie.fie.umich.mx/socket_programming.html#10">9.2. Whois 
+    Daemon </A></P></UL>
+  <P><A href="http://scfie.fie.umich.mx/socket_programming.html#10">10. Running 
+  the Daemon </A></P>
+  <UL>
+    <P><A href="http://scfie.fie.umich.mx/socket_programming.html#10.1">10.1. 
+    The Code </A></P>
+    <P><A href="http://scfie.fie.umich.mx/socket_programming.html#10.2">10.2. 
+    Connecting to the Server </A></P>
+    <P><A href="http://scfie.fie.umich.mx/socket_programming.html#10.3">10.3. 
+    Whois Client </A></P></UL>
+  <P><A href="http://scfie.fie.umich.mx/socket_programming.html#11">11. Final 
+  Comments</A></P>
+  <UL>
+    <P><A href="http://scfie.fie.umich.mx/socket_programming.html#11.1">11.1. 
+    Note Well </A></P></UL>
+  <P><A href="http://scfie.fie.umich.mx/socket_programming.html#12">12. 
+  Suggested Reading </A></P></UL><PRE><HR width="100%"></PRE><PRE><A name=1></A>1. Socket Programming </PRE><PRE>               This  course is directed at Unix application programmers who
+               want to develop client/server  applications  in  the  TCP/IP
+               domain.
+</PRE><PRE>               Fundamental  concepts are covered including network address-
+               ing, well known services, sockets and ports.  Sample  appli-
+               cations  are  examined  with  a  view  to developing similar
+               applications that serve other contexts.
+</PRE><PRE>               This course requires an understanding of C  programming  and
+               an  appreciation of the programming environment (ie. compil-
+               ers, loaders, libraries, Makefiles and the RCS revision con-
+               trol system).
+</PRE><PRE>                    BEWARE: If C code scares you, then you'll get some con-
+                    cepts but you might be in the wrong course.
+</PRE><PRE>               Our example is the UWO whois(l) service -- client and server
+               sources available in:
+</PRE>
+<P>julian:~ftp/pub/unix/networking/rwhois </P>
+<P><A name=2></A>2. Existing Services </P><PRE>               On  a Unix machine there are usually lots of TCP/IP services
+               installed and running (tons on julian!).
+
+               [1:17pm julian] netstat -a
+               Active Internet connections (including servers)
+               Proto Recv-Q Send-Q  Local Address Foreign Address        (state)
+               tcp        0      0  julian.2717   <A href="telnet://vnet.ibm.com.smtp/">vnet.ibm.com.smtp</A>      ESTABLISHED
+               tcp        0      0  julian.smtp   <A href="telnet://uacsc2.albany.ed/">uacsc2.albany.ed</A>.55049 TIME_WAIT
+               tcp        0     13  julian.nntp   watserv1.waterlo.3507  ESTABLISHED
+               tcp        0      0  julian.nntp   <A href="telnet://gleep.csd.uwo.ca/">gleep.csd.uwo.ca</A>.3413  ESTABLISHED
+               tcp        0      0  julian.telnet uwonet-server2.c.55316 ESTABLISHED
+               tcp        0      0  julian.login  <A href="telnet://no8sun.csd.uwo/">no8sun.csd.uwo</A>.c.1023  ESTABLISHED
+               tcp        0      0  julian.2634   <A href="telnet://xstn15.gaul.csd/">Xstn15.gaul.csd</A>..6000  ESTABLISHED
+                     etc...
+               tcp        0      0  *.printer     *.*                    LISTEN
+               tcp        0      0  *.smtp        *.*                    LISTEN
+               tcp        0      0  *.waisj       *.*                    LISTEN
+               tcp        0      0  *.account     *.*                    LISTEN
+               tcp        0      0  *.whois       *.*                    LISTEN
+               tcp        0      0  *.nntp        *.*                    LISTEN
+                     etc...
+               udp        0      0  *.ntp         *.*
+               udp        0      0  *.syslog      *.*
+               udp        0      0  *.xdmcp       *.*
+</PRE>
+<P><A name=2.1></A>2.1. Netstat Observations </P><PRE>               Inter Process Communication, IPC, is between host.port pairs
+               (or  host.service).  A  process  pair uses the connection --
+               client and server applications.
+</PRE><PRE>               Two protocols on IP -- TCP (Transmission  Control  Protocol)
+               and UDP (User Datagram Prototocol). We'll be looking in more
+               detail at TCP services and will not look at UDP at all.
+</PRE><PRE>               TCP services are connection orientated (like a stream,  pipe
+               or  tty)  while  UDP  services are connectionless (more like
+               telegrams or letters).
+</PRE><PRE>               We recognize many of  the  services  --  SMTP  (Simple  Mail
+               Transfer Protocol, E-mail), NNTP (Network News Transfer Pro-
+               tocol service, Usenet News), NTP  (Network  Time  Protocol),
+               and SYSLOG is the BSD service implemented by /etc/syslogd.
+</PRE><PRE>               The  netstat  display shows many TCP services as ESTABLISHED
+               (there is a connection between client.port and  server.port)
+               and  others  in a LISTEN state (a server application is lis-
+               tening at a port for client connections).
+</PRE>
+<P><A name=3></A>3. Host names and IP numbers </P><PRE>               Hosts have names (eg. <A href="telnet://julian.uwo.ca/">julian.uwo.ca</A>) but IP addressing is by
+               number  (eg.  [<A href="telnet://129.100.2.12/">129.100.2.12</A>]).  In  the old days name/number
+               translations were tabled in /etc/hosts.
+
+               [10:25am suncon] page /etc/hosts
+               # Sun Host Database
+               #
+               <A href="telnet://127.0.0.1/">127.0.0.1</A>       localhost
+               <A href="telnet://129.100.1.75/">129.100.1.75</A>    <A href="telnet://suncon.ccs.uwo.ca/">suncon.ccs.uwo.ca</A>
+</PRE><PRE>               These days name to number translations  are  implemented  by
+               the Domain Name Service (or DNS) -- see named(8).
+
+               [10:26am suncon] page /etc/resolv.conf
+               nameserver <A href="telnet://129.100.2.12/">129.100.2.12
+</A>               nameserver <A href="telnet://129.100.7.100/">129.100.7.100
+</A>               nameserver <A href="telnet://129.100.2.13/">129.100.2.13
+</A>               domain <A href="telnet://ccs.uwo.ca/">ccs.uwo.ca
+</A>               [10:26am suncon] nslookup whohost
+               Server:  <A href="telnet://julian.uwo.ca/">julian.uwo.ca
+</A>               Address:  <A href="telnet://129.100.2.12/">129.100.2.12
+
+</A>               Name:    <A href="telnet://julian.uwo.ca/">julian.uwo.ca
+</A>               Address:  <A href="telnet://129.100.2.12/">129.100.2.12
+</A>               Aliases:  <A href="telnet://whohost.uwo.ca/">whohost.uwo.ca</A>
+</PRE>
+<P><A name=3.1></A>3.1. Programming Calls </P><PRE>               Programmers  don't  scan  /etc/hosts nor do they communicate
+               with the DNS.  The C library routines  gethostbyname(3)  and
+               gethostbyaddr(3) each return a pointer to an object with the
+               following structure:
+
+               struct     hostent {
+                  char   *h_name;        /* official name of host */
+                  char   **h_aliases;    /* alias list */
+                  int    h_addrtype;     /* host address type */
+                  int    h_length;       /* length of address */
+                  char   **h_addr_list;  /* list of addresses */
+               };
+               #define h_addr h_addr_list[0]
+                                     /* backward compatibility */
+</PRE><PRE>               The structure h_addr_list is a list of  IP  numbers  (recall
+               that a machine might have several interfaces, each will have
+               a number).
+</PRE><PRE>               Good programmers would try to connect to each address listed
+               in  turn  (eg. some versions of ftp). Lazy programmers (like
+               me) just use h_addr -- the first address listed.
+</PRE><PRE>               Client applications connect to a host.port (cf. netstat out-
+               put) for a service.
+
+               Proto Recv-Q Send-Q  Local Address  Foreign Address        (state)
+               tcp        0      0  julian.2717    <A href="telnet://vnet.ibm.com.smtp/">vnet.ibm.com.smtp</A>      ESTABLISHED
+               tcp        0     13  julian.nntp    watserv1.waterlo.3507  ESTABLISHED
+</PRE><PRE>               The connection is usually prefaced by translating a hostname
+               name into an IP number (but if you knew the  IP  number  you
+               could carefully skip that step).
+
+               int     tcpopen(host,service)
+               char    *service, *host;
+               {
+                   struct  hostent         *hp;
+                   etc...
+                   if ((hp=gethostbyname(host)) == NULL)
+                      error...
+</PRE><PRE>               Carefully because the IP address is a structure of 4 octets.
+               Watch out for byte ordering.
+</PRE><PRE>               An unsigned long  isn't  the  same  octet  sequence  on  all
+               machines.  See htonl(3) and ntohl(3) for host to net conver-
+               sions.
+</PRE>
+<P><A name=4.></A>4. Services and Ports </P><PRE>               Services have names (eg. smtp the Simple Mail Transfer  Pro-
+               tocol).  Ports  have  numbers (eg. smtp is a service on port
+               25).  The mapping from service  names  to  port  numbers  is
+               listed in /etc/services.
+
+               [1:22pm julian] page /etc/services
+               # $Author: reggers $
+               # $Date: 1992/02/13 15:58:44 $
+               #
+               # Network services, Internet style
+               etc...
+               ftp             21/tcp
+               telnet          23/tcp
+               smtp            25/tcp          mail
+               whois           43/tcp          nicname
+               domain          53/tcp          nameserver
+               domain          53/udp          nameserver
+               tftp            69/udp
+               finger          79/tcp
+               nntp            119/tcp         readnews untp
+               ntp             123/udp
+               snmp            161/udp
+               xdmcp           177/udp         xdm
+               etc...
+</PRE>
+<P><A name=4.1></A>4.1. Programming Calls </P><PRE>               The  C  library  routines  getservbyname(3),  and getservby-
+               port(3) each return a pointer to an object with the  follow-
+               ing  structure containing the broken-out fields of a line in
+               /etc/services.
+
+               struct   servent {
+                  char   *s_name;      /* official name of service */
+                  char   **s_aliases;  /* alias list */
+                  int    s_port;       /* port service resides at */
+                  char   *s_proto;     /* protocol to use */
+               };
+</PRE><PRE>               Client applications connect to a service port. Usually  this
+               is  prefaced  by  translating a service name (eg. smtp) into
+               the port number (but if you knew the port number  you  could
+               carefully skip that step).
+
+               int     tcpopen(host,service)
+               char    *service, *host;
+               {
+                   struct  servent         *sp;
+                   etc...
+                   if ((sp=getservbyname(service,"tcp")) == NULL)
+                      error...
+</PRE>
+<P><A name=5.></A>5. Socket Addressing </P><PRE>               A  Socket  Address  is  a  host.port  pair (communication is
+               between host.port pairs).  The structure is sockaddr_in, the
+               address family is AF_INET:
+
+               int     tcpopen(host,service)
+               char    *service, *host;
+               {   int     unit;
+                   struct  sockaddr_in     sin;
+                   struct  servent         *sp;
+                   struct  hostent         *hp;
+                   etc...
+                   if ((sp=getservbyname(service,"tcp")) == NULL)
+                      error...
+                   if ((hp=gethostbyname(host)) == NULL)
+                      error...
+                   bzero((char *)&amp;sin, sizeof(sin));
+                   sin.sin_family=AF_INET;
+                   bcopy(hp-&gt;h_addr,(char *)&amp;sin.sin_addr,hp-&gt;h_length);
+                   sin.sin_port=sp-&gt;s_port;
+                   etc...
+</PRE><PRE>               The  code  is  filling  in  the port and host address in the
+               Socket Address  structure  --  the  address  of  the  remote
+               host.port where we want to connect.
+</PRE><PRE>               There's a generic Socket Address structure, a sockaddr, used
+               for communication in arbitrary domains.
+
+               /* from: /usr/include/sys/socket.h */
+
+               struct sockaddr {
+                   u_short sa_family;   /* address family */
+                   char    sa_data[14]; /* up to 14 bytes of direct address */
+               };
+</PRE><PRE>               The sockaddr_in structure is for Internet Socket  Addresses.
+               An instance of the generic socket address.
+
+               /* from: /usr/include/netinet/in.h */
+
+               struct sockaddr_in {
+                   short   sin_family;       /* AF_INET */
+                   u_short sin_port;         /* service port */
+                   struct  in_addr sin_addr; /* host number */
+                   char    sin_zero[8];
+               };
+</PRE><PRE>               The  family defines the interpretation of the data. In other
+               domains addressing will be different -- services in the UNIX
+               domain are names (eg. /dev/printer).
+</PRE>
+<P><A name=6></A>6. File Descriptors and Sockets </P>
+<P><A name=6.1></A>6.1. File Descriptors </P><PRE>               File Descriptors are the fundamental I/O object. You read(2)
+               and write(2) to file descriptors.
+
+                   int cc, fd, nbytes;
+                   char *buf;
+
+                   cc = read(fd, buf, nbytes);
+                   cc = write(fd, buf, nbytes)
+
+               The read attempts to read nbytes of data from the object
+               referenced by the file descriptor fd into the buffer pointed to
+               by buf. The write does a write to the file descriptor
+               from the buffer. Unix I/O is a byte stream.
+</PRE><PRE>               File descriptors are numbers  used  for  I/O.   Usually  the
+               result of open(2) and creat(2) calls.
+</PRE><PRE>               All  Unix  applications run with stdin as file descriptor 0,
+               stdout as 1, and stderr as 3.  But  stdin  is  a  FILE  (see
+               stdio(3)) not a file descriptor.  If you want a stdio stream
+               on a file descriptor use fdopen(3).
+</PRE>
+<P><A name=6.2></A>6.2. Sockets </P><PRE>               A Socket is a Unix file descriptor created by the  socket(2)
+               call -- you don't open(2) or creat(2) a socket. Cf.  pipe(2)
+               creates file descriptors.
+
+                    int s, domain, type, protocol;
+                    s = socket(domain, type, protocol)
+                    etc...
+                    cc = read(s, buf, nbytes);
+</PRE><PRE>               The domain parameter specifies a communications  domain  (or
+               address family). For IP use AFINET.
+</PRE><PRE>               The type parameter specifies the semantics of communication.
+               For TCP/IP use SOCKSTREAM (for UDP/IP use SOCKDGRAM).
+</PRE><PRE>               A SOCKSTREAM is a sequenced, reliable,  two-way  connection
+               based  byte stream.  If a data cannot be successfully trans-
+               mitted within a reasonable length of time the connection  is
+               considered broken and I/O calls will indicate an error.
+</PRE><PRE>               The protocol specifies a particular protocol to be used with
+               the socket -- for TCP/IP use 0. But  see  /etc/protocols  to
+               get really confused.
+</PRE>
+<P><A name=7.></A>7. Client Connect </P><PRE>               A client application creates a socket(2) and connect(2) to a
+               service.
+
+               int     tcpopen(host,service)
+               char    *service, *host;
+               {   int     unit;
+                   struct  sockaddr_in     sin;
+                   struct  servent         *sp;
+                   struct  hostent         *hp;
+
+                   if ((sp=getservbyname(service,"tcp")) == NULL)
+                      error...
+                   if ((hp=gethostbyname(host)) == NULL)
+                      error...
+                   bzero((char *)&amp;sin, sizeof(sin))
+                      etc...
+                   if ((unit=socket(AF_INET,SOCK_STREAM,0)) &lt; 0)
+                      error...
+                   if (connect(unit,&amp;sin,sizeof(sin)) &lt; 0)
+                      error...
+                   return(unit);
+               }
+</PRE>
+<P>The result returned is a file descriptor. </P>
+<P><A name=7.1></A>7.1. Client Communication </P><PRE>               Having connected a socket to a server to  establish  a  file
+               descriptor communication is with the usual Unix I/O calls.
+</PRE><PRE>               Many programmers turn file descriptors into stdio(3) streams
+               so  they  can  use  fputs,  fgets,  fprintf,  etc.  --   use
+               fdopen(3).
+
+               main(argc,argv)
+               int     argc;
+               char    *argv[];
+               {
+                   int     unit,i;
+                   char    buf[BUFSIZ];
+                   FILE    *sockin,*sockout;
+
+                   if ((unit=tcpopen(WHOHOST,WHOPORT)) &lt; 0)
+                      error...
+                   sockin=fdopen(unit,"r");
+                   sockout=fdopen(unit,"w");
+                   etc...
+                   fprintf(sockout,"WHOIS %s\n",argv[i]);
+                   etc...
+                   while (fgets(buf,BUFSIZ,sockin)) etc...
+</PRE>
+<P><A name=7.2></A>7.2. Stdio Buffers </P><PRE>               Stdio  streams  have powerful manipulation tools (eg. fscanf
+               is amazing). But beware, streams are buffered!
+</PRE><PRE>               This means a well placed  fflush(3)  is  often  required  to
+               flush a buffer to the peer.
+
+                   fprintf(sockout,"WHOIS %s\n",argv[i]);
+                   fflush(sockout);
+
+                   while (fgets(buf,BUFSIZ,sockin)) etc...
+</PRE><PRE>               Many client/server protocols are client driven -- the client
+               sends a command and expects an answer.
+</PRE><PRE>               The server won't see the command if the client doesn't flush
+               the output. Likewise, the client won't see the answer if the
+               server doesn't flush it's output.
+</PRE><PRE>               Watch out for client and server blocking -- both waiting for
+               input from the other.
+</PRE>
+<P><A name=8></A>8. Server Applications </P><PRE>               A  system  offers a service by having an application running
+               that is listening at the service port for a  connection.  If
+               there  is  no application listening at the service port then
+               the machine doesn't offer that service.
+</PRE><PRE>               The SMTP service is provided by an application listening  on
+               port 25. On Unix systems this is usually the sendmail appli-
+               cation which is started at boot time.
+
+               [2:20pm julian] ps -agx | grep sendmail
+                 419   ? SW    0:03 /usr/lib/sendmail -bd -q15m
+               18438   ? IW    0:01 /usr/lib/sendmail -bd -q15m
+
+               [2:28pm julian] netstat -a | grep smtp
+               tcp  0 0 julian.3155 <A href="telnet://acad3.alaska.edu.smtp/">acad3.alaska.edu.smtp</A> SYN_SENT
+               tcp  0 0 *.smtp      *.*                   LISTEN
+</PRE><PRE>               In the example we have a process listening to the smtp  port
+               (for  inbound  mail) and another process talking to the smtp
+               port on <A href="telnet://acad3.alaska.edu/">acad3.alaska.edu</A> (ie. sending mail to that  system).
+</PRE>
+<P><A name=8.1></A>8.1. Server Bind </P><PRE>               A  Server  uses  bind(2)  to  establish  the local host.port
+               assignment.  Only required for servers -- applications which
+               accept(2) connections from a host.port.
+
+                   struct servent    *sp;
+                   struct sockaddr_in sin;
+
+                   if ((sp=getservbyname(service,"tcp")) == NULL)
+                      error...
+                   sin.sin_family=AF_INET;
+                   sin.sin_port=sp-&gt;s_port;
+                   sin.sin_addr.s_addr=htonl(INADDR_ANY);
+
+                   if ((s=socket(AF_INET,SOCK_STREAM,0)) &lt; 0)
+                      error...
+                   if (bind(s, &amp;sin, sizeof(sin)) &lt; 0)
+                      error...
+</PRE><PRE>               htonl converts a long to the right sequence (given different
+               byte  ordering  on  different  machines).   The  IP  address
+               INADDR_ANY means all interfaces.
+</PRE><PRE>               Client applications usually aren't concerned about the local
+               host.port assignment (the connect(2) does  a  bind  for  the
+               local  address).   But  rcp,  rlogin,  etc.  do connect from
+               reserved port numbers.
+</PRE>
+<P><A name=8.2></A>8.2. Listen and Accept </P><PRE>               To accept  connections,  a  socket  is  first  created  with
+               socket(2),   a   queue for incoming connections is specified
+               with listen(2) and  then  the   connections   are   accepted
+               with accept(2).
+
+                   struct servent    *sp;
+                   struct sockaddr_in sin,from;
+
+                   if ((sp=getservbyname(service,"tcp")) == NULL) error...
+                   sin.sin_family=etc...
+                   if ((s=socket(AF_INET,SOCK_STREAM,0)) &lt; 0) error...
+                   if (bind(s, &amp;sin, sizeof(sin)) &lt; 0) error...
+
+                   if (listen(s,QUELEN) &lt; 0) error...
+                   for (;;) {
+                      if ((g=accept(f,&amp;from,&amp;len)) &lt; 0) error...
+                      if (!fork()) {
+                          child handles request...
+                          exit(0);
+                      }
+                      close(g);
+                   }
+</PRE><PRE>               This  is the programming schema used by utilities like send-
+               mail and lpd -- they create their socket and listen for con-
+               nections.
+</PRE>
+<P><A name=9></A>9. Inetd Services </P><PRE>               Not  all  services  are  started  at  boot time by running a
+               server application. Eg.  you won't  usually  see  a  process
+               running for the finger service like you do for the smtp ser-
+               vice. Many are handled by the InterNet Daemon inetd(8). This
+               is a generic service configured by the file /etc/inetd.conf.
+
+               [2:35pm julian] page /etc/inetd.conf
+               # $Author: reggers $
+               # $Date: 1992/02/13 15:58:44 $
+               #
+               # Internet server configuration database
+               ftp     stream tcp nowait root   /usr/etc/ftpd      ftpd
+               telnet  stream tcp nowait root   /usr/etc/telnetd   telnetd
+               shell   stream tcp nowait root   /usr/etc/rshd      rshd
+               login   stream tcp nowait root   /usr/etc/rlogind   rlogind
+               exec    stream tcp nowait root   /usr/etc/rexecd    rexecd
+               uucpd   stream tcp nowait root   /usr/etc/uucpd     uucpd
+               finger  stream tcp nowait nobody /usr/etc/fingerd   fingerd
+               etc...
+               nntp    stream tcp nowait root   /usr/lib/newsbin/nntpd          nntpd
+               whois   stream tcp nowait nobody /usr/ccs/lib/directory/rwhoisd  rwhoisd
+               tn3270  stream tcp nowait nobody /usr/ccs/bin/tn3270             tn3270
+               account stream tcp nowait nobody /usr/ccs/bin/accountd           accountd
+</PRE>
+<P><A name=9.1></A>9.1. Inetd Comments </P><PRE>               For each service listed in /etc/inetd.conf the inetd process
+               (this  process is started at boot time) executes the socket,
+               bind, listen and accept calls as discussed above. Inetd also
+               handles many of the daemon issues (signal handling, set pro-
+               cess group and controlling tty).
+</PRE><PRE>               Inetd spawns the appropriate application (with  fork(2)  and
+               exec(2)) when a client connects.
+</PRE><PRE>               The  application  is started with stdin and stdout connected
+               to the remote port. Any  input/output  on  stdin/stdout  are
+               sent/received by the client.
+</PRE><PRE>               This  means, any application written to use stdin/stdout can
+               be a  server  application.   Writing  a  server  application
+               should be fairly simple.
+</PRE>
+<P><A name=9.2></A>9.2. Whois Daemon </P><PRE>               On  julian  we  have an entry in /etc/inetd.conf for the UWO
+               whois service:
+
+               [3:25pm julian] grep whois /etc/inetd.conf
+               whois stream tcp nowait nobody  -
+                               /usr/ccs/lib/directory/rwhoisd  rwhoisd
+</PRE><PRE>               This is the UWO whois service (as listed in  /etc/services),
+               on  a  TCP/IP stream, ran as user nobody, the program to run
+               is listed, and the command line to the program.
+</PRE><PRE>               Note that this is not the  standard  /usr/ucb/whois  service
+               that  talks to <A href="telnet://nic.ddn.mil/">nic.ddn.mil</A>. The UWO whois service talks to a
+               different server and implements a different protocol.
+</PRE><PRE>               The program conducts a protocol on  stdin/stdout  (which  is
+               usually  connected  by  a TCP/IP socket to a client applica-
+               tion).
+</PRE>
+<P><A name=10></A>10. Running the Daemon </P><PRE>               You can run the whois daemon (on the server) to see what  it
+               does:
+
+               [3:27pm julian] /usr/ccs/lib/directory/rwhoisd
+               220 Directory Service $Revision: 1.1 $ ready at <A href="telnet://julian.uwo.ca/">julian.uwo.ca
+</A>               help .... my command
+               350 I don't know much but I can understand
+                       HELP, QUIT, WHOIS
+               .
+               whois quinton .... my command
+               350 Matches on quinton follow:
+               Reg.Quinton:
+                Reg Quinton  &lt;<A href="mailto:reggers@julian.uwo.ca">reggers@julian.uwo.ca</A>&gt;
+                CCS,programmer,NSC,214,661-2151,6026,#11930
+
+               reggers:
+                Reg Quinton  &lt;<A href="mailto:reggers@julian.uwo.ca">reggers@julian.uwo.ca</A>&gt;
+                CCS,programmer,NSC,214,661-2151,6026,#11930
+
+               .
+               quit .... my command
+               220 Quit accepted, terminating session
+               [3:30pm julian]
+</PRE><PRE>               The program is command driven -- you give commands on stdin,
+               it produces results on stdout.
+</PRE>
+<P><A name=10.1></A>10.1. The Code </P><PRE>               The program is easy enough: read a line, switch  on  command
+               and do command.
+
+               printf("220 Directory Service %s ready at %s\n", VERSION, name);
+               fflush(stdout);
+
+               while (fgets(string,BUFSIZ,stdin))
+               {   if (isprefix(string,"HELP")) printf(HELPMSG);
+                   else if (isprefix(string,"QUIT"))
+                   {       printf("220 Quit accepted, terminating session\n");
+                           fflush(stdout); sleep(3); exit(0);
+                   }
+                   else if (isprefix(string,"WHOIS "))
+                   {       sscanf(string,"%*s%*[ ]%[^ \r\n]",name);
+                           printf("350 Matches on %s follow:\n",name);
+                           fflush(stdout);
+                           sprintf(string,"%s '%s'",GREP,name);
+                           system(string);    printf(".\n");
+                   }
+                   else printf("550 command makes no sense\n");
+                   fflush(stdout);
+               }
+               printf("550 Oops... you've stopped talking\n");
+</PRE><PRE>               The  protocol  is  line  based.  This  works well with stdio
+               streams.  Also easy to test from a terminal.   Compare  with
+               line based protocols for NNTP and SMTP.
+</PRE>
+<P><A name=10.2></A>10.2. Connecting to the Server </P>
+<P>You can make a telnet(1) connection to the server: </P><PRE>               [3:47pm suncon] grep whois /etc/services
+               whois           43/tcp          nicname
+               [3:47pm suncon] telnet julian 43
+               Trying <A href="telnet://129.100.2.12/">129.100.2.12</A> ... Connected to <A href="telnet://julian.uwo.ca/">julian.uwo.ca</A>.
+               Escape character is '^]'.
+               220 Directory Service $Revision: 1.1 $ ready at <A href="telnet://julian.uwo.ca/">julian.uwo.ca
+</A>               help .... my command
+               350 I don't know much but I can understand
+                       HELP, QUIT, WHOIS
+               .
+               whois quinton .... my command
+               350 Matches on quinton follow:
+               Reg.Quinton:
+                Reg Quinton  &lt;<A href="mailto:reggers@julian.uwo.ca">reggers@julian.uwo.ca</A>&gt;
+                CCS,programmer,NSC,214,661-2151,6026,#11930
+
+               reggers:
+                Reg Quinton  &lt;<A href="mailto:reggers@julian.uwo.ca">reggers@julian.uwo.ca</A>&gt;
+                CCS,programmer,NSC,214,661-2151,6026,#11930
+
+               .
+               quit .... my command
+               220 Quit accepted, terminating session
+               Connection closed by foreign host.
+               [3:48pm suncon]
+</PRE>
+<P><A name=10.3></A>10.3. Whois Client </P><PRE>               The whois client makes a TCP/IP connection to the server and
+               conducts the kind of protocol you would type if you where to
+               make a connection by hand:
+
+               [7:30am zebra] whois quinton
+               Reg.Quinton:
+                Reg Quinton  &lt;<A href="mailto:reggers@julian.uwo.ca">reggers@julian.uwo.ca</A>&gt;
+                CCS,programmer,NSC,214,661-2151,6026,#11930
+
+               reggers:
+                Reg Quinton  &lt;<A href="mailto:reggers@julian.uwo.ca">reggers@julian.uwo.ca</A>&gt;
+                CCS,programmer,NSC,214,661-2151,6026,#11930
+
+               [7:30am zebra]
+</PRE><PRE>               The  client  sends  the  command "WHOIS quinton", the server
+               sends back the answer and the client displays the answer  to
+               the user. When finished the client sends "QUIT".
+</PRE><PRE>               The  server  response  codes  assist  in  the parsing of the
+               results.
+</PRE><PRE>               The client code is complicated (a bit) by the piping through
+               a pager.
+</PRE>
+<P><A name=11></A>11. Final Comments </P><PRE>               The  whois  example uses a line based protocol. The strategy
+               is common but by no means universal. For  example,  the  lpd
+               protocols  use  octets  (ie. single characters) for the com-
+               mands.
+</PRE><PRE>               Inetd servers are the simplest to implement.  However,  this
+               may not be optimal. Especially if the server has to do a lot
+               of work first (eg.  loading in a big data base).
+</PRE><PRE>               Stand alone servers have to deal with many daemon issues  --
+               they  should ignore most signals, set a unique process group
+               and get rid of the controlling terminal.
+</PRE><PRE>               Daemons like nntp could (in theory) handle many clients from
+               a  single  daemon  using  interrupt driven I/O. As currently
+               implemented we have an nntp daemon for each client.
+</PRE><PRE>               You'll note that Socket programmers use alarm(3), setjmp(3),
+               and  signal(3)  calls.  The  intent  is to prevent a process
+               (client or server) from hanging in a wait for I/O state.
+</PRE>
+<P><A name=11.1></A>11.1. Note Well </P><PRE>               The best way to code a client/server  program  is  to  reuse
+               code from an existing service. There's lots of public domain
+               examples to work from -- nntp, lpd, sendmail, and  even  our
+               whois service.
+</PRE><PRE>               A  simple  solution  that  works is much better than a fancy
+               solution that doesn't -- KISS. Protocols have to be  simple!
+</PRE><PRE>               Presentation  issues,  ie.  the display for the user, should
+               not effect the protocol or server. Again, protocols have  to
+               be simple!
+</PRE><PRE>               Don't ever assume the client or server applications are well
+               behaved!
+</PRE>
+<P><A name=12></A>12. Suggested Reading </P><PRE>               Introductory 4.3BSD Interprocess  Communication,  by  Stuart
+               Sechrest,  (in)  UNIX  Programmer's Supplementary Documents,
+               Vol1, 4.3 Berkeley Software Distribution, PS1:7.
+
+               Advanced 4.3BSD Interprocess  Communication,  by  Samuel  J.
+               Leffler  et  al,  (in) UNIX Programmer's Supplementary Docu-
+               ments, Vol1, 4.3 Berkeley Software Distribution, PS1:8.
+
+               Introduction to the  Internet  Protocols,  Computer  Science
+               Facilities Group, Rutgers. (on ~ftp/nic).
+
+               Networking with BSD-style Sockets, by John Romkey, (in) Unix
+               World, July-Aug. 1989.
+
+               How to Write Unix Daemons, by Dave Lennert, (in) Unix World,
+               Dec. 1988.
+
+               A  Socket-Based  Interprocess Communications Tutorial, Chpt.
+               10 of SunOS Network Programming Guide.
+
+               An Advanced Socket-Based Interprocess  Communications  Tuto-
+               rial, Chpt. 11 of SunOS Network Programming Guide.
+</PRE></BODY></HTML>

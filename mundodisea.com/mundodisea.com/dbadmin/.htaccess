@@ -1,0 +1,11 @@
+AuthType Basic
+AuthName "Zona Webmaster"
+AuthUserFile /inlander/sites/mundodisea.com/web/htpasswd.dbadmin
+AuthGroupFile /dev/null
+
+<Limit GET POST PUT>
+order allow,deny
+allow from all
+deny from none
+require valid-user
+</Limit>

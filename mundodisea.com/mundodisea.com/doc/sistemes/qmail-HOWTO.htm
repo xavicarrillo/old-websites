@@ -1,0 +1,714 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0046)http://www.flounder.net/qmail/qmail-howto.html -->
+<HTML><HEAD><TITLE>qmail-HOWTO</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=iso-8859-1">
+<META content="Adam D. McKenna (adam@flounder.net)" name=author>
+<META content="MSHTML 6.00.2600.0" name=GENERATOR></HEAD>
+<BODY bgColor=white><IMG src="qmail-HOWTO_archivos/ribbon.gif">
+<CENTER>
+<H1>qmail-HOWTO v2</H1></CENTER><BR>
+<HR>
+<A name=top>By Adam McKenna</A><BR><I>Last Modified: Wednesday, 07-Nov-2001 
+16:37:35 PST</I> 
+<P>This page is hosted by <A href="http://www.linuxis.net/">LinuxIS Consulting, 
+LLC</A></P>
+<P>We can install qmail for you! See our <A 
+href="http://linuxis.net/qmail.shtml">qmail</A> page for more info!</P>
+<P>This is the new version of the qmail-HOWTO. There are a few changes from the 
+old version. Specifically, this new version addresses setting up qmail with the 
+newest versions of daemontools and ucspi-tcp. Please report any errors to <A 
+href="mailto:adam-howto@flounder.net">adam-howto@flounder.net</A>. <FONT 
+color=red>
+<P><B>Please do not send general qmail support questions to me. Send them to the 
+qmail list. I will only answer questions and comments about the HOWTO itself. 
+General qmail questions should be directed to the <A 
+href="mailto:qmail-help@list.cr.yp.to">qmail list</A>.</B> </FONT>
+<P>The old version of the howto is available <A 
+href="http://www.flounder.net/qmail/qmail-howto-old.html">here</A>. The original 
+got almost 70,000 hits! 
+<P><B>See what <A href="http://www.flounder.net/qmail/praise.html">people are 
+saying</A> about this HOWTO.</B> 
+<P>This HOWTO was written in order to help people get started using <A 
+href="http://www.qmail.org/">qmail</A>, an excellent MTA (Mail Transport Agent) 
+written by <A href="http://cr.yp.to/djb.html">Dan Bernstein</A>. Following the 
+instructions outlined here will simplify the qmail installation, and make it 
+easier for new users.</P>
+<P>Table of Contents:</P><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#i">i.&nbsp; 
+Introduction</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#ii">ii.&nbsp; Requirements 
+for qmail</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#ii">iii.&nbsp; Our qmail 
+installation</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#1">1.&nbsp; Downloading and 
+unpacking the source</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#2">2.&nbsp; RTFM</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#3">3.&nbsp; Create the 
+qmail home directory.</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#4">4.&nbsp; Create the 
+necessary users and groups to run qmail.</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#5">5.&nbsp; Compile qmail 
+and related programs.</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#6">6.&nbsp; Configure 
+qmail.</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#7">7.&nbsp; Install the 
+qmail aliases.</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#8">8.&nbsp; Set up 
+daemontools and create control directories.</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#8a">8a.&nbsp; Access 
+control</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#9">9.&nbsp; Kill 
+sendmail!</A><BR><A href="http://www.flounder.net/qmail/qmail-howto.html#10">10. 
+Create /var/qmail/rc.</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#10a">10a. Maildir</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#11">11. Starting 
+qmail.</A><BR><A href="http://www.flounder.net/qmail/qmail-howto.html#12">12. 
+rblsmtpd.</A><BR><A href="http://www.flounder.net/qmail/qmail-howto.html#13">13. 
+RTFM</A><BR><A href="http://www.flounder.net/qmail/qmail-howto.html#14">14. The 
+control files..</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#15">15. 
+dot-qmail.</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#16">16. Virtual 
+Domains</A><BR><A href="http://www.flounder.net/qmail/qmail-howto.html#17">17. 
+Fastforward</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#18">17. The End.</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#A">Acknowledgements</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#B">Other Sites</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#C">Payment!</A><BR>
+<H2><A name=i>Introduction</A></H2><I>Why qmail?</I> 
+<P>Why switch to qmail? If you've ever edited a sendmail.cf file, you know why. 
+But there are other reasons to switch. Here are some of the more common 
+reasons:</P>
+<UL>
+  <LI>Security. qmail is secure. This claim was backed up by a <A 
+  href="http://web.infoave.net/~dsill/qmail.html">$1000 prize</A> offered by 
+  qmail supporters. After a year, the prize money was not claimed, and was sent 
+  to the <A href="http://www.fsf.org/">Free Software Foundation</A>. <A 
+  href="http://cr.yp.to/djb.html">Dan Bernstein</A>, the author of qmail, is 
+  also currently offering a <A href="http://cr.yp.to/qmail/guarantee.html">$500 
+  prize</A> for anyone who can find a security hole in qmail. 
+  <LI>Speed. qmail is capable of handling millions of deliveries per day on a 
+  moderate system. Even a 486 can handle mail volumes of 100,000 messages per 
+  day and many simultaneous deliveries. <BR>
+  <LI>Reliability. qmail writes mail to disk before it announces success. This 
+  way, even if there is a loss of power in the middle of a disk write, qmail 
+  will not lose mail. 
+  <LI>Extremely easy virtual domain administration. There is even an add-on for 
+  qmail called <A href="http://www.inter7.com/vpopmail/">vchkpw</A> which 
+  supports Virtual POP domains. Using this package, it is possible to set up 
+  POP3 users who do not even have UNIX accounts on the system. 
+  <LI>User-controlled mailing lists using <A 
+  href="http://www.ezmlm.org/">ezmlm.</A> 
+  <LI>More intuitive, straightforward, and simpler administration. </LI></UL>
+<P>Now when I say qmail is easier than sendmail, you must believe me, although 
+you won't for the first few hours. qmail documentation, despite being well 
+written and very complete, can sometimes be very esoteric, Most of it is not 
+step-by-step instructions like a howto. Like any good software, if you want to 
+get the most out of qmail, you will have to understand the theories behind how 
+it works, and why it does things the way it does them. (for a very high-level 
+look at how the components of qmail interact with each other, check out <A 
+href="http://www.nrg4u.com/">the qmail big picture</A>.)</P>
+<P>My first advice to you will be: read all of the INSTALL files, and as many of 
+the man files as you can. Learning how qmail's basic theories differ from those 
+of sendmail's is a key requirement for understanding qmail. Try to get an idea 
+of how qmail works.</P>
+<P>Qmail breaks up each specific task of mail handling and assigns each to a 
+different program. Each program is independent. This model has several 
+advantages, including ease of use, faster debugging, and easy integration with 
+custom tools.</P>
+<H2><A name=ii>Requirements</A></H2>
+<P>Before even attempting to install qmail, the following requirements must be 
+met:</P>
+<UL>
+  <LI>You must be running UNIX or a UNIX-like operating system. A mostly 
+  complete list of operating systems that qmail supports is contained in the 
+  README file which is supplied with the qmail distribution. 
+  <LI>You <B>MUST</B> have a working DNS, and your system must have a DNS name. 
+  qmail does <B>not</B> search an /etc/hosts file in order to look up domain 
+  names. A workaround is possible using /var/qmail/control/smtproutes, but doing 
+  this is not recommended, or desirable in most cases. 
+  <LI>You must have a working compiler (duh). If your compiler cannot be called 
+  using "cc", you will have to edit the conf-* files in the qmail source tree in 
+  order to tell qmail what to use. </LI></UL>
+<H2><A name=iii>Our qmail installation</A></H2>
+<P>qmail is extremely flexible. It is possible to install it in a zillion 
+different ways. However, if you follow this HOWTO, exactly as it is written, you 
+will wind up with a qmail installation that is surprisingly similar to most 
+sendmail installations, including: 
+<UL>
+  <LI>Support for /etc/aliases 
+  <LI>Support for .forward files </LI></UL>
+<P>This HOWTO assumes that: 
+<UL>
+  <LI>You have at least a rudimentary knowledge of UNIX and how it works 
+  <LI>You know how to add users, and set up init files on your particular 
+  flavor/distribution 
+  <LI>You are using GNU tar / gzip / binutils / gcc and other utilities. 
+</LI></UL>
+<H2><A name=1>1.</A> Downloading and unpacking the source.</H2>
+<P>The first step in installing qmail is to download the necessary files from 
+the server.</P>
+<P>The packages you will need in order to follow this HOWTO are:</P><A 
+href="http://cr.yp.to/qmail.html">qmail</A><BR><A 
+href="http://www.flounder.net/qmail/qmail-dns-patch">oversize DNS packet patch 
+for qmail</A><BR><A href="http://cr.yp.to/ucspi-tcp.html">ucspi-tcp</A><BR><A 
+href="http://cr.yp.to/daemontools.html">daemontools</A><BR><A 
+href="http://cr.yp.to/fastforward.html">fastforward</A><BR><A 
+href="http://cr.yp.to/dot-forward.html">dot-forward</A><BR><BR>
+<P>You will of course begin by unpacking your tarballs to an appropriate place 
+(such as /usr/local/src/)</P>(We'll need to become root now.)<BR>
+<BLOCKQUOTE><PRE>root:/usr/local/src# gzip -d qmail-1.03.tar.gz
+root:/usr/local/src# tar xf qmail-1.03.tar
+</PRE></BLOCKQUOTE>
+<P>Then you need to change to the qmail-1.03 folder.</P>
+<BLOCKQUOTE><PRE>root:/usr/local/src# cd qmail-1.03
+</PRE></BLOCKQUOTE>
+<H2><A name=2>2.</A> RTFM</H2>
+<P>Once you are in the qmail folder you will want to start by reading the <B><A 
+href="http://www.qmail.org/qmail-manual-html/misc/FAQ.html">FAQ</A></B> and 
+INSTALL files.</P>
+<BLOCKQUOTE><PRE>root:/usr/local/src/qmail-1.03# more INSTALL
+root:/usr/local/src/qmail-1.03# more INSTALL.alias
+root:/usr/local/src/qmail-1.03# more INSTALL.mbox
+<I>etc...</I>
+</PRE></BLOCKQUOTE>
+<P>After you are done reading the INSTALL files, you won't need the rest of this 
+HOWTO! <BR><BR>
+<P>You're still reading. That means you didn't read the files. Bad sysadmin! Go 
+sit in a corner for 15 minutes, or field helpdesk calls, or something equally 
+annoying. 
+<P>After you return, apply the oversize DNS packet patch. This patch is 
+necessary because some providers (such as AOL) have decided to ignore the RFC's, 
+and return UDP DNS responses that are greater than 512 bytes. qmail's DNS 
+resolver library is strictly RFC compliant, and does not accept 
+non-RFC-compliant replies. This patch enables qmail to correctly process illegal 
+DNS replies. 
+<P>To apply the patch, do the following (in the qmail source dir) 
+<BLOCKQUOTE><PRE>root:/usr/local/src/qmail-1.03# patch -p1 &lt; /path/to/qmail-103.patch
+</PRE></BLOCKQUOTE>
+<P>
+<H2><A name=3>3.</A> Create the qmail home directory.</H2>
+<P>The first thing we need to do on our road to qmail is to create the qmail 
+home directory. This is the directory that almost all of qmail will reside in, 
+including the configuration files, the queue, and the actual qmail binaries. 
+</P>
+<BLOCKQUOTE><PRE># mkdir /var/qmail
+</PRE></BLOCKQUOTE>
+<H2><A name=4>4.</A> Create the necessary users and groups to run qmail.</H2>
+<P>Next, we need to create all of the users and groups that the various qmail 
+daemons run as. See INSTALL.ids for these groups. If you run <A 
+href="http://www.debian.org/">Debian Linux</A> then the users and groups are 
+already created for you (how nice of Debian!). The following commands should 
+work on most Linux distributions, and Solaris:</P>
+<BLOCKQUOTE><PRE># groupadd nofiles
+# useradd -g nofiles -d /var/qmail/alias -s /bin/false alias
+# useradd -g nofiles -d /var/qmail -s /bin/false qmaild
+# useradd -g nofiles -d /var/qmail -s /bin/false qmaill
+# useradd -g nofiles -d /var/qmail -s /bin/false qmailp
+# groupadd qmail
+# useradd -g qmail -d /var/qmail -s /bin/false qmailq
+# useradd -g qmail -d /var/qmail -s /bin/false qmailr
+# useradd -g qmail -d /var/qmail -s /bin/false qmails
+</PRE></BLOCKQUOTE>
+<HR>
+<B>Note:</B> To obtain instructions for creating the qmail users on other 
+operating systems, or if you are having problems with the commands above, read 
+INSTALL.ids. 
+<HR>
+
+<CENTER>
+<P><B>*** NOTE: IF YOU DO NOT CREATE THESE USERS AND GROUPS, QMAIL WILL NOT 
+WORK. ***</B></P></CENTER>
+<HR>
+
+<H2><A name=5>5.</A> Compile qmail and related programs.</H2>
+<P>The next step is to compile the programs and make the qmail directory tree. 
+</P>Type:<BR>
+<BLOCKQUOTE><PRE>root:/usr/local/src/qmail-1.03# make setup check
+</PRE></BLOCKQUOTE>
+<P>qmail will then begin compiling. If you get a successful compile, then there 
+will be a new directory tree under /var/qmail containing the complete qmail 
+system.</P>
+<P>Compiling the rest of the required programs is trivial on most systems. An 
+example for rblsmtpd: 
+<BLOCKQUOTE><PRE>root:/usr/local/src# tar zxvf daemontools-0.70.tar.gz
+root:/usr/local/src# cd daemontools-0.70
+root:/usr/local/src/daemontools-0.70# make setup check
+</PRE></BLOCKQUOTE>
+<P>This will install daemontools to /usr/local/bin.</P>
+<P>Do the same for ucspi-tcp, fastforward and dot-forward. If everything 
+compiles and installs correctly, you should be done compiling. 
+<H2><A name=6>6.</A> Configure qmail.</H2>
+<P>After qmail compiles, we will want to configure it. The easiest way to do 
+this is:</P>
+<BLOCKQUOTE><PRE>root:/usr/local/src/qmail-1.03# ./config
+</PRE></BLOCKQUOTE>
+<P>The config script tries to do a reverse DNS lookup on all local IP addresses. 
+If this doesn't work, then you've got some dirty work to do. Read INSTALL.ctl. 
+As long as all of your local IP's are in your DNS, then you shouldn't have any 
+problems. Otherwise you can do the following:</P>
+<BLOCKQUOTE><PRE>root:/usr/local/src/qmail-1.03# ./config-fast your.full.host.name
+</PRE></BLOCKQUOTE>
+<P>This will create the necessary files in order to run qmail.</P>
+<P>After running config or config-fast, you will probably need to update some of 
+the files in /var/qmail/control in order to make your qmail system usable. See 
+<A href="http://www.flounder.net/qmail/qmail-howto.html#14">Section 14: Control 
+Files</A> for a description of some of the commonly used control files and what 
+they do. 
+<HR>
+<B>Warning:</B> If the config scripts fail for some reason, do not attempt to 
+continue this installation! If you start your qmail system without configuring 
+it, it will not work properly, and you will also be running an open relay! 
+<HR>
+
+<H2><A name=7>7.</A> Install the qmail aliases.</H2>
+<BLOCKQUOTE><PRE>root:/usr/local/src/qmail-1.03# cd ~alias
+root:/var/qmail/alias# echo adam &gt; .qmail-root
+root:/var/qmail/alias# echo bob &gt; .qmail-postmaster
+root:/var/qmail/alias# echo bob &gt; .qmail-mailer-daemon
+</PRE></BLOCKQUOTE>
+<P>Qmail uses files for every alias. This is one of the major ways that qmail 
+differs from sendmail. This is explained in greater detail <A 
+href="http://www.flounder.net/qmail/qmail-howto.html#13">below.</A> Note that 
+there is an alias for root. This is because root does not receive mail in qmail. 
+In fact, qmail-lspawn will immediately die and bounce the message if UID == 0. 
+Read INSTALL.alias for more instructions.</P>
+<H2><A name=8>8.</A> Set up daemontools and create control directories.</H2>
+<P>Now that you've installed qmail, you'll need to set everything up so that 
+qmail starts when your system comes up. In order to accomplish this, we're going 
+to use <I>svscan</I>, which is part of the daemontools package. 
+<P>If you've followed the HOWTO carefully so far, daemontools should already be 
+installed in /usr/local/bin. 
+<P>First, we'll need to create the daemontools services directory. Dan Bernstein 
+recommends using /service for this directory. If you want to use a different 
+directory, feel free. Just remember to replace /service with whatever directory 
+you're using in the directions below. 
+<BLOCKQUOTE><PRE># mkdir /service
+# mkdir /var/qmail/supervise
+# mkdir /var/qmail/supervise/qmail-send
+# chmod +t /var/qmail/supervise/qmail-send
+# mkdir /var/qmail/supervise/qmail-send/log
+# mkdir /var/qmail/supervise/qmail-smtpd
+# chmod +t /var/qmail/supervise/qmail-smtpd
+# mkdir /var/qmail/supervise/qmail-smtpd/log
+# mkdir /var/log/qmail
+# mkdir /var/log/qmail/qmail-send
+# mkdir /var/log/qmail/qmail-smtpd
+# chown qmaill /var/log/qmail
+# chown qmaill /var/log/qmail/*
+</PRE></BLOCKQUOTE>
+<P>Because of the way <I>svscan</I> works, we aren't going to actually create 
+any directories under /service. Instead, we're going to create the <I>real</I> 
+directories under /var/qmail/supervise. Later on, we'll make symlinks in 
+/service to these directories, but not yet. 
+<P>The next thing we need to do is make it so that <I>svscan</I> starts every 
+time the system starts. On my system, I accomplish this with a simple rc script: 
+
+<BLOCKQUOTE><PRE>#!/bin/sh -e
+# /etc/init.d/svscan : start or stop svscan.
+# borrowed from http://Web.InfoAve.Net/~dsill/lwq.html#start-qmail
+# modified by Adam McKenna &lt;adam-howto@flounder.net&gt;
+
+case "$1" in
+    start)
+        echo -n "Starting djb services: svscan "
+	cd /service
+        env - PATH="/usr/local/bin:$PATH" svscan &amp;
+        echo $! &gt; /var/run/svscan.pid
+        echo "."
+        ;;
+    stop)
+        echo -n "Stopping djb services: svscan "
+        kill `cat /var/run/svscan.pid`
+        echo -n "services "
+        svc -dx /service/*
+        echo -n " logging "
+        svc -dx /service/*/log
+        echo "."
+        ;;
+    restart|reload|force-reload)
+        $0 stop
+        $0 start
+        ;;
+    *)
+        echo 'Usage: /etc/init.d/svscan {start|stop|restart}'
+        exit 1
+esac
+
+exit 0
+</PRE></BLOCKQUOTE>
+<P>If you correctly add this script to init, <I>svscan</I> will start each time 
+you boot your system. Please see the documentation for your particular system or 
+distribution to find out how to add things to init. 
+<P>If you are running <A href="http://www.debian.org/">Debian GNU/Linux</A>, you 
+would issue the following command (assuming that your script is installed at 
+/etc/init.d/svscan): 
+<BLOCKQUOTE><PRE># update-rc.d svscan defaults
+</PRE></BLOCKQUOTE>
+<P>In order to control qmail itself, another simple script can be used: 
+<BLOCKQUOTE><PRE>#!/bin/sh -e
+# /etc/init.d/qmail : start or stop the qmail mail subsystem.
+# borrowed from http://Web.InfoAve.Net/~dsill/lwq.html#start-qmail
+# modified by Adam McKenna &lt;adam@flounder.net&gt;
+
+PATH=$PATH:/usr/local/bin:/var/qmail/bin
+
+case "$1" in
+    start)
+        echo -n "Starting mail-transport-agent:" 
+        svc -u /var/qmail/supervise/*
+        echo -n " qmail"
+        svc -u /var/qmail/supervise/*/log
+        echo " logging."
+        ;;
+    stop)
+        echo -n "Stopping mail-transport-agent: "
+        echo -n " qmail"
+        svc -d /var/qmail/supervise/*
+        echo " logging"
+        svc -d /var/qmail/supervise/*/log
+        ;;
+    restart)
+        $0 stop
+        $0 start
+        ;;
+    reload|force-reload)
+        echo "Reloading 'locals' and 'virtualdomains' control files."
+	svc -h /var/qmail/supervise/qmail-send
+        ;;
+    *)
+        echo 'Usage: /etc/init.d/qmail {start|stop|restart|reload}'
+        exit 1
+esac
+
+exit 0
+</PRE></BLOCKQUOTE>
+<HR>
+<B>Note:</B> Unlike the <I>svscan</I> script, this script does <B>NOT</B> need 
+to be added to your init scripts. This script is for controlling qmail 
+<I>after</I> it has been started via <I>svscan</I>. 
+<HR>
+
+<P>Now, it's time to create some stuff in /var/qmail/supervise. First, cd to 
+/var/qmail/supervise/qmail-send. 
+<P>Here, we need to create a script called <I>run</I> with the following 
+contents: 
+<BLOCKQUOTE><PRE>#!/bin/sh
+exec /var/qmail/rc
+</PRE></BLOCKQUOTE>
+<P>Now, we need to create /var/qmail/supervise/qmail-send/log/run with the 
+following contents: 
+<BLOCKQUOTE><PRE>#!/bin/sh
+exec /usr/local/bin/setuidgid qmaill /usr/local/bin/multilog t s2500000 /var/log/qmail/qmail-send
+</PRE></BLOCKQUOTE>
+<P>Now, we will create similar files in /var/qmail/supervise/qmail-smtpd. For 
+<I>run</I>, use the following: 
+<BLOCKQUOTE><PRE>#!/bin/sh
+QMAILDUID=`id -u qmaild`
+NOFILESGID=`id -g qmaild`
+exec /usr/local/bin/softlimit -m 2000000 \
+ /usr/local/bin/tcpserver -H -R -v -p -x /etc/tcp.smtp.cdb \
+ -u $QMAILDUID -g $NOFILESGID 0 smtp /var/qmail/bin/qmail-smtpd 2&gt;&amp;1
+</PRE></BLOCKQUOTE>
+<P>For <I>log/run</I>: 
+<BLOCKQUOTE><PRE>#!/bin/sh
+exec /usr/local/bin/setuidgid qmaill /usr/local/bin/multilog t s2500000 /var/log/qmail/qmail-smtpd
+</PRE></BLOCKQUOTE>
+<H2><A name=8a>8a.</A> Access Control</H2>
+<P>Before we can start up our qmail smtpd, we need to do some access control. 
+The simplest way to do this is by using files in /etc. I use /etc/tcp.smtp as my 
+access control file. If you don't need to do any access control, /etc/tcp.smtp 
+can have just one line: 
+<BLOCKQUOTE><PRE>:allow
+</PRE></BLOCKQUOTE>
+<P>Note that a default configuration does not allow for ANY relaying, even from 
+localhost. To allow relaying from localhost and your local network, you would 
+have to use something like this: 
+<BLOCKQUOTE><PRE>127.0.0.1:allow,RELAYCLIENT=""
+192.168.1.:allow,RELAYCLIENT=""
+:allow
+</PRE></BLOCKQUOTE>
+<P>For more examples, man tcprules.</P>
+<P>After you've created your rules, you need to activate them. tcpserver works 
+by reading a cdb (database) file. You use the tcprules program to build the 
+database file from your /etc/tcp.smtp file. This is accomplished by the 
+following command:</P>
+<BLOCKQUOTE><PRE># tcprules /etc/tcp.smtp.cdb /etc/tcp.smtp.tmp &lt; /etc/tcp.smtp
+</PRE></BLOCKQUOTE>
+<H2><A name=9>9.</A> Kill sendmail!!</H2>
+<P>If you've gotten this far, that means that you are ready to do away with 
+rickety old sendmail for good. First, find the pid of your sendmail daemon and 
+kill it!!! In Linux: </P>
+<BLOCKQUOTE><PRE># killall -TERM sendmail
+</PRE></BLOCKQUOTE>
+<P>If you don't feel that you've gained enough pleasure from this experience, 
+then restart sendmail and kill it again. After that, do the following:</P>
+<BLOCKQUOTE><PRE># mv /usr/lib/sendmail /usr/lib/sendmail.old
+# mv /usr/sbin/sendmail /usr/sbin/sendmail.old
+# ln -s /var/qmail/bin/sendmail /usr/lib/sendmail
+# ln -s /var/qmail/bin/sendmail /usr/sbin/sendmail
+
+# mv /usr/sbin/newaliases /usr/sbin/newaliases.old
+# ln -s /var/qmail/bin/newaliases /usr/sbin/newaliases
+</PRE></BLOCKQUOTE>
+<HR>
+Note: /usr/sbin may not exist on your system. </HR>
+<HR>
+<B>*** IMPORTANT:</B> Keep in mind that sendmail is most likely being started in 
+your init scripts. You will need to remove sendmail from your init scripts so 
+that it does not start again when the system is rebooted. You will need to 
+consult the documentation for your particular operating system in order to do 
+this. 
+<HR>
+
+<H2><A name=10>10.</A> Create /var/qmail/rc.</H2>
+<P>/var/qmail/rc is one of the most important qmail files. It is responsible for 
+starting qmail, but more importantly, it tells qmail what to do with every email 
+it receives. <I>rc</I> contains the <I>default delivery instructions</I> for 
+qmail. 
+<P>We want our system to support .forward files, and deliver mail to 
+/var/spool/mail. Therefore, we need a /var/qmail/rc file that looks something 
+like this: 
+<BLOCKQUOTE><PRE>#!/bin/sh
+
+exec env - PATH="/var/qmail/bin:$PATH" \
+qmail-start '|dot-forward .forward
+|preline procmail'
+</PRE></BLOCKQUOTE>
+<H2><A name=10a>10a.</A> Maildir.</H2>
+<P>Maildir is an alternate way of delivering messages. Maildirs have the 
+following benefits:</P>
+<UL>
+  <LI>Lock-free -- This means Maildirs are reliable over NFS. 
+  <LI>Enables use of qmail-pop3d, a secure POP3 daemon which comes with qmail. 
+  <LI>Programs don't have to stat() /var/spool/mail every time they open your 
+  mailbox. On systems with a large userbase, this can make things excruciatingly 
+  slow. 
+  <LI>Supported natively by the <A href="http://www.mutt.org/">mutt MUA</A>. 
+  </LI></UL>There are also some disadvantages to using Maildirs. 
+<UL>
+  <LI>Some popular mail programs, such as PINE, need to be patched and 
+  recompiled in order to use Maildirs. You will need the <A 
+  href="http://www.flounder.net/qmail/">Bloodhounds International c-client 
+  Maildir patch</A> in order to patch Pine. 
+  <LI>Maildirs store each message in its own separate file. This consumes more 
+  inodes than keeping mail in one spool file. </LI></UL>
+<P>If you want to deliver to Maildirs in users' home directories instead of 
+/var/spool/mail, you can change /var/qmail/rc to look something like this: 
+<BLOCKQUOTE><PRE>#!/bin/sh
+
+exec env - PATH="/var/qmail/bin:$PATH" \
+qmail-start '|dot-forward .forward
+./Maildir/'
+</PRE></BLOCKQUOTE>
+<P>Remember, the Maildir must be owned by the user it belongs to. If you create 
+maildirs as root, then you will have to use the <I>chown</I> command in order to 
+change the ownership. A good idea is to include a Maildir in /etc/skel, so that 
+the Maildir will be automatically created whenever you make a new user. To learn 
+more about Maildirs, read INSTALL.maildir. </P>
+<H2><A name=11>11.</A> Starting qmail.</H2>
+<P>Everything is in place now, and we are ready to start qmail. Since svscan is 
+already running, all we need to do is create symlinks in /service to our control 
+directories in /var/qmail/supervise. 
+<BLOCKQUOTE><PRE># ln -s /var/qmail/supervise/* /service/
+</PRE></BLOCKQUOTE>
+<P>qmail services should start within one minute. To check if the services have 
+started, you can run <I>ps</I>. 
+<BLOCKQUOTE><PRE># ps auxww | grep qmail
+</PRE></BLOCKQUOTE>
+<P>You should see several tasks running, at the very least qmail-send, and some 
+supervise processes. If these processes don't show up within a minute, you've 
+probably done something wrong, and you should go back and retrace your steps. 
+<P>Once the qmail processes show up, you can test local deliveries by following 
+the instructions in TEST.deliver. You can check to make sure your qmail-smtpd is 
+listening by telneting to port 25 of the local machine. 
+<H2><A name=12>12.</A> rblsmtpd.</H2>
+<P>rblsmtpd is a generic program that is part of ucspi-tcp and works with any 
+SMTP server that can run under tcpserver (for example, qmail and sendmail.) If 
+you only want to block sites that are listed in the <A 
+href="http://maps.vix.com/rbl">MAPS RBL</A>, then you do not need to give 
+rblsmtpd any arguments except the name of the SMTP daemon to run. However, if 
+you want to block based on other blocking systems, such as <A 
+href="http://relays.mail-abuse.org/">Relay Spam Stopper (RSS)</A>, you will need 
+to run multiple instances of rblsmtpd, using the -b flag with the name of the 
+server that you want each invocation to perform lookups at.</P>
+<P>In order to add rblsmtpd to your qmail installation, you must make some 
+changes to the <I>run</I> script in /var/qmail/supervise/qmail-smtpd: 
+<BLOCKQUOTE><PRE>#!/bin/sh
+QMAILDUID=`id -u qmaild`
+NOFILESGID=`id -g qmaild`
+exec /usr/local/bin/softlimit -m 2000000 \
+ /usr/local/bin/tcpserver -H -R -v -p -x /etc/tcp.smtp.cdb \
+ -u $QMAILDUID -g $NOFILESGID 0 smtp rblsmtpd /var/qmail/bin/qmail-smtpd 2&gt;&amp;1
+</PRE></BLOCKQUOTE>
+<P>If you have a good eye, you can see that we've added an <I>rblsmtpd</I> 
+before the qmail-smtpd process. This will block mail which is listed in the 
+rbl.maps.vix.com zone. If we wanted to also use the RSS, we would add another 
+rblsmtpd before qmail-smtpd, ie: 
+<BLOCKQUOTE><PRE>#!/bin/sh
+QMAILDUID=`id -u qmaild`
+NOFILESGID=`id -g qmaild`
+exec /usr/local/bin/softlimit -m 2000000 \
+ /usr/local/bin/tcpserver -H -R -v -p -x /etc/tcp.smtp.cdb \
+ -u $QMAILDUID -g $NOFILESGID 0 smtp rblsmtpd rblsmtpd -rrelays.mail-abuse.org /var/qmail/bin/qmail-smtpd 2&gt;&amp;1
+</PRE></BLOCKQUOTE>
+<P>You can add as many rblsmtpd processes as you want to check multiple 
+blacklists. 
+<H2><A name=13>13.</A> RTFM</H2>
+<P>At this time, it would be a good idea to read some of the official 
+documentation. Of course, you're not going to do that, you're going to continue 
+reading my drivel. I have an almost obscene power over you now. It intoxicates 
+me.</P>
+<P>Anyway, back to qmail.</P>
+<H2><A name=14>14.</A> The control files.</H2>
+<P>Once you've got your qmail system set up and running, there are a few things 
+you're going to have to learn how to do. First of all, you'll be happy to know, 
+that virtual hosts are *WAY* easier to do in qmail than they are in sendmail. 
+<P>Look in your /var/qmail/control directory. Most likely, it'll look something 
+like this: 
+<BLOCKQUOTE><PRE>nose:/var/qmail/control$ ls -la
+total 8
+drwxr-xr-x&nbsp;&nbsp;&nbsp;2&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qmail&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1024 Sep 29 10:08 .
+drwxr-xr-x&nbsp;&nbsp;10&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1024 Sep 18 02:48 ..
+-rw-r--r--&nbsp;&nbsp;&nbsp;1&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;22 Sep 18 02:40 defaultdomain
+-rw-r--r--&nbsp;&nbsp;&nbsp;1&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;27 Sep 18 02:40 locals
+-rw-r--r--&nbsp;&nbsp;&nbsp;1&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;27 Sep 18 02:40 me
+-rw-r--r--&nbsp;&nbsp;&nbsp;1&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;17 Sep 18 02:40 plusdomain
+-rw-r--r--&nbsp;&nbsp;&nbsp;1&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;27 Sep 18 02:40 rcpthosts
+-rw-------&nbsp;&nbsp;&nbsp;1&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;root&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;147 Sep 29 10:08 virtualdomains
+</PRE></BLOCKQUOTE>
+<P>The three most important files here (in order of importance) 
+are:</P><I>me</I> -- (in fact qmail can survive with JUST this file. It contains 
+your local host name. <I>Including domain</I>)<BR><I>rcpthosts</I> -- (All of 
+the hosts that qmail will receive mail for. All of your local domains must be in 
+this file.)<BR>
+<HR>
+<B>Important: qmail bounces mail for domains not listed in rcpthosts. All of 
+your domains, including virtual domains, <I>must</I> be listed in this file. In 
+addition, not having an rcpthosts file turns your qmail server into an open 
+relay. Running an open relay on the internet is not acceptable, and if you do, 
+you will soon be listed by the various open-relay blacklists such as ORBS and 
+RSS.</B>
+<HR>
+ <I>locals</I> -- (All of the hosts that are <I>local</I>. I.E. mail sent to 
+these hosts will be delivered to users in /etc/passwd.)<BR>
+<H2><A name=15>15.</A> <A 
+href="http://www.qmail.org/man/man5/dot-qmail.html">dot-qmail</A>.</H2>
+<P>dot-qmail is an important concept and I think it deserves its own section, 
+even though this document is a HOWTO. This is because you will use dot-qmail for 
+95% of what you will do with qmail once it's installed.</P>
+<P>dot-qmail is what tells qmail-local what to do with a message once it is 
+received. With dot-qmail, a user can forward her mail, create ezmlm mailing 
+lists (such as <A href="mailto:qmail-help@list.cr.yp.to">the qmail mailing 
+list</A>), create aliases under her own username, and call external programs 
+such as autoresponders.</P>
+<P>dot-qmail exists in the form of .qmail files in a user's home directory. <A 
+href="http://www.qmail.org/man/man8/qmail-local.html">qmail-local</A> reads 
+these files in order to decide what to do with a message.</P>
+<P>When qmail does not find a .qmail file, it follows the default delivery 
+instructions in /var/qmail/rc (or whatever script you are running qmail-start 
+from). Please see the <A href="http://www.qmail.org/man/man5/dot-qmail.html">man 
+page for dot-qmail</A> for a listing of the commands available.</P>
+<P>The great thing about dot-qmail is that it lets users set up their own 
+aliases. If my user account is named "adam", then I can set up a file called 
+.qmail-info, which will contain commands for processing messages addressed to 
+adam-info. dot-qmail can be used to create as many aliases as you'd like, and 
+can even be used for distribution lists.</P>
+<H2><A name=16>16.</A> Virtual domains.</H2>
+<P>Thanks to dot-qmail, virtual domains are as easy as normal aliases to create. 
+The file <I>virtualdomains</I> uses the following format:</P>
+<BLOCKQUOTE><PRE>example.com:user
+</PRE></BLOCKQUOTE>
+<P>Where <I>user</I> is the username of the user that receives mail for this 
+domain. This seems complicated at first, but it is actually very intuitive.</P>
+<P>If my user account <I>adam</I> is specified by <I>virtualdomains</I> to 
+receive mail for example.com, then any .qmail files I create in my home 
+directory will work as aliases for example.com, as well as their normal usage. 
+So, .qmail-info becomes info@example.com.</P>
+<P><I>But what if I want to manage more than one virtual domain from my user 
+account?</I></P><BR>The <I>virtualdomains</I> file makes this very intuitive as 
+well. Instead of putting <I>user</I> as the recipient, just put <I>user-ext</I> 
+as the recipient. For example: 
+<BLOCKQUOTE><PRE>example.com:adam-example
+example2.com:adam-example2
+</PRE></BLOCKQUOTE>
+<P>With this configuration, creating virtual host aliases is just as easy, the 
+only difference is that we add an extension to the dot-qmail filename. Now, 
+info@example.com becomes .qmail-example-info, and info@example2.com becomes 
+.qmail-example2-info, etc.</P>
+<P>If .qmail-ext doesn't exist, qmail-local will try some default .qmail files. 
+For example, if ext is foo-bar, qmail-local will try first .qmail-foo-bar, then 
+.qmail-foo- default, and finally .qmail-default. If none of these exist, 
+qmail-local will bounce the message. (Exception: for the basic user address, 
+qmail-local treats a nonexistent .qmail the same as an empty .qmail.) <I>This 
+paragraph was taken directly from the dot-qmail man page.</I></P>
+<H2><A name=17>17.</A> Fastforward.</H2>
+<P>Most sendmail users will be familiar with /etc/aliases. djb's 
+<I>fastforward</I> package supports everything sendmail supports in 
+/etc/aliases, plus more. 
+<P>To activate /etc/aliases, put the following in 
+/var/qmail/alias/.qmail-default: 
+<BLOCKQUOTE><PRE>| fastforward -d /etc/aliases.cdb
+</PRE></BLOCKQUOTE>
+<P>Congratulations, /etc/aliases is now active. You may add sendmail style 
+aliases to /etc/aliases, along with virtual domain aliases (which sendmail 
+doesn't support). Be sure to run /var/qmail/bin/newaliases after making any 
+changes to /etc/aliases. Read the file ALIASES in your fastforward source 
+distribution for more detailed information. 
+<H2><A name=18>18.</A> The End.</H2>
+<P>qmail is an extremely fast, flexible, and secure MTA. There are many other 
+applications for it, and I have not even begun to scratch the surface of what 
+you can do with it. For more information, read the <A 
+href="http://www.qmail.org/">qmail web site</A></P>
+<H2><A name=A>Acknowledgements </A></H2>
+<P>I'd like to thank the following people:</P>
+<UL>
+  <LI>Dan Bernstein, for all of his excellent software. 
+  <LI>Russell Nelson, for hosting <A href="http://www.qmail.org/">the qmail home 
+  page</A> 
+  <LI>Christopher Johnson, for writing the <A 
+  href="http://www.nccnet.co.uk/~sixie/qmail/vchkpw.html">vchkpw</A> package. 
+  <LI>Mr. Sam, for his various qmail enhancements, including <A 
+  href="http://i.am/mrsam">maildrop</A>. 
+  <LI>The following people for providing feedback on how to make this HOWTO 
+  better: 
+  <UL>
+    <LI>Matthew Gibbins 
+    <LI>Scott Schwartz 
+    <LI>Mark Delany 
+    <LI>harold@nb.com.[sg] 
+    <LI>Erik Linder 
+    <LI>Djalil Chafai 
+    <LI>Olivier Mueller 
+    <LI>Peter Rye 
+    <LI>Harry Hersh 
+    <LI>Michael Handler 
+    <LI>Mate Wierdl 
+    <LI>Dave Sill (See <A href="http://web.infoave.net/~dsill/lwq.html">Life 
+    with Qmail</A>, another excellent qmail reference.) 
+    <LI>Neal Pollack </LI></UL></LI></UL>
+<H2><A name=B>Other Sites</A></H2>The following are some other sites that should 
+be of interest to anyone running qmail: 
+<UL>
+  <LI><A href="http://cr.yp.to/qmail.html">Dan Bernstein's qmail site</A>. 
+  <LI><A href="http://www.qmail.org/">the qmail home page</A>. 
+  <LI><A href="http://web.infoave.net/~dsill/lwq.html">Life with Qmail</A> by 
+  Dave Sill. 
+  <LI><A href="http://www.inter7.com/qmail/">Inter7, home of vpopmail and 
+  qmailadmin</A> 
+  <LI><A href="http://www.apress.com/catalog/book/1893115402/">Dave Sill has 
+  written <I>The Qmail Handbook</I></A> </LI></UL>
+<H2><A name=C>Payment! </A></H2>
+<P>You didn't think you were going to get off that easy, did you? Well, don't 
+worry, I'm not asking for much. If this HOWTO helped you, I would appreciate it 
+if you would send me a quick email, or if you are feeling especially thankful, 
+something from my <A 
+href="http://www.amazon.com/exec/obidos/wishlist/2FA44P5LEK7XP">Amazon.com 
+wishlist</A> would be cool. <B>PLEASE DO NOT SEND ME WEB GREETING CARDS! 99% OF 
+THEM ARE ONLY THERE TO HARVEST EMAILS FOR SPAMMERS!</B> 
+<HR>
+--Adam<BR>adam@flounder.net <BR><BR>This HOWTO is Copyright © 1998-2000 Adam D. 
+McKenna<BR>Permission for redistribution is granted under the <A 
+href="http://www.opencontent.org/opl.shtml">OpenContent</A> License.<BR><A 
+href="http://www.flounder.net/qmail/qmail-howto.html#top">Top</A><BR><A 
+href="http://www.flounder.net/">Back to flounder.net</A><BR></BODY></HTML>

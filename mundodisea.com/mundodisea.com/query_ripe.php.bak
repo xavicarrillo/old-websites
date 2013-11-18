@@ -1,0 +1,15 @@
+<?php
+//header("Location: http://www.mundodisea.com");
+echo "
+ <script language=\"JavaScript\">
+
+     function MM_openBrWindow(theURL,winName,features) {
+         window.open(theURL,winName,features);
+     }
+   </script>
+
+<html>
+<body onload=\"MM_openBrWindow('http://www.ripe.net/perl/whois?$ip','ip info','scrollbars=yes,resizable=yes,width=495,height=655')\">
+";
+include "adalt.php";
+?>

@@ -1,0 +1,436 @@
+# Webalizer V2.01-09 Incremental Data - 05/12/2002 22:00:20
+2002 5 12 22 0 20
+255 178 30 68 25 16 2636087 120 66 1
+2 2 33 1 12
+47 38 129426 2 11 2
+13 8 182751 3 6 3
+12 9 198484 4 7 4
+5 3 12644 1 4 2
+11 11 209163 3 2 2
+18 10 284495 7 12 9
+50 32 1028438 9 19 12
+31 4 158241 9 28 20
+23 20 51473 3 10 3
+10 9 101260 3 5 4
+2 2 12396 1 1 1
+33 32 267316 2 15 4
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+0 0 0 0 0 0
+4 3 152878 2
+5 2 173421 4
+4 0 0 1
+1 0 0 1
+8 4 224747 5
+5 3 83539 2
+3 2 73036 2
+22 15 351697 16
+2 1 28648 1
+17 9 469775 7
+26 16 56908 13
+4 2 9831 3
+32 23 74878 10
+19 15 54613 7
+6 6 8937 0
+21 17 171408 9
+20 20 58240 8
+8 6 107116 6
+6 4 7249 3
+17 12 180879 8
+6 4 153549 4
+5 5 35958 2
+11 8 155900 3
+3 1 2880 3
+0
+0
+0
+178
+0
+0
+0
+0
+0
+0
+0
+13
+0
+0
+26
+0
+0
+0
+3
+0
+0
+35
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+0
+# -urls- 
+/dbadmin/images/browse.gif
+0 1 0 0 0 0
+/doc/programacio/bsd_sockets.html
+0 2 0 28232 1 1
+/imatges/google.jpg
+0 2 0 2014 0 0
+/
+0 5 0 4196 5 1
+/doc/seguretat/howtoBoF.htm
+0 1 0 29543 0 1
+/doc/rfc/rfc826-ARP.txt
+0 1 0 21556 0 0
+/bbdd/borrar.php
+0 2 0 1032 0 0
+/imatges/navegar.jpg
+0 2 0 2026 0 0
+/estil.css
+0 2 0 1354 0 0
+/doc/rfc/rfc0793-TCP.txt
+0 2 0 151776 0 0
+/imatges/whois.jpg
+0 2 0 1772 0 0
+/doc/rfc/rfc2236-IGMP.txt
+0 1 0 51048 0 0
+/doc/sistemes.html
+0 3 0 2574 1 1
+/doc/rfc/rfc2821-SMTP.txt
+0 1 0 0 0 0
+/dbadmin/images/plus.gif
+0 1 0 0 0 0
+/dbadmin/images/bkg.gif
+0 1 0 0 0 0
+/doc/programacio.html
+0 3 0 1672 1 1
+/doc/seguretat/lkm.html
+0 1 0 0 1 1
+/doc/rfcs.html
+0 3 0 4158 1 1
+/doc/rfc/rfc0791-IP-es.txt
+0 1 0 0 0 0
+/doc/sistemes/port_forwading_con_ssh
+0 2 0 7172 1 1
+/doc/sistemes/mySQL.htm
+0 2 0 172047 1 0
+/doc/sistemes/apache.howto.html
+0 1 0 31486 1 0
+/imatges/ipinfo.jpg
+0 2 0 1852 0 0
+/doc/rfc/rfc1057-RPC.txt
+0 1 0 51065 0 0
+/links.php
+0 2 0 2238 0 0
+/dreta.html
+0 4 0 3420 1 2
+/doc/
+0 1 0 0 1 0
+/doc/sistemes/qmail-HOWTO.htm
+0 1 0 0 0 0
+/adalt.php
+0 4 0 6994 0 0
+/bbdd/update.php
+0 2 0 5842 0 0
+/doc/sistemes/qmail-POF.html
+0 2 0 58167 2 1
+/doc/rfc/rfc1591-DNS-es.txt
+0 2 0 36100 0 0
+/doc/seguretat.html
+0 3 0 3250 1 1
+/doc/seguretat/firewall_penetration_testing.html
+0 2 0 25924 1 1
+/doc/seguretat/Playing_redir_games_with_ARP_and_ICMP.txt
+0 1 0 33992 0 0
+/imatges/mundo_gradient.gif
+0 2 0 11788 0 0
+/dbadmin/tbl_change.php
+0 1 0 2910 0 0
+/bbdd/
+0 26 0 55651 9 11
+/whois.php
+0 2 0 364 0 0
+/dbadmin/main.php
+0 1 0 1765 0 0
+/dbadmin/db_details.php
+0 1 0 6142 0 0
+/bbdd/buscar1.php
+0 23 0 220755 0 0
+/doc/rfc/rfc903-RARP.txt
+0 1 0 9345 0 0
+/bbdd/update.cgi.php
+0 3 0 1377 0 0
+/doc/rfc/rfc0768-UDP-es.txt
+0 2 0 7160 0 0
+/bbdd/insert.php
+0 19 0 47676 0 0
+/dbadmin/tbl_properties.php
+0 1 0 7771 0 0
+/doc/sistemes/PROFTPD_userguide_full.html
+0 3 0 126698 3 1
+/doc/rfc/rfc0792-ICMP-es.txt
+0 1 0 0 0 0
+/dbadmin/
+0 1 0 294 0 0
+/imatges/planeta_petit.jpg
+0 2 0 11426 0 0
+/doc/rfc/rfc2449-POP3.txt
+0 1 0 35517 0 0
+/doc/programacio/unix_pro_FAQ.htm
+0 5 0 573362 3 1
+/doc/programacio/intro_sockets.html
+0 2 0 90434 1 1
+/whois.cgi.php
+0 1 0 20 0 0
+/dbadmin/images/minus.gif
+0 1 0 0 0 0
+/doc/rfc/rfc0959-FTP-es.txt
+0 1 0 0 0 0
+/doc/rfc/rfc1459-IRC-es.txt
+0 3 0 419312 0 0
+/dbadmin/tbl_replace.php
+0 1 0 8151 0 0
+/doc/rfc/rfc2228-FTP Security Extensions.txt
+0 1 0 58733 0 0
+/doc/seguretat/heap-overflows.txt
+0 1 0 0 0 0
+/doc/seguretat/smashing.txt
+0 1 0 67426 0 0
+/doc/rfc/rfc2709-IPsec-NATes.txt
+0 1 0 28303 0 0
+/esquerra.html
+0 5 0 3436 1 1
+/doc/sistemes/netcat.txt
+0 1 0 60834 0 0
+/bbdd/meterdatos.php
+0 20 0 9340 0 0
+/dbadmin/left.php
+0 1 0 9352 0 0
+# End Of Table - urls
+# -sites- (monthly)
+dup-200-64-137-216.prodigy.net.mx
+0 1 1 136938 0 0
+-
+166-barc-x44.libre.retevision.es
+0 2 2 12396 1 1021133082
+/bbdd/
+crawl2.googlebot.com
+0 1 1 35517 0 0
+-
+62.82.13.232
+0 9 9 14058 1 1020604354
+/bbdd/
+crawl6.googlebot.com
+0 5 1 1870 4 1020885670
+-
+x8982.ppp.xtec.es
+0 7 5 30079 2 1020452462
+/bbdd/
+wan.ferranti.be
+0 4 1 145727 1 1020333533
+/doc/programacio/unix_pro_FAQ.htm
+96-barc-x65.libre.retevision.es
+0 5 3 12644 2 1020556633
+/bbdd/
+212-166-150-59.red-acceso.airtel.net
+0 1 1 141187 0 0
+-
+crawl3.googlebot.com
+0 2 1 18392 1 1020840815
+-
+161-barc-x72.libre.retevision.es
+0 46 38 129101 2 1020282418
+/bbdd/
+cr027r01-2.sac2.fastsearch.net
+0 3 0 650 1 1020921897
+/
+cable-195-162-214-182.upc.chello.be
+0 1 1 63349 1 1020723036
+/doc/sistemes/PROFTPD_userguide_full.html
+copilot.thunderstone.com
+0 12 11 209908 1 1021190027
+/doc/programacio/unix_pro_FAQ.htm
+crawl7.googlebot.com
+0 10 2 69505 6 1020850582
+-
+213.194.137.219
+0 32 25 77905 8 1021031899
+/bbdd/
+crawl4.googlebot.com
+0 17 9 420792 5 1020878137
+-
+89-barc-x46.libre.retevision.es
+0 2 2 15940 1 1020990034
+/bbdd/
+toronto1.shoppersdrugmart.ca
+0 3 1 145158 1 1020890503
+-
+16-barc-x44.libre.retevision.es
+0 5 4 28413 1 1020809423
+-
+63.170.175.146
+0 1 1 25924 1 1020447288
+/doc/seguretat/firewall_penetration_testing.html
+bw1-202pub162.bluewin.ch
+0 17 17 45659 1 1020960678
+/doc/rfcs.html
+29-barc-x34.libre.retevision.es
+0 4 3 5489 1 1020881664
+/bbdd/
+crawl8.googlebot.com
+0 6 1 172717 3 1020850902
+-
+i74.infovia.xtec.es
+0 5 4 22697 1 1020360528
+/bbdd/
+crawl1.googlebot.com
+0 15 5 218200 6 1020873204
+-
+62.175.64.15
+0 21 21 57408 3 1021239929
+/bbdd/
+proxy.kknet.co.th
+0 1 1 58167 1 1020619288
+/doc/sistemes/qmail-POF.html
+12-246-28-250.client.attbi.com
+0 1 1 63349 1 1021012767
+/doc/sistemes/PROFTPD_userguide_full.html
+crawl5.googlebot.com
+0 16 6 256948 9 1020871018
+-
+# End Of Table - sites (monthly)
+# -sites- (daily)
+copilot.thunderstone.com
+0 12 11 209908 1 1021190027
+/doc/programacio/unix_pro_FAQ.htm
+62.175.64.15
+0 21 21 57408 3 1021239929
+/bbdd/
+# End Of Table - sites (daily)
+# -referrers- 
+- (Direct Request)
+0 133
+http://www.google.com/search
+0 5
+http://mundodisea.com/esquerra.html
+0 1
+http://www.mundodisea.com/bbdd/insert.php
+0 20
+http://www.mundodisea.com/bbdd/meterdatos.php
+0 9
+http://www.mundodisea.com/dbadmin/tbl_properties.php
+0 1
+http://www.mundodisea.com/adalt.php
+0 5
+http://www.mundodisea.com/bbdd/buscar1.php
+0 11
+http://mundodisea.com/adalt.php
+0 7
+http://www.mundodisea.com/doc/seguretat/firewall_penetration_testing.html
+0 1
+http://www.mundodisea.com/
+0 3
+http://www.mundodisea.com/bbdd/borrar.php
+0 1
+http://mundodisea.com/whois.php
+0 1
+http://www.mundodisea.com/esquerra.html
+0 7
+http://mundodisea.com/
+0 3
+http://www.mundodisea.com/dbadmin/left.php
+0 4
+http://www.mundodisea.com/doc/programacio/unix_pro_FAQ.htm
+0 4
+http://www.mundodisea.com/dbadmin/tbl_change.php
+0 1
+http://www.mundodisea.com/bbdd/index.php
+0 8
+http://www.mundodisea.com/bbdd/update.cgi.php
+0 2
+http://www.mundodisea.com/bbdd/
+0 22
+http://www.mundodisea.com/dbadmin/
+0 2
+http://www.mundodisea.com/doc/rfcs.html
+0 1
+http://www.google.ca/search
+0 1
+http://www.mundodisea.com/bbdd/update.php
+0 2
+# End Of Table - referrers
+# -agents- 
+Mozilla/4.0 (compatible; MSIE 5.0; Windows 98; DigExt)
+0 1
+Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; Q312461)
+0 1
+Mozilla/4.0 (compatible; MSIE 6.0; Windows 98)
+0 9
+Mozilla/4.0 (compatible; MSIE 6.0; Windows 98; Win 9x 4.90)
+0 1
+Mozilla/2.0 (compatible; T-H-U-N-D-E-R-S-T-O-N-E)
+0 12
+Mozilla/5.0 (X11; U; Linux i586; en-US; Galeon) Gecko/2001090
+0 12
+Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)
+0 17
+FAST-WebCrawler/3.5 (atw-crawler at fast dot no; http://fast.
+0 3
+Mozilla/4.0 (compatible; MSIE 5.5; Windows 95)
+0 1
+Mozilla/4.0 (compatible; MSIE 5.01; Windows 98)
+0 1
+Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0; .NET CLR 1
+0 1
+Mozilla/5.0 Galeon/1.0.2 (X11; Linux i686; U;) Gecko/20011226
+0 32
+Mozilla/4.76 [en] (Win95; U)
+0 3
+Googlebot/2.1 (+http://www.googlebot.com/bot.html)
+0 72
+Mozilla/5.0 (compatible; Konqueror/2.2.1; Linux)
+0 4
+Mozilla/5.0 Galeon/1.2.0 (X11; Linux i586; U;) Gecko/20020412
+0 85
+# End Of Table - agents
+# -search strings- 
+pasv proftpd local ip address
+1
+mess822 qmail install
+1
+solaris 8 pam shadow proftpd mod_auth
+1
+# End Of Table - search strings
+# -usernames- 
+eunicer0x
+0 11 7 36385 1 1020257282
+# End Of Table - usernames

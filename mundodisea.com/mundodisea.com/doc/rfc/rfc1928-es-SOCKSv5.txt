@@ -1,0 +1,449 @@
+
+
+
+
+
+
+Network Working Group                                           M. Leech
+Request for Comments: 1928                    Bell-Northern Research Ltd
+Category: Standards Track                                       M. Ganis
+                                         International Business Machines
+                                                                  Y. Lee
+                                                  NEC Systems Laboratory
+                                                                R. Kuris
+                                                       Unify Corporation
+                                                               D. Koblas
+                                                  Independent Consultant
+                                                                L. Jones
+                                                 Hewlett-Packard Company
+                                                              March 1996
+Traductor: Cayetano G¢mez                                    Enero, 2001
+
+                        Protocolo Socks Version 5
+
+Estado de este memoramdum
+
+   Este documento especifica un Protocolo standard de transporte para la
+   comunidad de internet, y requiere discusi¢n y sugerencias para
+   ampliaciones. Por favor, refierase a la edicion actual del  "Internet
+   Official Protocol Standards" (STD 1) para el estado y estado de
+   estandarizacion de este protocolo. La distribucuin de este memorando
+   es ilimitada.
+
+Reconocimientos
+
+   Este memoramdum describe un protocolo que es una evolucion de las
+   versiones previas del protocolo, version 4 [1]. Este nuevo protocolo
+   continua en activa discusion e imp¤ementacion de prototipos. Los
+   participantes clave an sido: Marcus Leech: Bell-Northern Research,
+   David Koblas: Independent Consultant, Ying-Da Lee: NEC Systems
+   Laboratory, LaMont Jones: Hewlett-Packard Company, Ron Kuris: Unify
+   Corporation, Matt Ganis: International Business Machines.
+
+1.  Introduccion
+
+   El uso de cortafuegos de red, sistemas que separan de forma efectiva
+   la red interna de una organizacion de la red externa, como puede ser
+   INTERNET comienza a ser crecientemente polular. Estos dispositivos
+   cortafuegos actuan tipamente como un puente en la capa de aplicacion
+   entre redes, usualmente ofrecen el control sobre el acceso a TELNET,
+   FTP y SMTP. Con la aparici¢n de protocolos de la capa de aplicaci¢n
+   m s sofisticados dise¤ados para facilitar el reconocimiento de
+   informacion global existe la necesidad de proveer un marco de
+   trabajo general para esos protocolos para atravesar transparentemente
+   y con seguridad el cortafuegos.
+
+   Exsite, tambien, la necesidad de una autentificacion fuerte en esa
+   travesia de una manera mas refinada y practica. Estos requerimientos
+   provienen de las relaciones cliente-servidor que surgen entre las
+   redes de varias organizaciones, estas relaciones necesian estar
+   contoladas y, a menudo, fuertemente autenficicadas.
+
+   El protocolo descrito esta dise¤ado para proveer de un marco de
+   trabajo para las aplicaiones cliente-servidor en ambos dominios, TCP
+   y UDP, para el uso conveniete y seguro de los cortafuegos de red. El
+   protocolo es conceptualmente una "capa intermedia" entre la capa de
+   aplicaci¢n y la capa de transporte, no entragando a la capa de red de
+   servicios de pasarela como el reenvio de mensajes ICMP.
+
+2.  Existencia Practica.
+
+   Actualmente existe un protocolo, SOCKS Versi¢n 4, que provee de
+   comunicacion insegura a trav‚s de cortafuegos para las aplicaciones
+   cliente-servidoras basadas en TCP, incluso TELNET, FTP y los protocolos
+   de intercambio de informaci¢n populares como HTTP, WAIS y GOPHER.
+
+   Este nuevo protocolo extiende el modelo de SOCKS Versi¢n 4  para
+   incluir UDP, y extiende el entorno para incluir los medios para la
+   los esquemas de autenticaci¢n fuerte generalizada, y amlia el esquema
+   de direccionamiento para abarcar nombres de dominio y direcciones IP
+   V6.
+
+   La implementacion del protocolo Socks tipicamente incluye la
+   recompilacion de las aplicaciones clientes basadas en TCP para usar
+   las rutinas apropiadas de la librer¡a de SOCKS.
+
+Nota:
+
+   Si no se indica lo contrario los numeros decimals que aparecen en el
+   formato de los paquetes representan la longitud del campo, en
+   octetos. Cuando un octeto ha de tener un valor espec¡fico, la
+   sintaxis X'hh' se usa para denotar un simple octeto en ese campo.
+   Donde se utiliza la palabra 'Variable', esta indica que el campo
+   correspondiente en de longitud variable o esta definida en un campo
+   de longitud ( uno o dos octetos ), o por un campo indicador de tipo
+   de dato.
+
+3. Procedimientos para Clientes Basados en TCP
+
+   Cuando un cliente basado en TCP desea establecer una conexi¢n con un
+   objeto que s¢lo es el accesible v¡a una cortafuegos (la determinacion
+   est  fuera de la implementaci¢n ), debe abrir una conexi¢n de
+   TCP al puerto del SOCKS adecuado en el sistema de servidor de
+   SOSCK.  El servicio de SOCKS se localiza por convenci¢n en el puerto
+   1080 por TCP. Si la solicitaci¢n de la conexi¢n tiene ‚xito, el
+   cliente entra en una negociaci¢n determinar la autentificaci¢n a
+   usar, se autentifica con el metodo elegido y envia la petici¢n. El
+   servidor de SOCKS evalua la petici¢n y establece la conexion
+   apropiada o la deniega.
+
+Nota del traductor: Parrafo repetido en el original )
+
+   Si no se indica lo contrario los numeros decimals que aparecen en el
+   formato de los paquetes representan la longitud del campo, en
+   octetos. Cuando un octeto ha de tener un valor espec¡fico, la
+   sintaxis X'hh' se usa para denotar un simple octeto en ese campo.
+   Donde se utiliza la palabra 'Variable', esta indica que el campo
+   correspondiente en de longitud variable o esta definida en un campo
+   de longitud ( uno o dos octetos ), o por un campo indicador de tipo
+   de dato.
+
+
+   El cliente conecta con el servidor y envia un mensaje de version del
+   metodo de identificacion.
+
+                   +----+----------+----------+
+                   |VER | NMETHODS | METHODS  |
+                   +----+----------+----------+
+                   | 1  |    1     | 1 to 255 |
+                   +----+----------+----------+
+
+   El campo VER es x'05' para esta veresi¢n del protocolo. el campo
+   NMETHODS contiene el numero de octetos que contiene el campo METHODS.
+
+   El servidor selecciona uno de los m‚todos existentes en METHODS y
+   envia un mensaje de seleci¢n:
+
+                         +----+--------+
+                         |VER | METHOD |
+                         +----+--------+
+                         | 1  |   1    |
+                         +----+--------+
+
+   Si el campo METHOD selecionado es X'FF' ningulo de los metodos
+   ofrecidos por el cliente es aceptable y el cliente DEBE cerrar la
+   conexi¢n.
+
+   Los valores definidos actualmente para METHOD son:
+
+          o  X'00' AUTORIZACIàN NO REQUERIDA
+          o  X'01' GSSAPI
+          o  X'02' USERNAME/PASSWORD
+          o  X'03' to X'7F' ASIGNADO POR IANA
+          o  X'80' to X'FE' RESERVADO PARA METODOS PRIVADOS
+          o  X'FF' METODOS NO ACEPTADOS
+
+   El cliente y el servidor entran en la subnegociacion espec¡fica del
+   metodo.
+
+   La decripcion de la subnegociacion dependiente del metodo aparece en
+   otros memorandums.
+
+   Los desarrolladores de soporte para nuevos metodos han de contactar
+   con el IANA para conseguir un numero de METHOD. El documento de
+   NUMEROS ASIGNADOS ( ASSIGNED NUMBERS ) es la referencia para la lista
+   de los numeros de METHOD asignados actualmente y sus correspondientes
+   protocolos.
+
+   Las implementaciones confome a normativa DEBEN soportar los m‚todos
+   de autentificacion GSSAPI y SHOULD.
+
+
+4.  Peticiones
+
+   Tras terminar la subnegocioacion dependiente del metodo, el cliente
+   envia los detalles de la petici¢n. Si el metodo de negociaci¢n
+   incluye encapsulaci¢n con prop¢sitos de comprobar la integridad y/o
+   confidencialidad, esta DEBE ser incluida en la encapsulacion del
+   m‚todo.
+
+   Una vez la subnegociacion dependiente del m‚todo ha terminado el
+   cliente envia los detalles de la peticion. Si el metodo incluye
+   encapsulaci¢n por motivos de comprobaci¢n de seguridad y/o
+   confidencialidad, la peticion DEBE incluirse en la encapsulaci¢n
+   dependiente del m‚todo.
+
+   La peticion tiene esta forma:
+
+        +----+-----+-------+------+----------+----------+
+        |VER | CMD |  RSV  | ATYP | DST.ADDR | DST.PORT |
+        +----+-----+-------+------+----------+----------+
+        | 1  |  1  | X'00' |  1   | Variable |    2     |
+        +----+-----+-------+------+----------+----------+
+
+     Donde:
+
+          o  VER    Version del Protocolo : X'05'
+          o  CMD
+             o  CONNECT X'01', Conecxion
+             o  BIND X'02', Busqueda
+             o  UDP ASSOCIATE X'03', Asociacion de UDP
+          o  RSV    RESERVED, Reservada
+          o  ATYP   Rireccion, seg£n uno de estos tipos.
+             o  Direcci¢n IP V4 : X'01'
+             o  Nombre de Domino : X'03'
+             o  Direcci¢n IP V6 : X'04'
+          o  DST.ADDR direccion de destino solicitada
+          o  DST.PORT puerto asociado a la direccion destino.
+
+   El servidor de SOCKS tipicamente puede evaluar la petici¢n bas ndose
+   en las direcciones de origen y destino, y devolver una o m s
+   respuestas, seg£n sea apropiado a la petici¢n.
+
+5.  Direccionamiento
+
+   En un campo de direccion (DST.ADDR, BND.ADDR), el campo ATYP
+   especifica el tipo de direccionamiento contenido en el campo:
+
+          o  X'01'
+
+   es una direccion de la version 4, con cuatro octelos de longitud
+
+          o  X'03'
+
+   El campo de direcci¢n contiene yn nombre de dominio completamente
+   cualificado. El primer octeto del campo direccion contiene el numero
+   de octetos del nombre que le sigeu, no est  terminado con un octeto
+   NUL ( octeto X'0').
+
+          o  X'04'
+
+   es una direccion de la version 6, con 1 6 octelos de longitud
+
+6.  Respuestas
+
+   La informacion de respuestas de SOCKS es enviada al cliente tan
+   pronto esta establecida la conecxion por el SOCKS servidor y
+   completada la negociacion de autentificaci¢n. El servidor eval£a la
+   peticion y devuelbe una respuesta seg£n este formato:
+
+
+        +----+-----+-------+------+----------+----------+
+        |VER | REP |  RSV  | ATYP | BND.ADDR | BND.PORT |
+        +----+-----+-------+------+----------+----------+
+        | 1  |  1  | X'00' |  1   | Variable |    2     |
+        +----+-----+-------+------+----------+----------+
+
+     Donde:
+
+          o  VER    la version del protocolo: X'05'
+          o  REP    Campo de respuesta:
+             o  X'00' Conseguido
+             o  X'01' Fallo general del servidor de SOCKS
+             o  X'02' Conexion denegada por infringir el juego de reglas
+                      ( de segurad o permisos ... )
+             o  X'03' Red inalcanzable
+             o  X'04' Destino Inalcanzable
+             o  X'05' Conexion Rechazada
+             o  X'06' TTL expiredado.
+             o  X'07' Comando no soportado
+             o  X'08' Tipo de direcci¢n no soportado
+             o  de X'09' hasta X'FF' estan sin asignar.
+          o  RSV    Reservado ( RESERVED )
+          o  ATYP   Determina la direccion seg£n los tipos siguientes:
+             o  Direccion IP V4 : X'01'
+             o  Nombre de Dominio, DOMAINNAME: X'03'
+             o  Direccion IP V6: X'04'
+          o  BND.ADDR       DIreccion de conexion del servidor.
+          o  BND.PORT       Puerto de conexion en formato de octetos de red.
+
+Nota del Traductor: El fomato de octetos de red se representa con el
+    octeto menos significativo en primera posicion.
+
+   Los campos marcados como RESERVED (RSV) han de estar a X'00'
+
+   SI el m‚todo elegido incluye encapsulaci¢n con prop¢sitos de
+   autentificaci¢n, integridad y/o confidencialidad, las respuestas
+   estar n encapsuladas seg£n la encapsulacion dependiente del m‚todo.
+
+
+CONNECT
+
+   En la respuesta a un comando CONNECT, BND.PORT contiene el numero de
+   puerto que el servidor asigna a la conexion con el host destino,
+   mientras que BND.ADDR contiene la direccion IP asociada. El campo
+   BND.ADDR proporcionado puede diferir de la IP con la que el cliente
+   consult¢ al servidor SOCKS, estos servidores son amenudo
+   multialojados. Se espera que el servidor SOCKS utilize DST.ADDR y
+   DST.port, y la fuente del lado del liente es evaluado en la peticion
+   CONNECT.
+
+BIND
+
+   La peticion de BIND es usada en protocolos que requieren del cliente
+   que acepte conexiones desde el servidor. FTP es un buen ejemplo, se
+   utiliza una conexion primaria cilete hacia el servidor para los
+   comandos y la informaci¢n de estado, pero se usa una conexi¢n del
+   servidor al cliente para transferir datos por demanda ( por ejemplo:
+   LS, GET,PUT ).
+
+   Se espera que el lado cliente del protocolo de aplicaci¢n use la
+   petici¢n de BIND s¢lo para establecer una conexi¢n secundaria, tras
+   una conexi¢n primaria establecida mediante CONNECT. En este caso se
+   espera que que el servidor SOCKS pueda usar DST.ADDR y DST.port en la
+   evaluacion de la petici¢n de BIND.
+
+   Se envian dos respuestas desde el servidor de SOCS al cliente durante
+   una operacion de BIND. La primera es enviada cuando el servidor crea
+   y pone en escucha un nuevo socket. El campo BND.PORT contiene el
+   numero de puerto que el servidor de socks a asignado al puerto de
+   escucha para una conexi¢n entrante. El campo BND.ADDR contiene la
+   direcion IP asociada. El cliente tipicamente puede usar esas piezas
+   de informaci¢n para notificar ( mediante la conexion primaria o de
+   control ) a la aplicacion cliente de la direccion de la cita. La
+   segunda respuesta ocurre solo tras el fallo o consecuci¢n de la
+   conexion antidipada.
+
+   En la segunda respuesta los campos BND.PORT y BND.ADDR contienen la
+   direcci¢n y puerto del host en conexion.
+
+
+ASOCIACION UDP
+
+   La peticion de ASOCIACION UDP ( UDP ASSOCIATE ) se usa para
+   establecer una associaci¢n con el proceso de reenvio de UDP para
+   manejar datagramas UDP. Los campos DST.ADDR y DST.PORT contienen la
+   direccion y puerto en que el cliente espera usar para enviar
+   datagramas UDP a la asociaci¢n. El servidor PUEDE usar esta
+   informaci¢n para limitar el acceso a la asociaci¢n. Si el cliente no
+   est  en posesi¢n de la informaci¢n en el moneto de lanzar el UDP
+   ASSOCIATE, DEBE usar un puerto y direccion con todo a cero.
+
+   Una asociaci¢n termina cuando la conexion TCP con la que se pidi¢ la
+   asociaci¢n UDP termina.
+
+   En la contestaci¢n a una petici¢n UDP ASSOCIATE, los campos BND.POT y
+   BND.ADDR indican el la direccion y puerto por los que el cliente
+   TIENE que enviar los mensajes UDP para su reenv¡o.
+
+Procesado de Respuestas
+
+   Cuando una respuesta indica un fallo ( el campo REP contiene un valor
+   distinto de X'00'), el servidor de SOCKS TIENE que terminar la
+   conix¢n TCP inmediatamente tras enviar la respuesta. Ha de ser en no
+   m s de 10 segundos tras haber detectado la causa del fallo.
+
+   Si el codigo de respuestas indica acierto ( el campo REP vale X'00'
+   ), y la petici¢n era BIND o CONNECT, el cliente puede ahora comenzar
+   a enviar datos. Si el m‚todo de autentificaci¢n soporta encapsulacion
+   con prop¢sitos de integridad, autentificaci¢n y/o confidencialidad,
+   los datos son ancpsulados usando el metodo seleccionado. Igualmente
+   cuando los datos llegan al servidor de SOCKS para el cliente, el
+   servidor TIENE que encapsular los datos con el metodo de
+   autentificaci¢n aprotiado.
+
+7.  Procedimientos para clientes basados en UDP.
+
+   Un cliente basado en UDP DEBE eenviar sus datagramas al servidor de
+   reenvio de UDP al puerto UDP indicado en el campo BIND.PORT de la
+   respuesta a una petici¢n UDP ASSOCIATE. Si el m‚todo de
+   autentificaci¢n soporta encapsulacion con prop¢sitos de integridad,
+   autentificaci¢n y/o confidencialidad, los datos son ancpsulados
+   usando el metodo seleccionado. Cada datagrama UDO conlleva una
+   respuesta UDP con esta estructura:
+
+
+      +----+------+------+----------+----------+----------+
+      |RSV | FRAG | ATYP | DST.ADDR | DST.PORT |   DATA   |
+      +----+------+------+----------+----------+----------+
+      | 2  |  1   |  1   | Variable |    2     | Variable |
+      +----+------+------+----------+----------+----------+
+
+     Los campos de la cabecera de la respuesta UDP son:
+
+          o  RSV            Reservada X'0000'
+          o  FRAG           N£mero de fragmento actual
+          o  ATYP           uno de los siguietes tipos de direcci¢n:
+             o  Direccion IP V4 : X'01'
+             o  DOMAINNAME, nombre de dominio : X'03'
+             o  Direcci¢n IP V6 : X'04'
+          o  DST.ADDR       direccion de destino pedida
+          o  DST.PORT       Puerto de destino pedido
+          o  DATA           datos de usuario
+
+   Cuando un servidor de reenvio de UDP decide cursar un datagrama UDP
+   lo hace silenciosamente, sin notificaci¢n al cliente que lo solicita.
+   Igualmente, puede recoger datagramas que no sean reenviados. Cuando
+   un servidor de reenv¡o de UDP recibe un datagrama de respuesta de un
+   host remoto ha de encapsularlo usado la cabecera anterior, y la
+   encapsulacion dependiente del m‚todo de autentificaci¢n empleado.
+
+   El servidor de reenvio de UDP adquiere del servidor SOCKS la
+   direccion a la que el cliente quiere enviar los datagramas del campo
+   BND.PORT incluido en la respuesta a un UDP ASSOCIATE. DEBE ignorar
+   cualquier datagrama llegado de cualquier direccion IP diferente de la
+   recogida en una asociaci¢n en particular.
+
+   El campo FRAG indica si el datagrama es o no un fragmento de una
+   serie. Si est  implementado el bit de mayor orden indica el fin de la
+   secuencia de fragmentos, mientras que un valor de X'00' indica que es
+   un fragmento aislado. Valores entre 1 y 127 indican la posici¢n en la
+   secuencia de fragmentos. Cada receptor puede tener una COLA DE
+   REENSAMBLAJE y un TEMPORIZADOR DE REENSAMBLAJE asociado con esos
+   fragmentos. La cola de reensamblaje se reicia y los fragmentos
+   asociados se abandonan cuando el temporizador caduca o cuando se
+   recibe un fragmento cuyo campo FRAG tiene un valor inferior al mayor
+   valor procesado en la secuencia de fragmentos. El temporizador de
+   reensamblaje TIENE que ser menor que 5 segundos. Se recomienda que
+   las alicaciones eviten la fragmentacion siempre que sea posible.
+
+   La implementaci¢n de la fragmentaci¢n es opcional; una implementacion
+   que so soporte fragmentaci¢n TIENE que eliminar cualquier fragmento
+   en el que el campo FRAG sea distinto de X'00'.
+
+   El interfaz de programaci¢n orientado a SOCKS UDP TIENE que informar
+   si la disponibilidad de un espacio de almacenamiento temporal de
+   datagramas UDP es menor que el espacio que en ese momento provee el
+   sistema operativo:
+
+          o  si ATYP es X'01' - octetos necesarios por el m‚todo + 10
+          o  si ATYP es X'03' - octetos necesarios por el m‚todo + 262
+          o  si ATYP es X'04' - octetos necesarios por el m‚todo + 20
+
+8.  Consideraciones de seguridad
+
+   Este documento describe el protocolo para la capa de aplicaci¢n para
+   atravesar cortafuagos en redes IP. La seguridad  de esa traves¡a es
+   altamente dependiente del m‚todo de ancapsulaci¢n y autentificaci¢n
+   previsto en una implementaci¢n en particular, y del seleccionado
+   durante la negociaci¢n entre el sevidor y el cliente de SOCKS.
+
+
+   Una cuidadosa consideraci¢n ha de ser hecha por el administrador en
+   la selecci¢n de los m‚todos de autentificaci¢n.
+
+
+9.  Referencias
+
+   [1] Koblas, D., "SOCKS", Proceedings: 1992 Usenix Security Symposium.
+
+Author's Address
+
+       Marcus Leech
+       Bell-Northern Research Ltd
+       P.O. Box 3511, Stn. C,
+       Ottawa, ON
+       CANADA K1Y 4H7
+
+       Phone: (613) 763-9145
+       EMail: mleech@bnr.ca

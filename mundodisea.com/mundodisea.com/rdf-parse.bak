@@ -1,0 +1,104 @@
+<? 
+
+############################################# 
+#  This is rdf-parse.inc, which parses RDF  # 
+#  files and outputs links to their ITEMs   # 
+#                                           # 
+#  Optionally, it can also print HTML for   # 
+#  the IMAGE and CHANNEL bits of the XML.   # 
+#  Just uncomment those lines in endElement # 
+#  and put in appropriate HTML.             # 
+#                                           # 
+#  Usage:                                   # 
+#  parseRDF("filename")                     # 
+#   note: "filename" can be a URL           # 
+#                                           # 
+#  Requires:                                # 
+#  PHP 4 compiled with "--use-xml"          # 
+#                                           # 
+#  Creates:                                 # 
+#  Global variables $_depth, $_tags, and    # 
+#  $_item                                   # 
+############################################# 
+
+                      $_depth = array(); 
+                      $_tags = array( "dummy" ); 
+                      #  "dummy" prevents unecessary subtraction in the $_depth indexes 
+
+                      function initArray() { 
+                          $_item = array ("TITLE"=>"", "LINK"=>"", "DESCRIPTION"=>"", "URL"=>"" ); 
+                      } 
+
+                      function startElement($parser, $name, $attrs) { 
+                      global $_depth, $_tags, $_item; 
+
+                          initArray(); 
+                          $_depth[$parser]++; 
+                              array_push($_tags, $name); 
+                      } 
+
+                      function endElement($parser, $name) { 
+                      global $_depth, $_tags, $_item; 
+                       
+                          array_pop($_tags); 
+                          $_depth[$parser]--; 
+                          switch ($name) { 
+                              case "ITEM": 
+                                  echo "<li><A HREF=\"$_item[LINK]\">$_item[TITLE]</A>\n"; 
+                              break; 
+
+                              case "IMAGE": 
+                                  echo "<A HREF=\"$_item[LINK]\"><IMG SRC=\"$_item[URL]\" ALT=\"$_item[TITLE]\" BORDER=0></A>\n<BR>\n";
+
+                              break; 
+
+                              case "CHANNEL": 
+ //                                 echo "<h3>$_item[TITLE]</h3>\n"; 
+                                  break; 
+                          } 
+                      } 
+
+                      function parseData($parser, $text) { 
+                      global $_depth, $_tags, $_item; 
+
+						  $text = str_replace('!$-a-0*', '&', $text);
+
+                          $crap = preg_replace("/\s/", "", $text); 
+                          # is the data just whitespace? 
+                          # if so, we don't want it! 
+
+                          if ($crap) { 
+                              $text = preg_replace("/^\s+/", "", $text); 
+                              # get rid of leading whitespace 
+                              $_item[$_tags[$_depth[$parser]]] = $text; 
+                          } 
+                      } 
+
+
+                      function parseRDF($file) { 
+                      global $_depth, $_tags, $_item; 
+
+                          $xml_parser = xml_parser_create(); 
+                          initArray(); 
+
+                          #  Set up event handlers 
+                          xml_set_element_handler($xml_parser, "startElement", "endElement"); 
+                          xml_set_character_data_handler($xml_parser, "parseData"); 
+
+                          #  Open up the file 
+                          $fp = fopen($file, "r") or die( "Could not open $file for input"); 
+
+                          while ($data = fread($fp, 4096)) { 
+							  $data = str_replace('&', '!$-a-0*', $data);
+                              if (!xml_parse($xml_parser, $data, feof($fp))) { 
+                                  die(sprintf("XML error: %s at line %d", 
+                                  xml_error_string(xml_get_error_code($xml_parser)), 
+                                  xml_get_current_line_number($xml_parser))); 
+                              } 
+                          } 
+                                      
+                          fclose( $fp ); 
+                          xml_parser_free($xml_parser); 
+                      } 
+
+?> 

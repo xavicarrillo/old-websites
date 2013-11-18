@@ -1,0 +1,1235 @@
+
+
+
+
+
+
+Network Working Group                                          J. Postel
+RFC:  792                                                            ISI
+                                                         Septiembre 1981
+Actualiza:  RFCs 777, 760; IENs 109, 128
+
+               PROTOCOLO DE MENSAJES DE CONTROL INTERNET
+               (ICMP : INTERNET CONTROL MESSAGE PROTOCOL)
+
+                         DARPA INTERNET PROGRAM
+                      ESPECIFICACION DE PROTOCOLO
+
+
+Introducción
+
+   El Protocolo Internet (IP) [1] se utiliza para el servicio de
+   datagramas de "host" a "host" en un sistema de redes interconectadas
+   denominado Catenet [2]. Los dispositivos de conexión de redes se
+   denominan Pasarelas (Gateways). Estas pasarelas se comunican entre
+   ellas con propósito de control mediante el Protocolo Pasarela a
+   Pasarela (Gateway to Gateway Protocol (GGP)) [3,4]. Ocasionalmente,
+   una pasarela o un "host" de destino se comunicará con un "host" de
+   origen para, por ejemplo, informar de un error en el procesamiento de
+   datagramas. El Protocolo de Mensajes de Control Internet (ICMP) se
+   usa para este propósito. ICMP utiliza el soporte básico de IP como si
+   se tratara de un protocolo de nivel superior. Sin embargo, ICMP es
+   realmente una parte integrante de IP, y debe ser implementado por
+   todo módulo IP.
+
+   Los mensajes ICMP son enviados en varias situaciones: por ejemplo,
+   cuando un datagrama no puede alcanzar su destino, cuando una pasarela
+   no dispone de capacidad de almacenamiento temporal para reenviar el
+   datagrama, y cuando la pasarela puede dirigir al "host" para enviar
+   el tráfico por una ruta más corta.
+
+   El Protocolo Internet no está diseñado para ser absolutamente fiable.
+   El propósito de estos mensajes de control no es hacer a IP fiable,
+   sino suministrar información sobre los problemas en el entorno de
+   comunicación. Sigue sin garantizarse que un datagrama sea entregado o
+   que se devuelva un mensaje de control . Existe la posibilidad de que
+   algunos datagramas no sean entregados, sin ningún informe sobre su
+   pérdida. Los protocolos de nivel superior que usen IP deben
+   implementar sus propios procedimientos de fiabilidad en caso de que
+   requieran comunicación fiable.
+
+   Típicamente, los mensajes ICMP informan de errores en el
+   procesamiento de datagramas. Para evitar la generación sin fin de
+   mensajes acerca de mensajes, etc... , no se envían mensajes ICMP
+   acerca de mensajes ICMP.  Además sólo se envían mensajes ICMP acerca
+
+
+
+Postel                                                          [Pág. 1]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+   de errores en el procesamiento del fragmento cero de un datagrama
+   fragmentado. (el fragmento cero es el que tiene el campo posición
+   ("offset") de fragmento igual a cero).
+
+Formatos de Mensaje
+
+   Los mensajes ICMP se envían usando la cabecera IP básica. El primer
+   octeto de la parte de datos del datagrama es el campo de tipo ICMP;
+   el valor de este campo determina el formato del resto de los datos.
+   Los campos etiquetados como "no usado" están reservados para
+   posteriores extensiones y deben ser cero al ser enviados, y los
+   receptores no deberán usar estos campos (excepto para incluirlos en
+   la suma de control). Exceptuando las descripciones de formato
+   individuales en las que se indique lo contrario, los valores de los
+   campos de la cabecera internet son como sigue:
+
+   Version
+
+      4
+
+   IHL ("Internet Header Length")
+
+      Longitud de la cabecera internet en palabras de 32 bits.
+
+   Tipo de Servicio
+
+      0
+
+   Longitud Total
+
+      Longitud de la cabecera y los datos en octetos.
+
+   Identificación, Indicadores ("flags") y Posición De Fragmento
+
+      Usados en fragmentación, ver [1].
+
+   Tiempo de Vida (TTL, "Time To Live")
+
+      Tiempo de vida en segundos; como este valor se decrementa en cada
+      máquina en la cual el datagrama es procesado, debe ser al menos
+      igual o mayor que el número de pasarelas que atravesará.
+
+   Protocolo
+
+      ICMP = 1
+
+   Suma de Control de Cabecera
+
+
+
+
+Postel                                                          [Pág. 2]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+      El complemento a uno de 16 bits de la suma de los complementos a
+      uno de todas las palabras de 16 bits de la cabecera. A la hora de
+      calcular la suma de control, el valor inicial de este campo es
+      cero. Esta suma de control puede ser sustituida en el futuro.
+
+   Dirección de Origen
+
+      La dirección de la pasarela o "host" que crea el mensaje ICMP. Si
+      no se indica lo contrario, puede ser cualquiera de las direcciones
+      de una pasarela.
+
+   Dirección de Destino
+
+      La dirección de la pasarela o "host" al cual se debe enviar el
+      mensaje.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Postel                                                          [Pág. 3]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+Mensaje de Destino Inaccesible ("Destination Unreachable Message")
+
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Tipo      |    Código     |        Suma de Control        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                            sin usar                           |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |  Cabecera Internet + 64 bits de datos del datagrama original  |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   Campos IP:
+
+   Dirección de Destino
+
+      La red y dirección del origen extraídos de los datos del datagrama
+      original.
+
+   Campos ICMP:
+
+   Tipo
+
+      3
+
+   Código
+
+      0 = red inaccesible;
+
+      1 = "host" inaccesible;
+
+      2 = protocolo inaccesible;
+
+      3 = puerto inaccesible;
+
+      4 = se necesitaba fragmentación pero DF estaba activado;
+
+      5 = fallo en la ruta de origen.
+
+   Suma de Control
+
+      El complemento a uno de 16 bits de la suma de los complementos a
+      uno del mensaje ICMP, comenzando por el Tipo ICMP.  A la hora de
+      calcular la suma de control, el valor inicial de este campo es
+      cero. Esta suma de control puede ser sustituida en el futuro.
+
+   Cabecera internet + 64 bits de Datagrama de Datos
+
+
+
+
+Postel                                                          [Pág. 4]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+      La cabecera Internet más los primeros 64 bits de datos del
+      datagrama original.  Este dato lo utiliza el "host" para asociar
+      el mensaje al proceso apropiado. Si un protocolo de nivel superior
+      utiliza números de puerto, se asume que están en los primeros 64
+      bits de datos del datagrama original.
+
+   Descripción
+
+      Si, de acuerdo con la información existente en las tablas de
+      enrutamiento de la pasarela, la red especificada en el campo de
+      destino internet de un datagrama es inaccesible, p. ej., si la
+      distancia a la red es infinita, la pasarela pue de enviar un
+      mensaje de destino inaccesible al "host" de origen del datagrama.
+      Además, en algunas redes, la pasarela puede ser capaz de
+      determinar si el "host" de destino en internet es inalcanzable.
+      Las pasarelas de estas redes pueden enviar al "host" de origen
+      mensajes de destino inaccesible cuando el "host" de destino sea
+      inaccesible.
+
+      Si en el "host" de destino el módulo IP no puede enviar el
+      datagrama debido a que el módulo de protocolo o el puerto del
+      proceso indicado no estén activos, puede enviar un mensaje de
+      destino inaccesible al "host" de origen.
+
+      Otro caso se presenta cuando un datagrama debe ser fragmentado
+      para poder ser enviado a través de una pasarela aún cuando el
+      indicador "Don't Fragment" (No Fragmentar) esté activado. En este
+      caso la pasarela debe desechar el datagrama y puede devolver un
+      mensaje de destino inaccesible.
+
+      Los códigos 0, 1, 4 y 5 pueden ser recibidos desde una pasarela.
+      Los códigos 2 y 3 pueden ser recibidos desde un "host".
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Postel                                                          [Pág. 5]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+Mensaje de Tiempo Superado ("Time Exceeded Message")
+
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Tipo      |    Código     |        Suma de Control        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                            sin usar                           |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |  Cabecera Internet + 64 bits de datos del datagrama original  |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   Campos IP:
+
+   Dirección de Destino
+
+      La red y dirección del origen extraídos de los datos del datagrama
+      original.
+
+   Campos ICMP:
+
+   Tipo
+
+      11
+
+   Código
+
+      0 = tiempo de vida superado en tránsito;
+
+      1 = tiempo de reensamblaje de fragmentos superado.
+
+   Suma de Control
+
+      El complemento a uno de 16 bits de la suma de los complementos a
+      uno del mensaje ICMP, comenzando por el Tipo ICMP.  A la hora de
+      calcular la suma de control, el valor inicial de este campo es
+      cero. Esta suma de control puede ser sustituida en el futuro.
+
+   Cabecera internet + 64 bits de Datagrama de Datos
+
+      La cabecera Internet más los primeros 64 bits de datos del
+      datagrama original.  Este dato lo utiliza el "host" para asociar
+      el mensaje al proceso apropiado. Si un protocolo de nivel superior
+      utiliza números de puerto, se asume que están en los primeros 64
+      bits de datos del datagrama original.
+
+
+   Descripción
+
+
+
+Postel                                                          [Pág. 6]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+      Si la pasarela que está procesando el datagrama detecta que el
+      campo tiempo de vida es cero debe desechar el datagrama. La
+      pasarela puede también notificar el suceso al "host" de origen
+      mediante el mensaje de tiempo de vida superado.
+
+      Si un "host" que trata de reensamblar un datagrama fragmentado no
+      puede hacerlo en el tiempo límite debido a fragmentos perdidos,
+      descartará el datagrama y puede enviar un mensaje de tiempo de
+      reensamblaje superado.
+
+      Si el fragmento cero no está disponible no es necesario enviar
+      ningún mensaje de tiempo superado.
+
+      El código 0 puede ser recibido desde una pasarela. El código 1
+      desde un "host".
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Postel                                                          [Pág. 7]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+Mensaje de Problema de Parámetros ("Parameter Problem Message")
+
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Tipo      |    Código     |        Suma de Control        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |    Puntero    |                 sin usar                      |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |  Cabecera Internet + 64 bits de datos del datagrama original  |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   Campos IP:
+
+   Dirección de Destino
+
+      La red y dirección del origen extraídos de los datos del datagrama
+      original.
+
+   Campos ICMP:
+
+   Tipo
+
+      12
+
+   Código
+
+      0 = el puntero indica el error.
+
+   Suma de Control
+
+      El complemento a uno de 16 bits de la suma de los complementos a
+      uno del mensaje ICMP, comenzando por el Tipo ICMP.  A la hora de
+      calcular la suma de control, el valor inicial de este campo es
+      cero. Esta suma de control puede ser sustituida en el futuro.
+
+   Puntero
+
+      Si código = 0, identifica el octeto donde se detectó el error.
+
+   Cabecera internet + 64 bits de Datagrama de Datos
+
+      La cabecera Internet más los primeros 64 bits de datos del
+      datagrama original.  Este dato lo utiliza el "host" para asociar
+      el mensaje al proceso apropiado. Si un protocolo de nivel superior
+      utiliza números de puerto, se asume que están en los primeros 64
+      bits de datos del datagrama original.
+
+
+
+
+Postel                                                          [Pág. 8]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+   Descripción
+
+      Si la pasarela o "host" que procesa el datagrama encuentra un
+      problema con los parámetros de cabecera, de modo que no puede
+      completar el procesamiento del datagrama, debe desecharlo. Una
+      potencial fuente de este tipo de problema son los argumentos
+      incorrectos en una opción. La pasarela o "host" puede también
+      notificarlo al "host" de origen mediante el mensaje de Problema de
+      Parámetros. Este mensaje sólo se envía si el error provocó que el
+      datagrama fuera desechado.
+
+      El puntero identifica el octeto de la cabecera del datagrama
+      original donde fue detectado el error (puede estar en medio de una
+      opción). Por ejemplo, 1 indica que algo va mal con el Tipo de
+      Servicio y (si hay opciones presentes) 20 indica un error en el
+      código de tipo de la primera opción.
+
+      El código 0 puede ser recibido desde una pasarela o un "host".
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Postel                                                          [Pág. 9]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+Mensaje de Disminución del Tráfico desde el Origen ("Source Quench
+Message")
+
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Tipo      |    Código     |        Suma de Control        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |                            sin usar                           |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |  Cabecera Internet + 64 bits de datos del datagrama original  |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   Campos IP:
+
+   Dirección de Destino
+
+      La red y dirección del origen extraídos de los datos del datagrama
+      original.
+
+   Campos ICMP:
+
+   Tipo
+
+      4
+
+   Código
+
+      0
+
+   Suma de Control
+
+      El complemento a uno de 16 bits de la suma de los complementos a
+      uno del mensaje ICMP, comenzando por el Tipo ICMP.  A la hora de
+      calcular la suma de control, el valor inicial de este campo es
+      cero. Esta suma de control puede ser sustituida en el futuro.
+
+   Cabecera internet + 64 bits de Datagrama de Datos
+
+      La cabecera Internet más los primeros 64 bits de datos del
+      datagrama original.  Este dato lo utiliza el "host" para asociar
+      el mensaje al proceso apropiado. Si un protocolo de nivel superior
+      utiliza números de puerto, se asume que están en los primeros 64
+      bits de datos del datagrama original.
+
+   Descripción
+
+      Una pasarela puede descartar datagramas de internet si no dispone
+
+
+
+Postel                                                         [Pág. 10]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+      del espacio de búfer suficiente para ponerlos en la cola de salida
+      hacia la próxima red de la ruta a la red de destino. Si una
+      pasarela descarta  un datagrama por este motivo, puede enviar un
+      mensaje de Disminución de Tráfico desde el Origen (DTO) al "host"
+      de origen del datagrama. Un "host" de destino puede también enviar
+      un DTO si los datagramas llegan demasiado rápido para ser
+      procesados. El DTO es una petición al "host" para que reduzca el
+      ritmo al que envía tráfico al "host" de destino. Una pasarela
+      puede enviar un DTO por cada mensaje que descarta. Al recibir un
+      DTO, el "host" de origen debe disminuir el ritmo de generación de
+      tráfico al destino especificado hasta que deje de recibir DTOs de
+      la pasarela. Después, el "host" de origen  puede aumentar
+      gradualmente la frecuencia de mensajes al destino hasta que vuelva
+      a recibir DTOs.
+
+      La pasarela o "host" puede enviar el DTO cuando se está acercando
+      al límite de su capacidad, antes que esperar a que ésta se
+      sobrepase. Esto significa que el datagrama de datos que provocó el
+      DTO puede que sea enviado.
+
+      El Código 0 puede ser recibido desde un "host" o una pasarela.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Postel                                                         [Pág. 11]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+Mensaje de Redirección ("Redirect Message")
+
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Tipo      |    Código     |        Suma de Control        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |               Dirección Internet de la Pasarela               |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |  Cabecera Internet + 64 bits de datos del datagrama original  |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   Campos IP:
+
+   Dirección de Destino
+
+      La red y dirección del origen extraídos de los datos del datagrama
+      original.
+
+   Campos ICMP:
+
+   Tipo
+
+      5
+
+   Código
+
+      0 = Redirigir datagramas debido a la Red.
+
+      1 = Redirigir datagramas debido al "host".
+
+      2 = Redirigir datagramas debido al Tipo de Servicio y la Red.
+
+      3 = Redirigir datagramas debido al Tipo de Servicio y el "host".
+
+   Suma de Control
+
+      El complemento a uno de 16 bits de la suma de los complementos a
+      uno del mensaje ICMP, comenzando por el Tipo ICMP.  A la hora de
+      calcular la suma de control, el valor inicial de este campo es
+      cero. Esta suma de control puede ser sustituida en el futuro.
+
+   Dirección Internet de la Pasarela
+
+      Dirección de la Pasarela a la cual se debe dirigir el tráfico
+      destinado a la red especificada en el campo 'red de destino
+      internet' de los datos del datagrama original.
+
+
+
+
+Postel                                                         [Pág. 12]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+   Cabecera internet + 64 bits de Datagrama de Datos
+
+      La cabecera Internet más los primeros 64 bits de datos del
+      datagrama original.  Este dato lo utiliza el "host" para asociar
+      el mensaje al proceso apropiado. Si un protocolo de nivel superior
+      utiliza números de puerto, se asume que están en los primeros 64
+      bits de datos del datagrama original.
+
+   Descripción
+
+      La pasarela envía un mensaje de redirección a un "host" en la
+      siguiente situación: Una pasarela, G1, recibe un datagrama
+      internet de un "host" en una red a la cual la pasarela está
+      conectada. G1 comprueba su tabla de encaminamiento y obtiene la
+      dirección de la siguiente pasarela, G2, en la ruta hacia la red X,
+      destino del datagrama en internet. Si G2 y el "host" identificado
+      por la dirección internet de origen del datagrama están en la
+      misma red, se envía un mensaje de redirección al "host".  Un
+      mensaje de redirección recomienda al "host" que dirija el tráfico
+      destinado a la red X directamente a la pasarela G2, ya que se
+      trata de un camino más corto hacia el destino. La pasarela reenvía
+      el datagrama original a su destino en internet.
+
+      No se envía ningún mensaje de redirección para aquellos datagramas
+      con opciones IP de 'ruta de origen' y la dirección de la pasarela
+      en el campo dirección de destino, incluso si existe una ruta mejor
+      al destino final que la que pasa por la siguiente dirección en la
+      ruta de origen.
+
+      Los códigos 0, 1, 2 y 3 pueden ser recibidos desde una pasarela.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Postel                                                         [Pág. 13]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+Mensaje de Eco o de Respuesta de Eco ("Echo or Echo Reply Message")
+
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Tipo      |    Código     |        Suma de Control        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |        Identificador          |     Número de Secuencia       |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Datos ...
+   +-+-+-+-+-
+
+   Campos IP:
+
+   Direcciones
+
+      La dirección del origen en un mensaje de eco será la del destino
+      del mensaje de respuesta de eco. Para componer un mensaje de
+      respuesta de eco, simplemente se invierten las direcciones de
+      origen y destino, el código de tipo se cambia a 0 y se vuelve a
+      calcular la suma de control.
+
+   Campos ICMP:
+
+   Tipo
+
+      8 para mensaje de eco;
+
+      0 para mensaje de respuesta de eco.
+
+   Código
+
+      0
+
+   Suma de Control
+
+      El complemento a uno de 16 bits de la suma de los complementos a
+      uno del mensaje ICMP, comenzando por el Tipo ICMP. A la hora de
+      calcular la suma de control, el valor inicial de este campo es
+      cero. Si la longitud total es impar, los datos recibidos son
+      completados con un octeto de ceros para calcular la suma de
+      control. Esta suma de control puede ser sustituida en el futuro.
+
+   Identificador
+
+      Si código = 0, un identificador como referencia para emparejar
+      ecos y respuestas, que puede ser cero.
+
+
+
+
+Postel                                                         [Pág. 14]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+   Número de Secuencia
+
+      Si código = 0, un número de secuencia como referencia para
+      emparejar ecos y respuestas, que puede ser cero.
+
+   Descripción
+
+      Los datos recibidos en el mensaje de eco deben ser devueltos en el
+      mensaje de respuesta de eco.
+
+      El identificador y número de secuencia pueden ser usados por el
+      emisor del eco como referencia para emparejar las respuestas con
+      las peticiones de eco. Por ejemplo, el identificador podría usarse
+      como un puerto en TCP o UDP para identificar una sesión, y el
+      número de secuencia se iría incrementando con cada nueva petición
+      de eco enviada.  El "host" que hace eco devuelve estos mismos
+      valores en la respuesta de eco.
+
+      El código 0 puede ser recibido desde un "host" o una pasarela.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Postel                                                         [Pág. 15]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+Mensaje de Solicitud de Marca de Tiempo o de Respuesta de Marca de
+Tiempo ("Timestamp or Timestamp Reply Message")
+
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Tipo      |    Código     |      Suma de Control          |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |         Identificador         |    Número de Secuencia        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Marca de Tiempo de Origen                                 |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Marca de Tiempo de Recepción                              |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Marca de Tiempo de Transmisión                            |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   Campos IP:
+
+   Direcciones
+
+      La dirección del origen en un mensaje de marca de tiempo será la
+      del destinatario del mensaje de respuesta. Para formar un mensaje
+      de respuesta de marca de tiempo, simplemente se intercambian las
+      direcciones de origen y destino, se cambia el código de tipo a 14
+      y se vuelve a calcular la suma de control.
+
+   Campos IP:
+
+   Tipo
+
+      13 para el mensaje de solicitud de marca de tiempo;
+
+      14 para el mensaje de respuesta.
+
+   Código
+
+      0
+
+   Suma de Control
+
+      El complemento a uno de 16 bits de la suma de los complementos a
+      uno del mensaje ICMP, comenzando por el Tipo ICMP. A la hora de
+      calcular la suma de control, el valor inicial de este campo es
+      cero. Esta suma de control puede ser sustituida en el futuro.
+
+   Identificador
+
+
+
+
+Postel                                                         [Pág. 16]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+      Si Código = 0, entonces es un identificador, que puede ser cero,
+      que se usa para hacer corresponder mensajes de marca de tiempo con
+      sus respectivas respuestas.
+
+   Número de Secuencia
+
+      Si Código = 0, entonces es número de secuencia, que puede ser
+      cero, que se usa para hacer corresponder mensajes de marca de
+      tiempo con sus respectivas respuestas
+
+   Descripción
+
+      Los datos recibidos (una marca de tiempo) en el mensaje son
+      devueltos en la respuesta junto con marcas de tiempo adicionales.
+      La marca de tiempo es un entero de 32 bits que indica los
+      milisegundos transcurridos desde la medianoche UT. Un posible uso
+      de estas marcas de tiempo se describe en Mills [5].
+
+      La Marca de Tiempo de Origen es el instante en el cual el mensaje
+      fue manipulado por última vez por el emisor antes de enviarlo. La
+      Marca de Tiempo de Recepción es el instante en el cual el
+      destinatario recibe el mensaje. Por último, la Marca de Tiempo de
+      Transmisión es el momento en el cual el destinatario manipula el
+      mensaje por última vez antes de enviarlo.
+
+      Si la medida del tiempo no está disponible en milisegundos, o bien
+      no puede ser indicada respecto a la medianoche UT, entonces se
+      puede insertar cualquier valor de tiempo en la marca de tiempo,
+      siempre y cuando el bit más significativo de la marca de tiempo
+      sea puesto a uno para indicar que se trata de un valor no
+      estándar.
+
+      El Identificador y Número de Secuencia pueden ser usados por el
+      emisor del eco como ayuda para relacionar las respuestas con sus
+      respectivas peticiones. Por ejemplo, el identificador puede usarse
+      como un puerto en TCP o UDP para identificar una sesión, y el
+      número de secuencia podría ser incrementado con cada petición
+      enviada. El destinatario devuelve estos mismos valores en la
+      respuesta.
+
+      El Código 0 puede ser recibido desde una pasarela o un "host".
+
+
+
+
+
+
+
+
+
+
+Postel                                                         [Pág. 17]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+Mensaje de Solicitud de Información o de Respuesta de Información
+      ("Information Request or Information Reply Message")
+
+    0                   1                   2                   3
+    0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7 8 9 0 1
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |     Tipo      |    Código     |      Suma de Control          |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+   |         Identificador         |    Número de Secuencia        |
+   +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+
+   Campos IP:
+
+   Direcciones
+
+      La dirección del origen en un mensaje de solicitud de información
+      será la dirección del destinatario del mensaje de respuesta. Para
+      formar un mensaje de respuesta, simplemente se intercambian las
+      direcciones de origen y destino, se cambia el código de  tipo a 16
+      y se vuelve a calcular la suma de control.
+
+   Campos IP:
+
+   Tipo
+
+      15 para mensaje de solicitud de información;
+
+      16 para mensaje de respuesta;
+
+   Código
+
+      0
+
+   Suma de control
+
+      El complemento a uno de 16 bits de la suma de los complementos a
+      uno del mensaje ICMP, comenzando por el Tipo ICMP. A la hora de
+      calcular la suma de control, el valor inicial de este campo es
+      cero. Esta suma de control puede ser sustituida en el futuro.
+
+
+   Identificador
+
+      Si Código = 0, entonces es un identificador, que puede ser cero, y
+      se usa para hacer corresponder mensajes de respuesta con sus
+      respectivas solicitudes.
+
+   Número de Secuencia
+
+
+
+Postel                                                         [Pág. 18]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+      Si Código = 0, entonces es número de secuencia, que puede ser
+      cero, y se usa para hacer corresponder mensajes de respuesta con
+      sus respectivas solicitudes.
+
+   Descripción
+
+      Este mensaje puede ser enviado indicando en el campo dirección de
+      origen de la cabecera IP la dirección de red de origen y los
+      campos de dirección de destino puestos a cero (lo cual indica
+      "esta" red).
+
+      Este mensaje puede ser enviado con la parte de red de la dirección
+      de origen de la cabecera IP tomando un valor cero (lo que
+      significa "esta red").
+
+      El módulo IP que ha de responder debería enviar la respuesta con
+      las direcciones completamente especificadas. Este es un mensaje
+      mediante el cual un "host" puede saber el número de la red en la
+      que se encuentra.
+
+      El Identificador y Número de Secuencia puede ser usado por el
+      emisor del eco como ayuda para relacionar las respuestas con sus
+      respectivas peticiones. Por ejemplo, el identificador puede usarse
+      como un puerto en TCP o UDP para identificar una sesión, y el
+      número de secuencia podría ser incrementado con cada petición
+      enviada.  El destinatario devuelve estos mismos valores en la
+      respuesta.
+
+      El Código 0 puede ser recibido desde una pasarela o un "host".
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Postel                                                         [Pág. 19]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+Resumen de los Tipos de Mensajes
+
+
+    0  Eco Respuesta ("Echo Reply")
+
+    3  Destino Inaccesible ("Destination Unreachable")
+
+    4  Disminución del tráfico desde el origen ("Source Quench")
+
+    5  Redirección ("Redirect")
+
+    8  Eco ("Echo")
+
+    11  Tiempo Superado ("Time Exceeded")
+
+    12  Problema de Parámetros ("Parameter Problem")
+
+    13  Marca de Tiempo ("Timestamp")
+
+    14  Respuesta de Marca de Tiempo ("Timestamp Reply")
+
+    15  Solicitud de Información ("Information Request")
+
+    16  Respuesta de Información ("Information Reply")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Postel                                                         [Pág. 20]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+Referencias
+
+
+[1]  Postel, J. (ed.), "Internet Protocol - DARPA Internet Program Pro­
+     tocol Specification," RFC 791, USC/Information Sciences Institute,
+     Septiembre 1981. (N.T. Versión en castellano por P.J. Ponce
+      de León: "Protocolo Internet", Mayo 1999)
+
+
+[2]  Cerf, V., "The Catenet Model for Internetworking," IEN 48, Informa­
+     tion Processing Techniques Office, Defense Advanced Research Pro­
+     jects Agency, Julio 1978.
+
+
+[3]  Strazisar, V., "Gateway Routing:  An Implementation Specification",
+     IEN 30, Bolt Beranek and Newman, April 1979.
+
+
+[4]  Strazisar, V., "How to Build a Gateway", IEN 109, Bolt Beranek and
+     Newman, Agosto 1979.
+
+
+[5]  Mills, D., "DCNET Internet Clock Service," RFC 778, COMSAT Labora­
+     tories, Abril 1981.
+
+Nota del traductor
+
+   Este documento y las traducciones al español mencionadas en las ref­
+   erencias pueden encontrarse en:
+
+      http://lucas.hispalinux.es/htmls/estandares.html
+
+   El proyecto de traducción de RFC al español tiene su web de desar­
+   rollo en:
+
+      http://www.arrakis.es/~pjleon/rfc-es
+
+   Lista RFC-ES:
+      http://www.rediris.es/list/info/rfc-es.html
+
+Traducción al castellano
+
+      Febrero de 2000
+
+      Pedro J. Ponce de León Amador <pjleon@arrakis.es>
+
+   Revisión
+
+
+
+
+Postel                                                         [Pág. 21]
+
+RFC 792         Protocolo de Mensajes de Control Internet       Sep-1981
+
+
+      Abril de 2000
+
+      Domingo Sanchez Ruiz <domingo@QUARK.FIS.UCM.ES>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Postel                                                         [Pág. 22]
+

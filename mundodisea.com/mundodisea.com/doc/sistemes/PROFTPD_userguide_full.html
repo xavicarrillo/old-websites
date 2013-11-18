@@ -1,0 +1,3482 @@
+<HTML
+><HEAD
+><TITLE
+>Proftpd</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.64
+"></HEAD
+><BODY
+CLASS="BOOK"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="BOOK"
+><A
+NAME="PROFTPD"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+><A
+NAME="AEN2"
+>Proftpd</A
+></H1
+><H2
+CLASS="SUBTITLE"
+>A User's Guide</H2
+><H3
+CLASS="AUTHOR"
+><A
+NAME="AEN6"
+>Mark Lowes</A
+></H3
+><P
+CLASS="COPYRIGHT"
+>Copyright &copy; 2001 by Mark Lowes</P
+><DIV
+CLASS="LEGALNOTICE"
+><A
+NAME="AEN17"
+></A
+><P
+></P
+><P
+>Permission to use, copy, modify and distribute the ProFTPD
+      User Guide and its accompanying documentation for any purpose
+      and without fee is hereby granted in perpetuity, provided that
+      the above copyright notice and this paragraph appear in all
+      copies.</P
+><P
+></P
+></DIV
+><DIV
+CLASS="LEGALNOTICE"
+><A
+NAME="AEN19"
+></A
+><P
+></P
+><P
+>The copyright holders make no representation about the
+      suitability of this document for any purpose. It is provided
+      <SPAN
+CLASS="QUOTE"
+>"as is"</SPAN
+> without expressed or implied
+      warranty.</P
+><P
+></P
+></DIV
+><HR></DIV
+><HR><H1
+><A
+NAME="AEN22"
+>Dedication</A
+></H1
+><P
+>This book is dedicated to Lady Kayla.</P
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="#PREFACE"
+>Preface</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="#AEN29"
+>This Book's Audience</A
+></DT
+><DT
+><A
+HREF="#AEN35"
+>Why Read This Book?</A
+></DT
+><DT
+><A
+HREF="#PREF-REQ-COMMENTS"
+>Request for Comments</A
+></DT
+><DT
+><A
+HREF="#AEN50"
+>Organization of This Book</A
+></DT
+><DT
+><A
+HREF="#AEN68"
+>Acknowledgements</A
+></DT
+><DT
+><A
+HREF="#AEN71"
+>Copyrights and Trademarks</A
+></DT
+></DL
+></DD
+><DT
+>I. <A
+HREF="#PROFTPD-INTRO"
+>Introduction</A
+></DT
+><DD
+><DL
+><DT
+>1. <A
+HREF="#CH-BACKGROUND"
+>Background</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="#AEN83"
+>What is Proftpd</A
+></DT
+><DT
+><A
+HREF="#AEN86"
+>Who codes/maintains Proftpd?</A
+></DT
+><DT
+><A
+HREF="#AEN90"
+>Website &#38; documenation</A
+></DT
+><DT
+><A
+HREF="#AEN94"
+>Bug reporting?</A
+></DT
+><DT
+><A
+HREF="#AEN97"
+>Availability</A
+></DT
+><DT
+><A
+HREF="#AEN112"
+>Mailing lists</A
+></DT
+><DT
+><A
+HREF="#AEN130"
+>Copyright Issues</A
+></DT
+><DT
+><A
+HREF="#AEN133"
+>The FTP protocol</A
+></DT
+></DL
+></DD
+><DT
+>2. <A
+HREF="#INSTALL"
+>Compilation and installing</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="#AEN159"
+>Architecture</A
+></DT
+><DT
+><A
+HREF="#AEN162"
+>Installing packaged versions</A
+></DT
+><DT
+><A
+HREF="#AEN176"
+>Compiling from source</A
+></DT
+><DT
+><A
+HREF="#AEN195"
+>Compatibility Issues</A
+></DT
+><DT
+><A
+HREF="#AEN198"
+>linux</A
+></DT
+><DT
+><A
+HREF="#AEN204"
+>CVS</A
+></DT
+><DT
+><A
+HREF="#AEN215"
+>How do I get debug output</A
+></DT
+><DT
+><A
+HREF="#AEN219"
+>Patches</A
+></DT
+><DT
+><A
+HREF="#AEN223"
+>Using non-default modules</A
+></DT
+><DT
+><A
+HREF="#AEN226"
+>Plans for next version (1.3.x)</A
+></DT
+><DT
+><A
+HREF="#AEN230"
+>Longer term development</A
+></DT
+><DT
+><A
+HREF="#AEN233"
+>NT Support</A
+></DT
+><DT
+><A
+HREF="#AEN236"
+>New features/modules</A
+></DT
+></DL
+></DD
+><DT
+>3. <A
+HREF="#SECURITY"
+>Security Issues</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="#AEN247"
+>Securing ftp servers</A
+></DT
+><DT
+><A
+HREF="#AEN269"
+>Daemon security</A
+></DT
+><DT
+><A
+HREF="#AEN274"
+>Password Issues</A
+></DT
+><DT
+><A
+HREF="#AEN293"
+>Server attacks</A
+></DT
+><DT
+><A
+HREF="#AEN310"
+>Firewall issues</A
+></DT
+><DT
+><A
+HREF="#AEN317"
+>Locking users into a directory (chroot)</A
+></DT
+><DT
+><A
+HREF="#AEN356"
+>Security by obscurity and warnings</A
+></DT
+><DT
+><A
+HREF="#AEN376"
+>How can I control what commands the server accepts?</A
+></DT
+><DT
+><A
+HREF="#AEN379"
+>Secure Sockets Layer (SSL)</A
+></DT
+></DL
+></DD
+><DT
+>4. <A
+HREF="#AEN383"
+>Day to day issues</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="#AEN385"
+>Starting and stopping your server</A
+></DT
+><DT
+><A
+HREF="#AEN388"
+>Timezone issues</A
+></DT
+><DT
+><A
+HREF="#AEN395"
+>Log management</A
+></DT
+><DT
+><A
+HREF="#AEN464"
+>FXP</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>II. <A
+HREF="#PROFTPD-CONFIG"
+>Configuration</A
+></DT
+><DD
+><DL
+><DT
+>5. <A
+HREF="#CONFIG-GETTINGREADY"
+>Getting ready</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="#AEN475"
+>What do you want from your server?</A
+></DT
+><DT
+><A
+HREF="#AEN478"
+>Config file</A
+></DT
+><DT
+><A
+HREF="#AEN481"
+>Scoreboard file</A
+></DT
+><DT
+><A
+HREF="#AEN484"
+>Standalone or inetd?</A
+></DT
+><DT
+><A
+HREF="#AEN487"
+>Contexts</A
+></DT
+></DL
+></DD
+><DT
+>6. <A
+HREF="#GENERIC"
+>Generic issues</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="#AEN522"
+>File permissions and UMASK</A
+></DT
+><DT
+><A
+HREF="#AEN528"
+>proftpd.umask</A
+></DT
+><DT
+><A
+HREF="#AEN554"
+>Setting the Umask</A
+></DT
+></DL
+></DD
+><DT
+>7. <A
+HREF="#VIRTHOST"
+>Virtual Hosting</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="#AEN560"
+>What is virtual hosting</A
+></DT
+><DT
+><A
+HREF="#AEN563"
+>IP address space considerations</A
+></DT
+><DT
+><A
+HREF="#AEN573"
+>VirtualHost directive</A
+></DT
+><DT
+><A
+HREF="#AEN576"
+>Setting up a basic virtual host</A
+></DT
+><DT
+><A
+HREF="#AEN586"
+>I only want to allow anonymous access to a virtual server.</A
+></DT
+><DT
+><A
+HREF="#AEN590"
+>vhost notes</A
+></DT
+><DT
+><A
+HREF="#AEN596"
+>DNS issues</A
+></DT
+><DT
+><A
+HREF="#AEN604"
+>Reloading the config</A
+></DT
+></DL
+></DD
+><DT
+>8. <A
+HREF="#AUTH"
+>Authentication</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="#AEN631"
+>Password files</A
+></DT
+><DT
+><A
+HREF="#AEN635"
+>Pluggable Authentication Modules (PAM)</A
+></DT
+><DT
+><A
+HREF="#AEN683"
+>SQL</A
+></DT
+><DT
+><A
+HREF="#AEN688"
+>UserPassword</A
+></DT
+><DT
+><A
+HREF="#AEN695"
+>Lightweight Directory Access Protocol (LDAP)</A
+></DT
+><DT
+><A
+HREF="#AEN746"
+>Normal users can't login, only anon.</A
+></DT
+><DT
+><A
+HREF="#AEN749"
+>Other authentication methods</A
+></DT
+></DL
+></DD
+><DT
+>9. <A
+HREF="#ANON-SERVER"
+>Anonymous Servers</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="#AEN771"
+>How do I create individual anonymous FTP sites for my users?</A
+></DT
+><DT
+><A
+HREF="#AEN777"
+>I want to support normal login and Anonymous under a
+particular user</A
+></DT
+><DT
+><A
+HREF="#AEN782"
+>I only want to allow anonymous access to a virtual server.</A
+></DT
+><DT
+><A
+HREF="#AEN785"
+>Why doesn't Anonymous ftp work</A
+></DT
+><DT
+><A
+HREF="#AEN791"
+>How do I add another anonymous login or guest account?</A
+></DT
+><DT
+><A
+HREF="#AEN798"
+>How do I provide a secure upload facility?</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>III. <A
+HREF="#PART-ADVANCEDCONFIG"
+>Advanced configuration</A
+></DT
+><DD
+><DL
+><DT
+>10. <A
+HREF="#AEN805"
+>Access controls</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="#AEN808"
+>Access limitation</A
+></DT
+><DT
+><A
+HREF="#AEN833"
+>Bandwidth control</A
+></DT
+><DT
+><A
+HREF="#AEN867"
+>Quota controls</A
+></DT
+><DT
+><A
+HREF="#AEN879"
+>Access controls</A
+></DT
+><DT
+><A
+HREF="#AEN900"
+>Limit</A
+></DT
+><DT
+><A
+HREF="#AEN903"
+>mod_ratio</A
+></DT
+><DT
+><A
+HREF="#AEN906"
+>Controlling permission changes</A
+></DT
+><DT
+><A
+HREF="#AEN909"
+>.ftpaccess files</A
+></DT
+></DL
+></DD
+><DT
+>11. <A
+HREF="#TROUBLESHOOT"
+>Troubleshooting</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="#AEN919"
+>ProFTPD doesn't seem to work.</A
+></DT
+><DT
+><A
+HREF="#AEN922"
+>Common Problems</A
+></DT
+></DL
+></DD
+><DT
+>12. <A
+HREF="#COMPLEX"
+>More complex Configuration Issues</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="#AEN1019"
+>How can I stop my users from using their space as a warez repository</A
+></DT
+><DT
+><A
+HREF="#AEN1022"
+>Can I rotate files out of an upload directory after upload?</A
+></DT
+><DT
+><A
+HREF="#AEN1025"
+>How can I hide a directory from anonymous clients.</A
+></DT
+><DT
+><A
+HREF="#AEN1029"
+>File/Directory hiding isn't working for me!</A
+></DT
+><DT
+><A
+HREF="#AEN1032"
+>I want to prevent users from accessing a hidden directory</A
+></DT
+><DT
+><A
+HREF="#AEN1035"
+>How do I setup a virtual FTP server?</A
+></DT
+><DT
+><A
+HREF="#AEN1039"
+>How does &lt;Limit LOGIN&gt; work, and where should I use it?</A
+></DT
+><DT
+><A
+HREF="#AEN1045"
+>How can I limit users to a particular directory tree?</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>IV. <A
+HREF="#WORKINGSTUFF"
+>WorkShop</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="#AEN1059"
+></A
+></DT
+><DT
+>13. <A
+HREF="#AEN1061"
+>Cleaned sections</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="#AEN1063"
+>Cleaned - part A</A
+></DT
+><DT
+><A
+HREF="#AEN1081"
+>proftpd.chroot</A
+></DT
+><DT
+><A
+HREF="#AEN1143"
+>proftpd.filter</A
+></DT
+></DL
+></DD
+><DT
+>14. <A
+HREF="#AEN1146"
+>Initial ponderings from the list</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="#AEN1148"
+>stuff_a</A
+></DT
+><DT
+><A
+HREF="#AEN1179"
+>sql notes</A
+></DT
+><DT
+><A
+HREF="#AEN1356"
+>proftpd.binding</A
+></DT
+><DT
+><A
+HREF="#AEN1360"
+>proftpd.auth</A
+></DT
+><DT
+><A
+HREF="#AEN1410"
+>proftpd.chmod</A
+></DT
+><DT
+><A
+HREF="#AEN1414"
+>proftpd.ls</A
+></DT
+><DT
+><A
+HREF="#AEN1439"
+>proftpd.pasv</A
+></DT
+><DT
+><A
+HREF="#AEN1459"
+>proftpd.sql</A
+></DT
+><DT
+><A
+HREF="#AEN1485"
+>proftpd.timeouts</A
+></DT
+></DL
+></DD
+><DT
+>15. <A
+HREF="#CH-COMPAT"
+>Compatibility and Integration</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="#AEN1491"
+>SQL</A
+></DT
+><DT
+><A
+HREF="#AEN1560"
+>Hints</A
+></DT
+><DT
+><A
+HREF="#AEN1578"
+>SSH</A
+></DT
+><DT
+><A
+HREF="#AEN1581"
+>sendfile()</A
+></DT
+><DT
+><A
+HREF="#AEN1595"
+>Regular expressions</A
+></DT
+></DL
+></DD
+><DT
+>16. <A
+HREF="#COOKBOOK"
+>Cookbook</A
+></DT
+></DL
+></DD
+><DT
+>V. <A
+HREF="#PROFTPD-REFERENCE"
+>References</A
+></DT
+><DD
+><DL
+><DT
+>I. <A
+HREF="#AEN1603"
+>Configuration Directives</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="#ACCESSDENYMSG"
+>&#13;AccessDenyMsg</A
+> &#8212; Customise the response on failed authentication</DT
+><DT
+><A
+HREF="#ACCESSGRANTMSG"
+>&#13;AccessGrantMsg</A
+> &#8212; Customise the response on successful authentication</DT
+><DT
+><A
+HREF="#ALLOW"
+>&#13;Allow</A
+> &#8212; Access control directive</DT
+><DT
+><A
+HREF="#ALLOWALL"
+>&#13;AllowAll</A
+> &#8212; Allow all clients </DT
+><DT
+><A
+HREF="#ALLOWCHMOD"
+>&#13;AllowChmod</A
+> &#8212; Enable the CHMOD command (deprecated)</DT
+><DT
+><A
+HREF="#ALLOWFILTER"
+>&#13;AllowFilter</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#ALLOWFOREIGNADDRESS"
+>&#13;AllowForeignAddress</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#ALLOWGROUP"
+>&#13;AllowGroup</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#ALLOW"
+>&#13;Allow</A
+> &#8212; Permit logging to symlinked files</DT
+><DT
+><A
+HREF="#ALLOWOVERWRITE"
+>&#13;AllowOverwrite</A
+> &#8212; Enable files to be overwritten</DT
+><DT
+><A
+HREF="#ALLOWRETRIEVERESTART"
+>&#13;AllowRetrieveRestart</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#ALLOWSTORERESTART"
+>&#13;AllowStoreRestart</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#ALLOWUSER"
+>&#13;AllowUser</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#ANONRATIO"
+>&#13;AnonRatio</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#ANONREQUIREPASSWORD"
+>&#13;AnonRequirePassword</A
+> &#8212; Make anonymous users supply a valid password</DT
+><DT
+><A
+HREF="#ANONYMOUS"
+>&#13;Anonymous</A
+> &#8212; Define an anonymous server</DT
+><DT
+><A
+HREF="#ANONYMOUSGROUP"
+>&#13;AnonymousGroup</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#AUTHALIASONLY"
+>&#13;AuthAliasOnly</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#AUTHGROUPFILE"
+>&#13;AuthGroupFile</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#AUTHPAM"
+>&#13;AuthPAM</A
+> &#8212; Enable/Disable PAM authentication</DT
+><DT
+><A
+HREF="#AUTHPAMAUTHORITATIVE"
+>&#13;AuthPAMAuthoritative</A
+> &#8212; Set whether PAM is the authoritive authentication scheme</DT
+><DT
+><A
+HREF="#AUTHPAMCONFIG"
+>&#13;AuthPAMConfig</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#AUTHUSERFILE"
+>&#13;AuthUserFile</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#AUTHUSINGALIAS"
+>&#13;AuthUsingAlias</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#BIND"
+>&#13;Bind</A
+> &#8212; Bind the server or Virtualhost to a specific IP address</DT
+><DT
+><A
+HREF="#BYTERATIOERRMSG"
+>&#13;ByteRatioErrMsg</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#CDPATH"
+>&#13;CDPath</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#CLASS"
+>&#13;Class</A
+> &#8212; Definition statements for class based tracking</DT
+><DT
+><A
+HREF="#CLASSES"
+>&#13;Classes</A
+> &#8212; Enable Class based connection tracking</DT
+><DT
+><A
+HREF="#COMMANDBUFFERSIZE"
+>&#13;CommandBufferSize</A
+> &#8212; Limit the maximum command length</DT
+><DT
+><A
+HREF="#CWDRATIOMSG"
+>&#13;CwdRatioMsg</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#DEFAULTCHDIR"
+>&#13;DefaultChdir</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#DEFAULTQUOTA"
+>&#13;DefaultQuota</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#DEFAULTROOT"
+>&#13;DefaultRoot</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#DEFAULTSERVER"
+>&#13;DefaultServer</A
+> &#8212; Set the default server</DT
+><DT
+><A
+HREF="#DEFAULTTRANSFERMODE"
+>&#13;DefaultTransferMode</A
+> &#8212; Set the default method of data transfer</DT
+><DT
+><A
+HREF="#DEFERWELCOME"
+>&#13;DeferWelcome</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#DELETEABORTEDSTORES"
+>&#13;DeleteAbortedStores</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#DENY"
+>&#13;Deny</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#DENYALL"
+>&#13;DenyAll</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#DENYFILTER"
+>&#13;DenyFilter</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#DENYGROUP"
+>&#13;DenyGroup</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#DENYUSER"
+>&#13;DenyUser</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#DIRFAKEGROUP"
+>&#13;DirFakeGroup</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#DIRFAKEMODE"
+>&#13;DirFakeMode</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#DIRFAKEUSER"
+>&#13;DirFakeUser</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#DIRECTORY"
+>&#13;Directory</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#DISPLAYCONNECT"
+>&#13;DisplayConnect</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#DISPLAYFIRSTCHDIR"
+>&#13;DisplayFirstChdir</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#DISPLAYGOAWAY"
+>&#13;DisplayGoAway</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#DISPLAYLOGIN"
+>&#13;DisplayLogin</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#DISPLAYQUIT"
+>&#13;DisplayQuit</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#DISPLAYREADME"
+>&#13;DisplayReadme</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#EXTENDEDLOG"
+>&#13;ExtendedLog</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#FILERATIOERRMSG"
+>&#13;FileRatioErrMsg</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#FOOBARDIRECTIVE"
+>&#13;FooBarDirective</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#GLOBAL"
+>&#13;Global</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#GROUP"
+>&#13;Group</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#GROUPOWNER"
+>&#13;GroupOwner</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#GROUPPASSWORD"
+>&#13;GroupPassword</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#GROUPRATIO"
+>&#13;GroupRatio</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#HIDDENSTOR"
+>&#13;HiddenStor</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#HIDEGROUP"
+>&#13;HideGroup</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#HIDENOACCESS"
+>&#13;HideNoAccess</A
+> &#8212; Block the listing of directory entries to which the user
+has no access permissions</DT
+><DT
+><A
+HREF="#HIDEUSER"
+>&#13;HideUser</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#HOSTRATIO"
+>&#13;HostRatio</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#IDENTLOOKUPS"
+>&#13;IdentLookups</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#IGNOREHIDDEN"
+>&#13;IgnoreHidden</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#INCLUDE"
+>&#13;Include</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#LDAPAUTHBINDS"
+>&#13;			LDAPAuthBinds</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#LDAPDNINFO"
+>&#13;			LDAPDNInfo</A
+> &#8212; Set DN information to be used for initial bind</DT
+><DT
+><A
+HREF="#LDAPDEFAULTAUTHSCHEME"
+>&#13;			LDAPDefaultAuthScheme</A
+> &#8212; 			Set the authentication scheme/hash that is used when no leading
+			{hashname} is present.
+		</DT
+><DT
+><A
+HREF="#LDAPDEFAULTGID"
+>&#13;			LDAPDefaultGID</A
+> &#8212; 			Set the default GID to be assigned to users when no uidNumber
+			attribute is found.
+		</DT
+><DT
+><A
+HREF="#LDAPDEFAULTUID"
+>&#13;			LDAPDefaultUID</A
+> &#8212; 			Set the default GID to be assigned to users when no uidNumber
+			attribute is found.
+		</DT
+><DT
+><A
+HREF="#LDAPDOAUTH"
+>&#13;			LDAPDoAuth</A
+> &#8212; Enable LDAP authentication</DT
+><DT
+><A
+HREF="#LDAPDOGIDLOOKUPS"
+>&#13;			LDAPDoGIDLookups</A
+> &#8212; 			Enable LDAP lookups for user group membership and GIDs in
+			directory listings
+		</DT
+><DT
+><A
+HREF="#LDAPDOUIDLOOKUPS"
+>&#13;			LDAPDoUIDLookups</A
+> &#8212; 			Enable LDAP lookups for UIDs in directory listings
+		</DT
+><DT
+><A
+HREF="#LDAPFORCEDEFAULTGID"
+>&#13;			LDAPForceDefaultGID</A
+> &#8212; Force all LDAP-authenticated users to use the same GID.</DT
+><DT
+><A
+HREF="#LDAPFORCEDEFAULTUID"
+>&#13;			LDAPForceDefaultUID</A
+> &#8212; Force all LDAP-authenticated users to use the same UID.</DT
+><DT
+><A
+HREF="#LDAPHOMEDIRONDEMAND"
+>&#13;			LDAPHomedirOnDemand</A
+> &#8212; 			Enable the creation of user home directories on demand
+		</DT
+><DT
+><A
+HREF="#LDAPHOMEDIRONDEMANDPREFIX"
+>&#13;			LDAPHomedirOnDemandPrefix</A
+> &#8212; 			Enable the creation of user home directories on demand
+		</DT
+><DT
+><A
+HREF="#LDAPHOMEDIRONDEMANDSUFFIX"
+>&#13;			LDAPHomedirOnDemandSuffix</A
+> &#8212; 			Specify an additional directory to be created inside a user's
+			home directory on demand.
+		</DT
+><DT
+><A
+HREF="#LDAPNEGATIVECACHE"
+>&#13;			LDAPNegativeCache</A
+> &#8212; Enable negative caching for LDAP lookups</DT
+><DT
+><A
+HREF="#LDAPQUERYTIMEOUT"
+>&#13;			LDAPQueryTimeout</A
+> &#8212; Set a timeout for LDAP queries</DT
+><DT
+><A
+HREF="#LDAPSEARCHSCOPE"
+>&#13;			LDAPSearchScope</A
+> &#8212; Specify the search scope used in LDAP queries</DT
+><DT
+><A
+HREF="#LDAPSERVER"
+>&#13;			LDAPServer</A
+> &#8212; Specify the LDAP server to use for lookups</DT
+><DT
+><A
+HREF="#LDAPUSETLS"
+>&#13;			LDAPUseTLS</A
+> &#8212; Enable TLS/SSL connections to the LDAP server.</DT
+><DT
+><A
+HREF="#LEECHRATIOMSG"
+>&#13;LeechRatioMsg</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#LIMIT"
+>&#13;Limit</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#LOGFORMAT"
+>&#13;LogFormat</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#LOGINPASSWORDPROMPT"
+>&#13;LoginPasswordPrompt</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#LSDEFAULTOPTIONS"
+>&#13;LsDefaultOptions</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#MASQUERADEADDRESS"
+>&#13;MasqueradeAddress</A
+> &#8212; Configure the server address presented to clients</DT
+><DT
+><A
+HREF="#MAXCLIENTS"
+>&#13;MaxClients</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#MAXCLIENTSPERHOST"
+>&#13;MaxClientsPerHost</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#MAXINSTANCES"
+>&#13;MaxInstances</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#MAXLOGINATTEMPTS"
+>&#13;MaxLoginAttempts</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#MULTILINERFC2228"
+>&#13;MultilineRFC2228</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#MYSQLINFO"
+>&#13;MySQLInfo</A
+> &#8212; Configures the MySQL driver</DT
+><DT
+><A
+HREF="#ORDER"
+>&#13;Order</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#PASSIVEPORTS"
+>&#13;PassivePorts</A
+> &#8212; Specify the ftp-data port range to be used</DT
+><DT
+><A
+HREF="#PATHALLOWFILTER"
+>&#13;PathAllowFilter</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#PATHDENYFILTER"
+>&#13;PathDenyFilter</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#PERSISTENTPASSWD"
+>&#13;PersistentPasswd</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#PIDFILE"
+>&#13;PidFile</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#PORT"
+>&#13;Port</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#POSTGRESINFO"
+>&#13;PostgresInfo</A
+> &#8212; Postgres backend configuration (Deprecated)</DT
+><DT
+><A
+HREF="#POSTGRESPORT"
+>&#13;PostgresPort</A
+> &#8212; Sets the port postgres is listening on</DT
+><DT
+><A
+HREF="#QUOTABLOCKNAME"
+>&#13;QuotaBlockName</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#QUOTABLOCKSIZE"
+>&#13;QuotaBlockSize</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#QUOTACALC"
+>&#13;QuotaCalc</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#QUOTAEXEMPT"
+>&#13;QuotaExempt</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#QUOTATYPE"
+>&#13;QuotaType</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#QUOTAS"
+>&#13;Quotas</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#RLIMITCPU"
+>&#13;RLimitCPU</A
+> &#8212; Configure the maximum CPU time in seconds used by a process</DT
+><DT
+><A
+HREF="#RLIMITMEMORY"
+>&#13;RLimitMemory</A
+> &#8212; Configure the maximum memory in bytes used by a process</DT
+><DT
+><A
+HREF="#RLIMITOPENFILES"
+>&#13;RLimitOpenFiles</A
+> &#8212; Configure the maximum number of open files used by a process</DT
+><DT
+><A
+HREF="#RATEREADBPS"
+>&#13;RateReadBPS</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#RATEREADFREEBYTES"
+>&#13;RateReadFreeBytes</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#RATEREADHARDBPS"
+>&#13;RateReadHardBPS</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#RATEWRITEBPS"
+>&#13;RateWriteBPS</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#RATEWRITEFREEBYTES"
+>&#13;RateWriteFreeBytes</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#RATEWRITEHARDBPS"
+>&#13;RateWriteHardBPS</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#RATIOFILE"
+>&#13;RatioFile</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#RATIOTEMPFILE"
+>&#13;RatioTempFile</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#RATIOS"
+>&#13;Ratios</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#REQUIREVALIDSHELL"
+>&#13;RequireValidShell</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#ROOTLOGIN"
+>&#13;RootLogin</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SQLAUTHTYPES"
+>&#13;SQLAuthTypes</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SQLCONNECTINFO"
+>&#13;SQLConnectInfo</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SQLDEFAULTGID"
+>&#13;SQLDefaultGID</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SQLDEFAULTUID"
+>&#13;SQLDefaultUID</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SQLDOAUTH"
+>&#13;SQLDoAuth</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SQLDOGROUPAUTH"
+>&#13;SQLDoGroupAuth</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SQLEMPTYPASSWORDS"
+>&#13;SQLEmptyPasswords</A
+> &#8212; Allow zero length passwords (DEPRECATED)</DT
+><DT
+><A
+HREF="#SQLENCRYPTEDPASSWORDS"
+>&#13;SQLEncryptedPasswords</A
+> &#8212; Assume SQL passwords are encrypted (DEPRECATED)</DT
+><DT
+><A
+HREF="#SQLGROUPGIDFIELD"
+>&#13;SQLGroupGIDField</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SQLGROUPMEMBERSFIELD"
+>&#13;SQLGroupMembersField</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SQLGROUPTABLE"
+>&#13;SQLGroupTable</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SQLGROUPNAMEFIELD"
+>&#13;SQLGroupnameField</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SQLHOMEDIRONDEMAND"
+>&#13;SQLHomedirOnDemand</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SQLMINID"
+>&#13;SQLMinID</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SQLSSLHASHEDPASSWORDS"
+>&#13;SQLSSLHashedPasswords</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SQLSCRAMBLEDPASSWORDS"
+>&#13;SQLScrambledPasswords</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SQLSHELLFIELD"
+>&#13;SQLShellField</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SQLWHERECLAUSE"
+>&#13;SQLWhereClause</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SAVERATIOS"
+>&#13;SaveRatios</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SCOREBOARDPATH"
+>&#13;ScoreboardPath</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SERVERADMIN"
+>&#13;ServerAdmin</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SERVERIDENT"
+>&#13;ServerIdent</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SERVERNAME"
+>&#13;ServerName</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SERVERTYPE"
+>&#13;ServerType</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SHOWDOTFILES"
+>&#13;ShowDotFiles</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SHOWSYMLINKS"
+>&#13;ShowSymlinks</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SOCKETBINDTIGHT"
+>&#13;SocketBindTight</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SYSLOGFACILITY"
+>&#13;SyslogFacility</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#SYSLOGLEVEL"
+>&#13;SyslogLevel</A
+> &#8212; Set the verbosity level of system logging</DT
+><DT
+><A
+HREF="#SYSTEMLOG"
+>&#13;SystemLog</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#TIMEOUTIDLE"
+>&#13;TimeoutIdle</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#TIMEOUTLOGIN"
+>&#13;TimeoutLogin</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#TIMEOUTNOTRANSFER"
+>&#13;TimeoutNoTransfer</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#TIMEOUTSTALLED"
+>&#13;TimeoutStalled</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#TIMESGMT"
+>&#13;TimesGMT</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#TRANSFERLOG"
+>&#13;TransferLog</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#UMASK"
+>&#13;Umask</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#USEFTPUSERS"
+>&#13;UseFtpUsers</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#USEREVERSEDNS"
+>&#13;UseReverseDNS</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#USER"
+>&#13;User</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#USERALIAS"
+>&#13;UserAlias</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#USERDIRROOT"
+>&#13;UserDirRoot</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#USEROWNER"
+>&#13;UserOwner</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#USERPASSWORD"
+>&#13;UserPassword</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#USERRATIO"
+>&#13;UserRatio</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#VIRTUALHOST"
+>&#13;VirtualHost</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#WTMPLOG"
+>&#13;WtmpLog</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#TCPBACKLOG"
+>&#13;tcpBackLog</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#TCPNODELAY"
+>&#13;tcpNoDelay</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#TCPRECEIVEWINDOW"
+>&#13;tcpReceiveWindow</A
+> &#8212; FIXME FIXME</DT
+><DT
+><A
+HREF="#TCPSENDWINDOW"
+>&#13;tcpSendWindow</A
+> &#8212; FIXME FIXME</DT
+></DL
+></DD
+><DT
+>II. <A
+HREF="#AEN9533"
+>Configuration by Module</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="#MOD-AUTH"
+>&#13;mod_auth</A
+> &#8212; Authentication module</DT
+><DT
+><A
+HREF="#MOD-CODE"
+>&#13;mod_code</A
+> &#8212; FIX ME FIX ME</DT
+><DT
+><A
+HREF="#MOD-CORE"
+>&#13;mod_core</A
+> &#8212; Core module</DT
+><DT
+><A
+HREF="#MOD-LOG"
+>&#13;mod_log</A
+> &#8212; FIX ME FIX ME</DT
+><DT
+><A
+HREF="#MOD-LS"
+>&#13;mod_ls</A
+> &#8212; FIX ME FIX ME</DT
+><DT
+><A
+HREF="#MOD-PAM"
+>&#13;mod_pam</A
+> &#8212; FIX ME FIX ME</DT
+><DT
+><A
+HREF="#MOD-QUOTA"
+>&#13;mod_quota</A
+> &#8212; FIX ME FIX ME</DT
+><DT
+><A
+HREF="#MOD-RATIO"
+>&#13;mod_ratio</A
+> &#8212; FIX ME FIX ME</DT
+><DT
+><A
+HREF="#MOD-README"
+>&#13;mod_readme</A
+> &#8212; FIX ME FIX ME</DT
+><DT
+><A
+HREF="#MOD-SAMPLE"
+>&#13;mod_sample</A
+> &#8212; Example module</DT
+><DT
+><A
+HREF="#MOD-SITE"
+>&#13;mod_site</A
+> &#8212; FIX ME FIX ME</DT
+><DT
+><A
+HREF="#MOD-SQL"
+>&#13;mod_sqlpw</A
+> &#8212; SQL support module</DT
+><DT
+><A
+HREF="#MOD-UNIXPW"
+>&#13;mod_unixpw</A
+> &#8212; FIX ME FIX ME</DT
+><DT
+><A
+HREF="#MOD-XFER"
+>&#13;mod_xfer</A
+> &#8212; FIX ME FIX ME</DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>VI. <A
+HREF="#PROFTPD-APP"
+>Appendices</A
+></DT
+><DD
+><DL
+><DT
+>A. <A
+HREF="#APP-RESOURCES"
+>Resources</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="#AEN9949"
+>Latest Versions of DocBook</A
+></DT
+><DT
+><A
+HREF="#AEN9957"
+>Resources for Resources</A
+></DT
+><DT
+><A
+HREF="#AEN10003"
+>Introductory Material on the Web</A
+></DT
+><DT
+><A
+HREF="#AEN10022"
+>References and Technical Noteson the Web</A
+></DT
+><DT
+><A
+HREF="#AEN10068"
+>Internet <SPAN
+CLASS="ACRONYM"
+>RFC</SPAN
+>s</A
+></DT
+><DT
+><A
+HREF="#AEN10089"
+>Specifications</A
+></DT
+><DT
+><A
+HREF="#AEN10126"
+>Books and Printed Resources</A
+></DT
+><DT
+><A
+HREF="#AEN10252"
+><SPAN
+CLASS="ACRONYM"
+>SGML</SPAN
+>/<SPAN
+CLASS="ACRONYM"
+>XML</SPAN
+> Tools</A
+></DT
+></DL
+></DD
+><DT
+>B. <A
+HREF="#APP-CONFIG"
+>Cookbook examples</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="#AEN10283"
+>Index</A
+></DT
+><DT
+><A
+HREF="#AEN10285"
+>Colophon</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="LOT"
+><DL
+CLASS="LOT"
+><DT
+><B
+>List of Examples</B
+></DT
+><DT
+>2-1. <A
+HREF="#AEN192"
+>Configuring for additional modules</A
+></DT
+><DT
+>3-1. <A
+HREF="#AEN283"
+>Other approaches</A
+></DT
+><DT
+>4-1. <A
+HREF="#AEN401"
+>logrotate configuration</A
+></DT
+><DT
+>4-2. <A
+HREF="#AEN404"
+>logrotate configuration</A
+></DT
+><DT
+>4-3. <A
+HREF="#AEN407"
+>logrotate configuration</A
+></DT
+><DT
+>4-4. <A
+HREF="#AEN468"
+>Configuration fragment</A
+></DT
+><DT
+>8-1. <A
+HREF="#AEN655"
+>Generic Linux PAM config</A
+></DT
+><DT
+>8-2. <A
+HREF="#AEN660"
+>Redhat 6.* configuration</A
+></DT
+><DT
+>8-3. <A
+HREF="#AEN666"
+>SuSe configuration</A
+></DT
+><DT
+>8-4. <A
+HREF="#AEN672"
+>FreeBSD configuration</A
+></DT
+><DT
+>8-5. <A
+HREF="#AEN691"
+>...</A
+></DT
+><DT
+>8-6. <A
+HREF="#AEN703"
+>A typical configuration fragment</A
+></DT
+><DT
+>9-1. <A
+HREF="#AEN794"
+>Access control using LIMIT</A
+></DT
+><DT
+>10-1. <A
+HREF="#AEN827"
+>Configuration using classes</A
+></DT
+><DT
+>10-2. <A
+HREF="#AEN836"
+>Simple throttling config</A
+></DT
+><DT
+>10-3. <A
+HREF="#AEN846"
+>...,?</A
+></DT
+><DT
+>10-4. <A
+HREF="#AEN913"
+>.ftpaccess file</A
+></DT
+><DT
+>11-1. <A
+HREF="#AEN940"
+>...</A
+></DT
+><DT
+>11-2. <A
+HREF="#AEN1004"
+>....</A
+></DT
+><DT
+>13-1. <A
+HREF="#AEN1068"
+>Filter example</A
+></DT
+><DT
+>13-2. <A
+HREF="#AEN1084"
+></A
+></DT
+><DT
+>13-3. <A
+HREF="#AEN1128"
+>Sample svc.conf file</A
+></DT
+><DT
+>13-4. <A
+HREF="#AEN1135"
+>proftpd.conf</A
+></DT
+><DT
+>15-1. <A
+HREF="#AEN1501"
+><TT
+CLASS="PROMPT"
+>mysql&gt; show fields from proftp;</TT
+></A
+></DT
+><DT
+>15-2. <A
+HREF="#AEN1505"
+>Contents</A
+></DT
+><DT
+>15-3. <A
+HREF="#AEN1524"
+>...</A
+></DT
+><DT
+>15-4. <A
+HREF="#AEN1527"
+>...</A
+></DT
+><DT
+>15-5. <A
+HREF="#AEN1536"
+><TT
+CLASS="PROMPT"
+>mysql&gt; show fields from proftp;</TT
+></A
+></DT
+><DT
+>15-6. <A
+HREF="#AEN1540"
+>Contents</A
+></DT
+><DT
+>15-7. <A
+HREF="#AEN1548"
+>proftpd.conf</A
+></DT
+><DT
+>15-8. <A
+HREF="#AEN1554"
+>Updated authentication table</A
+></DT
+><DT
+>15-9. <A
+HREF="#AEN1557"
+>File tracking table</A
+></DT
+><DT
+>15-10. <A
+HREF="#AEN1572"
+>proftpd.conf</A
+></DT
+><DT
+>B-1. <A
+HREF="#AEN10271"
+>Basic Configuration</A
+></DT
+><DT
+>B-2. <A
+HREF="#AEN10274"
+>VirtualHost Config</A
+></DT
+><DT
+>B-3. <A
+HREF="#AEN10277"
+>Complex Configuration</A
+></DT
+><DT
+>B-4. <A
+HREF="#AEN10280"
+></A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="PREFACE"
+><HR><H1
+><A
+NAME="PREFACE"
+>Preface</A
+></H1
+><P
+>Welcome to this text on the ProFTPD server software, this
+    document grew out of a need for good documentation for the
+    software.  ProFTPD was written as an Open source software project
+    released under the Gnu Public License (GPL).  Many of the concepts
+    have been inspired by or derived from the Apache webserver
+    project.</P
+><P
+>This book grew out of a small FAQ on the proftpd.org website
+    prior to the change in maintainer in Sept 1999.  The need for a
+    accurate and comprehensive FAQ as obvious, it rapidly became clear
+    that a simple FAQ would not be suffcient.  In Oct 1999 I started
+    work on developing this document using the docbook DTD in
+    conjunction with the jade.</P
+><P
+>The software is currently designed for the Unix operating
+    system and it's derivatives including Linux and the BSD variants.
+    It is also reported to compile under win32, however it has not
+    been designed for this environment.</P
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN29"
+>This Book's Audience</A
+></H1
+><P
+>This text is primarily targetted at system administrators
+      who wish to make the most of the Proftpd software package.  I
+      expect that most readers will have at least a grasp of the ftp
+      protocol and reasonable skills in compiling and maintaining a
+      live Unix based system.  For a list of resources which I
+      consider to be useful reading to give this base knowledge
+      consult <A
+HREF="#APP-RESOURCES"
+>Appendix A</A
+>.</P
+><P
+>It is my hope, however, that the text is suffciently
+      generic in approach that it will be of use to those simply
+      wishing to know more about ftp and the function of a typical ftp
+      server.</P
+><P
+>The later chapters go into more depth on complex
+      configurations and discuss the needs of a live server hosting
+      multiple virtual hosts and hopefully suggest ways in which to
+      keep the administration of these configurations to a managable
+      scale.</P
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN35"
+>Why Read This Book?</A
+></H1
+><P
+>This book is designed to be the clear, concise, informative
+      reference to the Proftpd <SPAN
+CLASS="ACRONYM"
+>FTP</SPAN
+> server software,
+      I hope that this document will become the official documentation
+      for this software.</P
+><P
+>I hope to answer, all the questions you
+      might have about the issues concerning setting up and
+      configuring Proftpd and running the server software in the open
+      and sometimes hostile environment of the Internet.  In
+      particular I cover the following subjects:</P
+><P
+></P
+><UL
+><LI
+><P
+>How FTP operates, is defined and how it fits into
+	  todays Internet.</P
+></LI
+><LI
+><P
+>How to configure a basic anonymous ftp server and a
+	  basic user based ftp server.</P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="PREF-REQ-COMMENTS"
+>Request for Comments</A
+></H1
+><P
+>Please help me improve future editions of this book by
+      reporting any errors, inaccuracies, bugs, misleading or
+      confusing statements, and plain old typos that you find. An
+      online errata list is maintained at <A
+HREF="http://hamster.wibble.org/proftpd/this.is.a.broken.link.html"
+TARGET="_top"
+>http://deliberatly broken link/</A
+>.
+      Email your bug reports and comments to us at <A
+HREF="mailto:hamster@vom.tm"
+TARGET="_top"
+>hamster@vom.tm</A
+>.</P
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN50"
+>Organization of This Book</A
+></H1
+><P
+>This book is divided into xxxmultiplexxx parts. <I
+CLASS="CITETITLE"
+>Part I:
+      Introduction</I
+> is an introduction to ftp, security and
+      your first ftp server:</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><A
+HREF="#CH-BACKGROUND"
+>Chapter 1</A
+></DT
+><DD
+><P
+>A quick introduction to FTP</P
+></DD
+></DL
+></DIV
+><P
+><I
+CLASS="CITETITLE"
+>Part II: Configuration</I
+> is a guide
+	to getting the server configured and running</P
+><P
+></P
+><DIV
+CLASS="VARIABLELIST"
+><DL
+><DT
+><A
+HREF="#CH-BACKGROUND"
+>Chapter 1</A
+></DT
+><DD
+><P
+>A quick introduction to FTP</P
+></DD
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN68"
+>Acknowledgements</A
+></H1
+><P
+>Many thanks to the Proftpd developers, anyone who's posted
+      useful information to the mailing lists and everyone who has
+      mailed me direct.</P
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN71"
+>Copyrights and Trademarks</A
+></H1
+><P
+>This document may be reproduced in whole or in part,
+      without fee, subject to the following restrictions:</P
+><P
+>The copyright notice above and this permission notice must
+      be preserved complete on all complete or partial copies
+
+      </P
+><P
+>Any translation or derived work must be approved by the
+      author in writing before distribution.</P
+><P
+>If you distribute this work in part, instructions for
+      obtaining the complete version of this manual must be included,
+      and a means for obtaining a complete version provided.</P
+><P
+>Small portions may be reproduced as illustrations for
+      reviews or quotes in other works without this permission notice
+      if proper citation is given.</P
+><P
+>Exceptions to these rules may be granted for academic
+      purposes: Write to the author and ask. These restrictions are
+      here to protect us as authors, not to restrict you as learners
+      and educators.</P
+></DIV
+></DIV
+><DIV
+CLASS="PART"
+><A
+NAME="PROFTPD-INTRO"
+></A
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+>I. Introduction</H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>1. <A
+HREF="#CH-BACKGROUND"
+>Background</A
+></DT
+><DT
+>2. <A
+HREF="#INSTALL"
+>Compilation and installing</A
+></DT
+><DT
+>3. <A
+HREF="#SECURITY"
+>Security Issues</A
+></DT
+><DT
+>4. <A
+HREF="#AEN383"
+>Day to day issues</A
+></DT
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="CHAPTER"
+><HR><H1
+><A
+NAME="CH-BACKGROUND"
+>Chapter 1. Background</A
+></H1
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN83"
+>What is Proftpd</A
+></H1
+><P
+>ProFTPD is a ftp server primarily written for the various unix
+variants though it will now compile under win32.  It has been designed
+to be much like Apache in concept taking many of the ideas
+(configuration format, modular design, etc) from it.</P
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN86"
+>Who codes/maintains Proftpd?</A
+></H1
+><P
+>As with all Open source projects no one person can really lay claim to
+the entire package.  The ProFTPD project was started by Floody who took
+it to approximately 1.2.0pre2/3 before he found that his available time
+was insufficient to handle this project as well as his other commitments.
+Since then (mid-late 1999) MacGyver has taken over the project and is
+pushing towards cleaning up the outstanding patches and getting 1.2.0
+shipped.  </P
+><P
+>There are also numerous people involved in developing modules, and
+documentation for the project.  A number of these have been merged into
+the core distribution and more are likely to follow.</P
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN90"
+>Website &#38; documenation</A
+></H1
+><P
+>The official websites for the project are
+	http://www.proftpd.org/ and http://www.proftpd.net/, both
+	should be a mirror of the other.</P
+><P
+>The documentation is being brought back into shape at
+	the moment, the configuration on the website is reasonable but
+	the documentation supplied in the source should be considered
+	to be cannonical.  Even this is still being brought up to
+	date.</P
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN94"
+>Bug reporting?</A
+></H1
+><P
+>At the moment the best way to report a bug is to email
+	the ProFTPD-Devel mailing list or MacGyver directly.</P
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN97"
+>Availability</A
+></H1
+><P
+>&#13;Primary FTP:
+
+ftp.tos.net (primary site)
+&#13;</P
+><DIV
+CLASS="SECT2"
+><HR><H2
+CLASS="SECT2"
+><A
+NAME="AEN100"
+>Available formats</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN102"
+>Tarball</A
+></H3
+><P
+>This is the canonical source for ProFTPD.  It is
+	    provided in both tar-gzip and tar-bzip2 formats.</P
+></DIV
+><DIV
+CLASS="SECT3"
+><HR><H3
+CLASS="SECT3"
+><A
+NAME="AEN105"
+>RPM</A
+></H3
+><P
+>ProFTPD is packaged up for Redhat, the default build
+	    uses PAM for authentication</P
+></DIV
+><DIV
+CLASS="SECT3"
+><HR><H3
+CLASS="SECT3"
+><A
+NAME="AEN108"
+>DEB</A
+></H3
+><P
+>Package: ProFTPD
+Priority: optional
+Maintainer: Johnie Ingram &lt;johnie@debian.org&gt;</P
+><P
+>This package is being actively maintained and seems
+	    to follow the available releases within 24-48 hours or so.
+	  </P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN112"
+>Mailing lists</A
+></H1
+><P
+>There are three lists for ProFTPD</P
+><DIV
+CLASS="SECT2"
+><HR><H2
+CLASS="SECT2"
+><A
+NAME="AEN115"
+>Announce</A
+></H2
+><P
+>proftpd-announce@proftpd.net&#13;</P
+><P
+>This is a very low traffic list where only ProFTPD announcements/changes
+will be announced.
+
+	  </P
+><P
+>Subscribe by sending a message to
+	  proftpd-announce-request@proftpd.net with "subscribe" in the
+	  subject.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><HR><H2
+CLASS="SECT2"
+><A
+NAME="AEN120"
+>Users</A
+></H2
+><P
+>proftpd@proftpd.net
+
+	  </P
+><P
+>This is intended to the the user support channel for
+	  the software, in most likelihood this is going to be a high
+	  traffic list and slightly chatty.  Please read the FAQ, the
+	  documentation and the list archives before posting a
+	  question.</P
+><P
+>Subscribe by sending a message to
+	  proftpd-request@proftpd.net with "subscribe" in the
+	  subject.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><HR><H2
+CLASS="SECT2"
+><A
+NAME="AEN125"
+>Development</A
+></H2
+><P
+>proftpd-devel@proftpd.net
+
+	  </P
+><P
+>This list is intended for discussion of
+	  development-related issues of ProFTPD, and feature design.
+	  It is NOT intended to be a 'user help' group.</P
+><P
+>Subscribe by sending a message to
+	  proftpd-devel-request@proftpd.net with 'subscribe' in the
+	  subject.</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN130"
+>Copyright Issues</A
+></H1
+><P
+>The Proftpd software is currently distributed under the
+	GNU General Public License (version 2 or later) as published
+	by the Free Software Foundation.  Copyright is held by Public
+	Flood Software.</P
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN133"
+>The FTP protocol</A
+></H1
+><P
+>FTP was defined initially in RFC959 and has been updated
+	in RFC2228.  The protocol pre-dates RFC959 by over a decade
+	during which time various RFC's were written to move the
+	protocol towards a clear stable standard.  This standard has
+	now served the Internet well for fourteen years and shows only
+	minor signs of it's age.  RFC2228 currently only has standards
+	track status but shows all the signs of becoming a full IETF
+	standard for the internet.  This new RFC extends the protocol
+	to include encrypted and authenticated connections and to
+	provide methods of assurance of data integrity.  Proftpd is
+	RFC959 compliant and there are plans to make it RFC2228
+	compliant in version 1.4 and later.</P
+><P
+>The File Transfer Protocol (FTP) does exactly what it
+	says, it allows the movement of files from one place to
+	another.  Like most of the services on the internet it's
+	designed round the client-server model.  Given this software
+	related to ftp can be split along these lines, Proftpd is a
+	ftp server.</P
+><P
+>FTP servers allow access by authenticating users against
+	a password database of some description.  Historically this
+	has been the unix /etc/passwd file (and later /etc/shadow)
+	more recently support for other authentication systems as been
+	provided including NIS, Radius, SQL, LDAP and many others.
+	For most servers the username and password are sent over the
+	network in plaintext.  There is a RFC defining the
+	specification for encrypted passwords for use with ftp servers
+	but this not had a widespread takeup.</P
+><DIV
+CLASS="SECT2"
+><HR><H2
+CLASS="SECT2"
+><A
+NAME="AEN138"
+>Anonymous Servers</A
+></H2
+><P
+>In addition to properly authenticated users there ftp
+	  has historically allowed a special class of user.  The
+	  "anonymous" connection, primarily used for public archives
+	  of data, programs or general "stuff" anonymous logins allow
+	  anyone on the network to connect to a server.  Normally
+	  anonymous connections are limited in number to prevent the
+	  free aspect to the server from overwhelming it's primary
+	  function and the access permissions and rights of the
+	  anonymous user are locked down.</P
+><P
+>Anonymous servers are one of the great resources of
+	  the Internet over the years they collectively have become a
+	  massive redundant public storage system for information and
+	  programs.  This is partly due to the open nature of many
+	  admins in what they will allow to be hosted and partly in
+	  the habit of "mirroring" other sites to spread the load.
+	  Without anonymous servers it's unlikely that the Open Source
+	  community would have been able to achieve the critical mass
+	  and accessibility required for it's current success.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><HR><H2
+CLASS="SECT2"
+><A
+NAME="AEN142"
+>Sockets and ports</A
+></H2
+><P
+>FTP was designed round a two socket model, streaming
+	  data down one socket and control information down the other.
+	  This design makes it possible for a well designed client to
+	  be uploading and downloading while still permitting the user
+	  to perform other adminitrative tasks on the server.</P
+><P
+>	    Normally the control socket uses port 21 (ftp) at the
+	    server end, the data socket handling is more complex.  Two
+	    modes of operation are defined for ftp connections.
+	  </P
+><DIV
+CLASS="SECT3"
+><HR><H3
+CLASS="SECT3"
+><A
+NAME="AEN146"
+>Active</A
+></H3
+><P
+>Active mode connections run control over port 21 and
+	      allow the server to decide which socket to use locally
+	      for data traffic.
+	    </P
+></DIV
+><DIV
+CLASS="SECT3"
+><HR><H3
+CLASS="SECT3"
+><A
+NAME="AEN149"
+>Passive</A
+></H3
+><P
+>	      Passive Mode connections work the same way as normal
+	      (Active Mode) connections, except the data connection is
+	      also made from the client to the server. This avoids the
+	      problem of incoming data connections being blocked by
+	      the firewall by making both connections from the
+	      client. </P
+></DIV
+><DIV
+CLASS="SECT3"
+><HR><H3
+CLASS="SECT3"
+><A
+NAME="AEN152"
+>Problems</A
+></H3
+><P
+>Unfortunately, not all FTP clients are capable of
+	      passive mode transfers, and not all users are aware of
+	      their existence or the problems they solve. Some
+	      firewalls can be configured to allow incoming FTP data
+	      connections while blocking all other incoming TCP
+	      connections. (The firewall recognizes FTP data
+	      connections because they originate from port 20, the FTP
+	      data port). This allows Active Mode FTP transfers
+	      through the firewall without blocking the incoming FTP
+	      data connections. Support for port connections
+	      established on the traditional FTP data port (20) was
+	      added in Rumpus 1.2, so older versions of Rumpus will
+	      not work correctly with firewalls configured this
+	      way.</P
+><P
+>Passive Mode connections work the same way as normal
+	      (Active Mode) connections, except the data connection is
+	      also made from the client to the server ie made to port
+	      ftp-data (20). This avoids the problem of incoming data
+	      connections being blocked by the firewall by making both
+	      connections from the client.  What it boils down to is
+	      Active control channel, port 21 data channel, server
+	      specifies random port.  Passive control channel, port 21
+	      data channel, port 20 I guess it's doc time :)
+	    </P
+></DIV
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="CHAPTER"
+><HR><H1
+><A
+NAME="INSTALL"
+>Chapter 2. Compilation and installing</A
+></H1
+><P
+>Being Open Source code Proftpd is availble primarily as
+      source code for local compilation.  There are a number of
+      maintainers within the project who create the packaged builds
+      for the primary platforms and distributions.  For most users the
+      packaged builds will prove to be suffcient and the least hassle
+      route to installing Proftpd.  However to use the daemon to it's
+      fullest or to explore some of the more interesting features a
+      local custom build will be required.</P
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN159"
+>Architecture</A
+></H1
+><P
+>Proftpd was designed from the ground up to be both
+	extensible and as secure by design as possible.  Security is
+	discussed in depth later in this document, however while there
+	are no known security holes it cannot be said of this or any
+	other piece of software that there are no problems waiting to
+	be found.  The extensibility is provided by means of a modular
+	architecture which takes many lessons and features from the
+	Apache webserver project.  Almost all the functionality has
+	been supplied by moving most functions into modules.  This
+	includes features such as "ls" and the authentication
+	handling, this approach allows third party developers to
+	provide additional modules to latch onto these hooks to add or
+	extend the basics provided.  Most of the more interesting
+	modules have to be compiled in as they are not part of the
+	standard builds.  Unfortunately dynamically loadable modules
+	are not available within the 1.2.x code tree though
+	development and testing is planned for the 1.3.x development
+	branch.</P
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN162"
+>Installing packaged versions</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN164"
+>Linux (RPM)</A
+></H2
+><P
+>The Linux RPM package is available on the main
+	  distribution sites for Proftpd.  Installtion is as simple as
+
+<TT
+CLASS="PROMPT"
+>rpm --install proftpd-{version}.rpm</TT
+></P
+><P
+>Note: check multiple rpm route now supported.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><HR><H2
+CLASS="SECT2"
+><A
+NAME="AEN169"
+>Linux (DEB)</A
+></H2
+><P
+>The Debian package is equally as simple to install as
+	  the RPM with either
+
+<PRE
+CLASS="PROGRAMLISTING"
+>dpkg --install {debfile}
+
+or
+
+apt-get install proftpd</PRE
+>&#13;</P
+></DIV
+><DIV
+CLASS="SECT2"
+><HR><H2
+CLASS="SECT2"
+><A
+NAME="AEN173"
+>FreeBSD</A
+></H2
+><P
+>Does anyone have any comments on the BSD install?</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN176"
+>Compiling from source</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN178"
+>Supported Platforms</A
+></H2
+><P
+>Proftpd is reported to compile and function on the
+	  following platforms,</P
+><PRE
+CLASS="PROGRAMLISTING"
+>Linux 2.0.x &amp; 2.2.x (glibc 2.x only)
+BSDI 3.1 &#38; 4.0
+IRIX 6.2, 6.3, 6.4, 6.5
+Solaris 2.5.1, 2.6 &#38; 2.7
+AIX 3.2 &#38; 4.2
+OpenBSD 2.2/2.3
+FreeBSD 2.2.7 
+Digital UNIX 4.0A
+DEC OFS/1</PRE
+><P
+>Some platforms require that compilation is done with
+	  gcc (or one of it's variants) while other platforms only
+	  function properly if compiled with the compiler shipped with
+	  the OS.  Experiences vary and at this time there is no
+	  reliable list of which platform requires what.</P
+><DIV
+CLASS="SECT3"
+><HR><H3
+CLASS="SECT3"
+><A
+NAME="AEN183"
+>FreeBSD</A
+></H3
+><P
+>ProFTPD is part of the FreeBSD ports collection. The minimal install
+commands on a system with a properly installed ports tree are:</P
+><P
+CLASS="LITERALLAYOUT"
+>&nbsp;cd&nbsp;/usr/ports/ftp/proftpd<br>
+&nbsp;make&nbsp;install</P
+><P
+>More information can be found in the README.html file in the same
+directory.</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><HR><H2
+CLASS="SECT2"
+><A
+NAME="AEN188"
+>Including additional modules</A
+></H2
+><P
+>Only the essential core modules are compiled in by
+	  default, most of the more interesting features such as sql
+	  support, upload/download ratios etc etc are contained within
+	  the non-standard modules.</P
+><P
+>Including additional modules is only possible at
+	  compile time, at the moment there is no chance of
+	  dynamically loadable modules entering the 1.2.x code tree.
+	  This is primarily due to time and the need for some major
+	  structural changes within the code to support dynamically
+	  loadable modules.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="AEN192"
+></A
+><P
+><B
+>Example 2-1. Configuring for additional modules</B
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>./configure --with-module=mod_module1:mod_module2
+make
+make install</PRE
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN195"
+>Compatibility Issues</A
+></H1
+><P
+>sendfile
+	  bsd
+	  linux 2.2 vs 2.0
+mod_linuxprivs
+libc5&#13;</P
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN198"
+>linux</A
+></H1
+><P
+></P
+><DIV
+CLASS="SECT2"
+><HR><H2
+CLASS="SECT2"
+><A
+NAME="AEN201"
+>Why not libc5 on Linux?</A
+></H2
+><P
+>There are several known problems with libc5-based
+	    systems, including improperly implemented library routines
+	    (vsprintf and vsnprintf are examples).  There are known
+	    problems with the resolver library.  For these reasons and
+	    others lib5 is not being supported at all, the latest
+	    versions of the major distributions (inc Debian, Redhat
+	    and Suse) are all glibc.</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN204"
+>CVS</A
+></H1
+><P
+>CVS (Concurrent Versions System), is a version control
+	  system which allows multiple developers (scattered across
+	  the same room or across the world) to maintain a single
+	  codebase and keep a record of all changes to the
+	  work.</P
+><P
+>The CVS repository for ProFTPD is available for
+	  non-developers in read-only mode, however this code is right
+	  on the bleeding edge and is not guaranteed to even compile
+	  let alone work.  Access to CVS is given to allow important
+	  security patches out into the wild and to allow users and
+	  interested users to test out the latest changes on real
+	  systems.</P
+><DIV
+CLASS="SECT2"
+><HR><H2
+CLASS="SECT2"
+><A
+NAME="AEN208"
+>Recommended ~/.cvsrc settings</A
+></H2
+><DIV
+CLASS="INFORMALEXAMPLE"
+><A
+NAME="AEN210"
+></A
+><P
+></P
+><PRE
+CLASS="PROGRAMLISTING"
+>cvs -z 3
+update -Pd
+diff -uw
+	    </PRE
+><P
+></P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><HR><H2
+CLASS="SECT2"
+><A
+NAME="AEN212"
+>Where can I get information on cvs?</A
+></H2
+><P
+>CVS is produced by Cyclic Software
+	    (http://www.cyclic.com/) and details on CVS can be found
+	    on their website.  The CVS documentation is clear,
+	    detailed and above all heavy when printed.  I'd recommend
+	    reading it if you're planning on using CVS a lot.</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN215"
+>How do I get debug output</A
+></H1
+><P
+>The easiest way is to fire up proftpd manually from the
+	  command line with the debug level cranked up.
+	  /usr/local/sbin/proftpd -d9 -n</P
+><P
+>This will result in maximal debug output direct to the
+	  console. Warning, this can get messy on a busy server, for
+	  testing I would suggest copying the config and altering the
+	  port the server binds to and then testing.</P
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN219"
+>Patches</A
+></H1
+><P
+>Any patches should be submitted in Universal format,
+	this makes integrating them into the main cvs source a lot
+	easier.  When generating a diff against the current cvs source
+	use "cvs diff -uw" to generate the patch.
+
+cvs diff -uw filename &#62; filename.patch
+
+or
+
+cvs diff -uw &#62; bigger.patch</P
+><P
+>Patches that add configuration directives without proper
+	documentation.  Will be rejected.  New features without
+	documentation are less than useless to the community at
+	large.</P
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN223"
+>Using non-default modules</A
+></H1
+><P
+>Simply configure ProFTPD with 
+
+./configure --with-modules=mod_module1:mod_module2:mod_module3
+make
+make install</P
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN226"
+>Plans for next version (1.3.x)</A
+></H1
+><P
+>The new development series will be 1.3.x, using the same
+	number scheme as the linux kernel developers.  The
+	targets/goals are:
+
+refining/redefining the module API to make it more extensible and useful.
+dynamic modules
+security APIs and implementations
+mod_ls rewrite
+Implementing some security-related RFCs
+Creating a web and GUI configuration interface to ProFTPD.
+	</P
+><P
+>1.4.x will be the production release of the 1.3.x
+	development set.</P
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN230"
+>Longer term development</A
+></H1
+><P
+>For 1.9.x/2.0.x there are plans to completely recode
+	some core sections of the software and creating an abstract
+	layer to build the 2.x version on.  The abstract layer will
+	handle all filesystem and OS-specific stuff.  This layer will
+	then have backends onto the major environments (ie Unix and
+	NT)</P
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN233"
+>NT Support</A
+></H1
+><P
+>If/when a port is undertaken for NT, it will only be
+	after a near complete rethinking of ProFTPD.  This is planned
+	for 2.0 and onwards.</P
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN236"
+>New features/modules</A
+></H1
+><P
+>While anything new is welcomed it's probably better to
+	at least float the idea first on the devel mailing list to
+	ensure that someone else isn't already hacking on it.  Also
+	when submitting the patch or module for inclusion into the
+	ProFTPD source full documentation is needed.</P
+><DIV
+CLASS="SECT2"
+><HR><H2
+CLASS="SECT2"
+><A
+NAME="AEN239"
+>Suggestions made for future development</A
+></H2
+><P
+>&#13;GUI based configuration tool
+CDB based Authentication</P
+></DIV
+></DIV
+></DIV
+><DIV
+CLASS="CHAPTER"
+><HR><H1
+><A
+NAME="SECURITY"
+>Chapter 3. Security Issues</A
+></H1
+><P
+>As with all services there is the risk that abuse can
+      happen or that a crack attempt will be made on the hosting
+      server.  As a general rule crackers will attempt to break in
+      through known holes in the various server daemons
+      running.</P
+><P
+>The cautious and security concious system admin should be
+      aware of the two main avenues for abuse, external and internal.
+      I will consider external attacks to be those made by individuals
+      without valid accounts or "user" level access to the server.
+      Internal I will consider as being those individuals with
+      authenticated user access of some form to the server.</P
+><P
+>Server Security security holes weak passwords Abuse of
+      server warez dumping ground</P
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN247"
+>Securing ftp servers</A
+></H1
+><P
+>In general there is not much more to securing a ftp
+	server than there is to any other public access server.
+	However the twin socket design and thus the requirement to
+	never quite give up root privileges completely leaves a window
+	ajar for the competant cracker to climb through.  Or
+	occasionally a thumping great sign and open door for a script
+	kiddie with some time to spare.</P
+><P
+>Proftpd provides for some additonal security by it's use
+	of chroot(), user and IP access limits, command and path
+	filters to limit what and where files can be uploaded and it's
+	attention to when root privs are needed and when they are not.
+	However a buffer overflow in the wrong place and it's possible
+	that the server is compromised beyond hope.</P
+><P
+>Simple steps which can be taken to tighten security
+	include</P
+><P
+></P
+><UL
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>Log to a separate machine</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>Traffic filtering upstream of the server</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>chroot() all sessions</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>Don't give a valid shell where it's not needed</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>Run an intrustion detection system</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>If possible place the OS itself on a bootable CDrom</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>Tripwire</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>Decent backups</P
+></LI
+></UL
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN269"
+>Daemon security</A
+></H1
+><P
+>Recently (between versions 1.2.0pre3 - 1.2.0pre7) there
+	have been a number of buffer overflow type security problems
+	with ProFTPD, with the coming release of pre7 these should be
+	under control.  Though no absolute statement can be given on
+	the security of the software (this is true for every piece of
+	software out there).  A significant amount of effort has been
+	put into removing the more 'dangerous' system calls which are
+	prone to overflow attacks.</P
+><P
+>There is a known security problem with ALL unix FTP
+	daemons, which requires the daemon to retain root privileges
+	even after a client has fully authenticated. In ProFTPD
+	versions 1.0.x, a decision was made to ignore RFC959's port 20
+	requirements in the interests of security.  This approach has
+	now been abandoned in favour of a more rfc compliant
+	approach.</P
+><P
+>ProFTPD takes a middle road in terms of security.  It
+	only uses root privileges where required and drops to the UID
+	defined in the config file at all other times.  Times when
+	root is required include, binding to ports &#60; 1024, setting
+	resource limits, reading configuration information and some
+	network code.</P
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN274"
+>Password Issues</A
+></H1
+><P
+>One of the biggest security problems about the whole FTP
+	protocol is the need to have the password transmitted in clear
+	text across the network.  In effect the username and passowrd
+	pair are available at all times during the authentication
+	sequence, resulting in this information being available to
+	crackers and sniffers alike.</P
+><DIV
+CLASS="SECT2"
+><HR><H2
+CLASS="SECT2"
+><A
+NAME="AEN277"
+>Encrypted passwords</A
+></H2
+><P
+>Currently (as of 1.2.0pre9) Proftpd does not support
+	  encrypted passwords for authentication.  Development for
+	  this feature is scheduled for post 1.2.0rel1, and it will
+	  remove the absolute need to send the password in clear text
+	  over the network.  There are some additional approaches
+	  involving ssh (secure shell) which I will not cover in
+	  detail in this text which can be used to secure a ftp
+	  session without encrypted keys.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><HR><H2
+CLASS="SECT2"
+><A
+NAME="AEN280"
+>FTP as root</A
+></H2
+><P
+>This is a bad idea simply because it's a major
+	  security risk to send the root passowrd in clear text over
+	  any network.  If there is a need to get files onto a server
+	  there are always better ways of achieving it than connecting
+	  via ftp as root.</P
+><DIV
+CLASS="EXAMPLE"
+><A
+NAME="AEN283"
+></A
+><P
+><B
+>Example 3-1. Other approaches</B
+></P
+><P
+></P
+><UL
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>rcp</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>ssh/scp</P
+></LI
+><LI
+STYLE="list-style-type: opencircle"
+><P
+>ftp as a safe user and change the ownership later.</P
+></LI
+></UL
+></DIV
+><P
+>If you really must ftp as root then our thoughts go
+	  with you on this dangerous journey as you add "RootLogin on"
+	  to your proftpd configuration and may your god go with
+	  you.</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+NAME="AEN293"
+>Server attacks</A
+></H1
+><P
+>As with all server processes the primary method of
+	cracking remains the buffer overflow.  Due to the nature of
+	the protocol and the requirement for root level privileges
+	this leaves ftp daemons open to attack.  Buffer overflows are
+	the result of weak programming where boundary condition checks
+	have been skipped or "unsafe" system calls have been used.
+	These allow a fixed length storage area to be overflowed, this
+	overflow can then be used as the transport to allow the
+	execution of arbitary commands as the root user.  In
+	combination this is known as a "root exploit".</P
+><DIV
+CLASS="SECT2"
+><HR><H2
+CLASS="SECT2"
+><A
+NAME="AEN296"
+>Stack smashing protection</A
+></H2
+><DIV
+CLASS="SECT3"
+><H3
+CLASS="SECT3"
+><A
+NAME="AEN298"
+>What about using Stackguard?</A
+></H3
+><P
+>Stackguard is a gcc variant which can protect
+	    programs from stack-smashing attacks, programs compiled
+	    using Stackguard dies without executing the stack code.
+	    While this approach is a good first line of defense
+	    against future problems it's not a complete cure-all.
+	    Some of the buffer overflows were found on static
+	    variables, which are not protected by stack protection
+	    mechanisms. </P
+></DIV
+><DIV
+CLASS="SECT3"
+><HR><H3
+CLASS="SECT3"
+><A
+NAME="AEN301"
+>Libsafe</A
+></H3
+><P
+>Libsafe implements a
+	    'middleware' layer which sits between the OS and the
+	    daemon process and protects against buffer overflows.
+	    This is achieved by intercepting all calls known to be
+	    vunerable to overflow.
+	    http://www.bell-labs.com/org/11356/html/security.html</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT2"
+><HR><H2
+CLASS="SECT2"
+><A
+NAME="AEN304"
+>Running Proftpd as non-root</A
+></H2
+><P
+>Running ProFTPD as a non-root user gives only a
+	  marginal security improvement on the normal case and adds
+	  some functional problems.  Such as not being able to bind to
+	  ports 20 or 21, unless it's spawned from inetd.  The
+	  inability to bind to ports 20 and 21 makes this approach
+	  usless for commercial hosting environments where the
+	  customers are expecting the connection to be on a "standard"
+	  port.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><HR><H2
+CLASS="SECT2"
+><A
+NAME="AEN307"
+>Linux</A
+></H2
+><P
+>For Linux 2.2.x kernel systems there is the POSIX
+	  style mod_linuxprivs module which allows very fine grain
+	  control over privileges.  This is highly recommended for
+	  security-conscious admins.</P
+></DIV
+></DIV
+><DIV
+CLASS="SECT1"
+><HR><H1
+CLASS="SECT1"
+><A
+N

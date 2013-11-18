@@ -1,0 +1,1175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- saved from url=(0075)http://www.es.qmail.org/documentacion/distro/puf/html/qmail-PUF.entera.html -->
+<HTML><HEAD><TITLE>Preguntas de Uso Frecuente sobre qmail</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="MSHTML 6.00.2600.0" name=GENERATOR></HEAD>
+<BODY>
+<H1>Preguntas de Uso Frecuente sobre qmail</H1>
+<H2>D. J. Bernstein, <CODE><A 
+href="mailto:qmail@pobox.com">qmail@pobox.com</A></CODE> <BR>Formato SGML y 
+traducción Francisco J. Montilla, <CODE><A 
+href="mailto:pacopepe@insflug.org">pacopepe@insflug.org</A></CODE></H2>Traducción 
+de sgml v3, diciembre de 1999. 
+<P>
+<HR>
+<EM>Este documento es un listado de respuestas a <I>Preguntas de Uso 
+Frecuente</I> relacionadas con qmail, basado enteramente en la FAQ original del 
+autor de qmail, D. J. Bernstein, radicada en <CODE><A 
+href="http://cr.yp.to/qmail/faq.html">http://cr.yp.to/qmail/faq.html</A></CODE>. 
+</EM>
+<HR>
+
+<H2><A name=acercade></A><A name=s1>1. Acerca de este documento - ¡Léame 
+primero!</A></H2>
+<P>
+<P>
+<H2>1.1 Créditos</H2>
+<P>
+<P>Este documento es un listado de respuestas a <I>Preguntas de Uso 
+Frecuente</I> relacionadas con qmail, basado enteramente en la FAQ original del 
+autor de qmail, D. J. Bernstein, radicada en <CODE><A 
+href="http://cr.yp.to/qmail/faq.html">http://cr.yp.to/qmail/faq.html</A></CODE>, 
+siendo por tanto más reciente, y conteniendo información más actualizada que el 
+fichero <CODE>FAQ</CODE> incluido en la distribución de <CODE>qmail-1.03</CODE>. 
+La traducción ha sido realizada sobre el «reformateo» a sgml de Francisco J. 
+Montilla, <CODE><A 
+href="mailto:pacopepe@insflug.org">pacopepe@insflug.org</A></CODE>. 
+<P>
+<H2>1.2 Renuncia de responsabilidad</H2>
+<P>
+<P>Aunque he hecho cuanto ha estado en mi mano para no introducir errores, no 
+garantizo absolutamente nada. 
+<P>El objetivo de este «reformateo» es proporcionar una serie adicional de 
+formatos del documento más apropiados, <B>no corregir o añadir</B> nada al 
+documento «oficial» de D. J. Bernstein, que puede obtener en <CODE><A 
+href="http://cr.yp.to/qmail/faq.html">http://cr.yp.to/qmail/faq.html</A></CODE>. 
+Lo único que ha sido modificado son los enlaces hipertexto, la tipografía y 
+obviamente, el formato. Si Vd. utiliza, lo hará bajo su propia cuenta y riesgo; 
+el documento original de D. J. Bernstein sigue teniendo la última palabra en 
+cualquier caso. 
+<P>
+<H2>1.3 Formatos disponibles</H2>
+<P>
+<P>El documento de D. J. Bernstein <I>qmail FAQ</I>, compendio de respuestas a 
+<I>Preguntas de Uso Frecuente</I> sobre qmail, ha sido reformateado del original 
+en HTML a <I>Linuxdoc-SGML</I>, estando disponible en múltiples formatos: texto 
+ascii, html, dvi, PostScript y PDF, bien del mismo sitio del que haya obtenido 
+este ejemplar, o generándolos a partir del fichero fuente <CODE>.sgml</CODE> 
+empleando <CODE>sgmltools</CODE>, <CODE><A 
+href="http://www.sgmltools.org/">http://www.sgmltools.org/</A></CODE>. 
+<P>
+<H2>1.4 La traducción</H2>
+<P>
+<P>Esta traducción ha sido realizada bajo el <I>Proyecto DoQmail</I>, <CODE><A 
+href="http://www.es.qmail.org/">http://www.es.qmail.org/</A></CODE>, un proyecto 
+por y para usuarios que persigue proporcionar recursos en castellano acerca de 
+qmail y software relacionado, fomentar la creación de una comunidad de usuarios, 
+y promover el uso de qmail: 
+<P>
+<UL>
+  <LI>Documentación: 
+  <UL>
+    <LI>Traducciones de todo tipo de documentos del prolífico autor de qmail, D. 
+    J. Bernstein. 
+    <LI>Traducciones de la documentación incluida con la distribución de qmail, 
+    tanto ficheros de texto como las páginas del manual. 
+    <LI>Traducciones de documentación aportada por usuarios. 
+    <LI>Traducciones de la información adicional disponible en <CODE><A 
+    href="http://www.qmail.org/">http://www.qmail.org/</A></CODE>. 
+    <LI>Documentación de cosecha propia. </LI></UL>
+  <LI>fomento de la comunidad de usuarios hispanos de qmail: 
+  <UL>
+    <LI>Promoción del soporte por y para usuarios, aportando recursos técnicos, 
+    como la lista de distribución de correo de qmail en castellano: <CODE><A 
+    href="mailto:DoQmail@adso.insflug.org">DoQmail@adso.insflug.org</A></CODE>. 
+    <LI><I>GUHq</I>, <I>Grupo de Usuarios Hispanos de qmail</I>. </LI></UL>
+  <LI>Promoción del uso de qmail, asistiendo a aquellos que lo precisen a migrar 
+  a qmail desde otros Agentes de Transporte de Correo, proporcionándoles 
+  servicios de retransmisión de correo temporales: <I>Red qmail al Rescate</I>, 
+  <I>RqR</I>. </LI></UL>
+<P>
+<P>
+<H2><A name=s2>2. Orientación</A></H2>
+<P>
+<P>
+<H2>2.1 ¿Cuánta gente usa qmail?</H2>
+<P>
+<P>qmail es utilizado en cientos de Proveedores de Acceso a Internet, y miles de 
+otros servidores. Algunos de ellos de alto nivel: 
+<P>
+<UL>
+  <LI>ONElist, <CODE><A 
+  href="http://www.onelist.com/">http://www.onelist.com/</A></CODE> gestiona la 
+  entrega de millones de mensajes diariamente, usando qmail. 
+  <LI>El mayor servidor de listas de correo LISTSERV <I>no-LSTMP</I>, 
+  <CODE>listserv.acsu.buffalo.edu</CODE>, ha estado en funcionamiento desde 
+  noviembre de 1996. Ha entregado doscientos millones de mensajes desde 
+  entonces. 
+  <LI>Hotmail, <CODE><A 
+  href="http://www.hotmail.com/">http://www.hotmail.com/</A></CODE>, con treinta 
+  millones de usuarios, ha estado utilizando qmail para el envío de correo 
+  saliente desde 1997. (Según he sido informado, tras la compra de Hotmail por 
+  parte de Microsoft, intentaron migrar a Microsoft Exchange bajo Windows NT. 
+  Exchange reventó). </LI></UL>
+<P>Hay más de mil personas en la lista de correo de qmail. 
+<P>
+<H2>2.2 ¿Cuáles son los motivos más comunes por los que la gente usa qmail?</H2>
+<P>
+<P>Éstas son las 10 razones principales que he escuchado a los usuarios de 
+qmail. 
+<P>
+<OL>
+  <LI>Seguridad, qmail no deja a los intrusos apoderarse de su máquina. 
+  <LI>Fiabilidad. qmail nunca pierde correo. 
+  <LI>Velocidad. qmail entrega su correo mucho más rápido que sendmail, sin 
+  comprometer la fiabilidad. 
+  <LI>Bajo consumo de memoria. qmail puede con docenas de entregas simultáneas 
+  en ese viejo 486 de 16 MB. 
+  <LI>Listas de correo gestionadas por usuarios. Los usuarios no tienen que 
+  incordiar al administrador del sistema para crear nuevas listas. 
+  <LI>Dominios virtuales de forma fácil. qmail fue el pionero en el soporte a 
+  múltiples dominios. 
+  <LI>Administración sencilla y directa. qmail funciona con mínimas 
+  complicaciones. 
+  <LI>Flexibilidad en cuanto a los programas utilizados para entrega. qmail 
+  proporciona una potente interfaz para ser usada con procesadores de correo 
+  externos. 
+  <LI>Rutas de Retorno para Envolturas Variables. Esta prestación (utilizada por 
+  ezmlm, <CODE><A 
+  href="http://pobox.com/~djb/ezmlm.html">http://pobox.com/~djb/ezmlm.html</A></CODE>), 
+  permite una gestión de mensajes devueltos automática al 100% de listas de 
+  distribución de correo de cualquier tamaño. 
+  <LI>El formato <I>maildir</I>. Esta característica facilita preparar 
+  servidores POP distribuidos de gran volumen. (Ver <CODE><A 
+  href="http://pobox.com/~djb/qmail/toaster.html">http://pobox.com/~djb/qmail/toaster.html</A></CODE>). 
+  </LI></OL>
+<P>
+<H2>2.3 ¿Es compatible con sendmail? </H2>
+<P>
+<P>Sí. qmail soporta 
+<P>
+<OL>
+  <LI><CODE>.forward</CODE>, ver pregunta <A 
+  href="http://www.es.qmail.org/documentacion/distro/puf/html/qmail-PUF.entera.html#dotforward">¿Cómo 
+  uso los ficheros .forward de sendmail con qmail?</A>. 
+  <LI><CODE>/etc/aliases</CODE>, ver pregunta <A 
+  href="http://www.es.qmail.org/documentacion/distro/puf/html/qmail-PUF.entera.html#aliases">¿Cómo 
+  utilizo el fichero /etc/aliases de sendmail con qmail?</A> 
+  <LI>Entregas mediante el sistema <I>binmail</I> a una cola central de correo 
+  en buzones de formato habitual <I>mbox</I>. 
+  <LI>Interfaz <CODE>/usr/{lib,sbin}/sendmail</CODE> de inyección de correo. 
+  <LI>Base de datos de usuarios UNIX habitual <CODE>/etc/passwd</CODE>. </LI></OL>
+<P>Hay un listado de puntos a comprobar <CODE><A 
+href="http://pobox.com/~djb/qmail/sendmail.html">http://pobox.com/~djb/qmail/sendmail.html</A></CODE> 
+por grandes servidores en su migración de qmail a sendmail. 
+<P>
+<H2>2.4 ¿Qué sistemas operativos soporta qmail?</H2>
+<P>
+<P>qmail funciona en prácticamente todos los sistemas UNIX: AIX, BSD/OS, 
+FreeBSD, HP/UX, Irix, Linux, NetBSD, OpenBSD, OSF/1, SunOS, Solaris, etc. qmail 
+se autoadapta automáticamente a las nuevas variantes UNIX. 
+<P>qmail no soporta Windows NT. 
+<P>
+<H2>2.5 ¿Es cierto que hay una recompensa en metálico para quien descubra 
+agujeros de seguridad?</H2>
+<P>
+<P>Sí. Ver <CODE><A 
+href="http://pobox.com/~djb/qmail/guarantee.html">http://pobox.com/~djb/qmail/guarantee.html</A></CODE>. 
+
+<P>
+<H2><A name=s3>3. Instalación</A></H2>
+<P>
+<P>
+<H2>3.1 ¿De dónde obtengo una distribución de qmail?</H2>
+<P>
+<P>Me gustaría instalar qmail. 
+<P><B>Respuesta:</B> todas las versiones publicadas de qmail son anunciadas en 
+<CODE><A 
+href="http://pobox.com/~djb/qmail.html">http://pobox.com/~djb/qmail.html</A></CODE>. 
+Puede obtener su distribución de ahí. 
+<P>En noviembre de 1998, el paquete con la última versión de qmail es 
+<CODE>qmail-1.03.tar.gz</CODE>, cuya suma de verificación MD5 es 
+<CODE>622f65f982e380dbe86e6574f3abcb7c</CODE>. Este paquete ha sido replicado en 
+cientos de servidores a lo largo y ancho de Internet. Si quiere encontrar un 
+servidor réplica cercano a Vd., pruebe con ftpsearch, <CODE><A 
+href="http://ftpsearch.lycos.com/">http://ftpsearch.lycos.com/</A></CODE>. 
+<P>
+<H2>3.2 ¿Cómo instalo qmail? </H2>
+<P>
+<P>Siga las instrucciones, descritas paso a paso, en el fichero 
+<CODE>INSTALL</CODE> (versión en castellano en <CODE><A 
+href="http://www.es.qmail.org/documentacion/textos/INSTALL.php3">http://www.es.qmail.org/documentacion/textos/INSTALL.php3</A></CODE>). 
+Si está actualizando de una versión anterior, lea <CODE>UPGRADE</CODE> (versión 
+en castellano en <CODE><A 
+href="http://www.es.qmail.org/documentacion/textos/UPGRADE.php3">http://www.es.qmail.org/documentacion/textos/UPGRADE.php3</A></CODE>) 
+en lugar de <CODE>INSTALL</CODE>. 
+<P>
+<H2>3.3 ¿Cómo migro paulatinamente de sendmail a qmail?</H2>
+<P>
+<P>Estoy pensando en migrar la red <CODE>heaven.af.mil</CODE> a qmail, pero 
+primero me gustaría dar a mis usuarios la oportunidad de probar qmail sin 
+afectar para ello a las entregas actuales vía sendmail. Usamos NFS. 
+<P><B>Respuesta:</B> busque un servidor de su red, por ejemplo 
+<CODE>pc.heaven.af.mil</CODE>, que no ejecute en la actualidad servidor SMTP 
+alguno. (Si la gente está usando direcciones de correo tipo 
+<CODE>@pc.heaven.af.mil</CODE>, debe tener ya un registro DNS <I>MX</I> 
+redirigiendo <CODE>pc.heaven.af.mil</CODE> a su distribuidor de correo) 
+<P>Prepare un registro <I>MX</I> nuevo que redirija 
+<CODE>lists.heaven.af.mil</CODE> hacia <CODE>pc.heaven.af.mil</CODE>. Instale 
+qmail en <CODE>pc.heaven.af.mil</CODE>. sustituya <CODE>pc</CODE> por 
+<CODE>lists</CODE> en <CODE>/var/qmail/control/*</CODE>. Ponga las páginas del 
+manual de qmail a disposición de los usuarios en todas sus máquinas. 
+<P>Comunique a sus usuarios la disponibilidad de qmail. Un usuario puede 
+reenviar <CODE>joe@heaven.af.mil</CODE> a <CODE>joe@lists.heaven.af.mil</CODE> 
+si quiere que su correo sea entregado a través de qmail. Puede preparar ficheros 
+<CODE>.qmail</CODE>; puede empezar a gestionar sus propias listas de 
+distribución de correo en <CODE>@lists.heaven.af.mil</CODE>. 
+<P>Cuando esté preparado para desterrar a sendmail, establezca a 
+<CODE>pc.heaven.af.mil</CODE> como su nuevo concentrador de correo. Añada 
+<CODE>heaven.af.mil</CODE> a <CODE>/var/qmail/control/locals</CODE>, y modifique 
+el registro <I>MX</I> para que apunte a <CODE>pc.heaven.af.mil</CODE>. Asegúrese 
+de que deja <CODE>lists.heaven.af.mil</CODE> en 
+<CODE>/var/qmail/control/locals</CODE>, para que dichas direcciones transitorias 
+sigan siendo efectivas. 
+<P>
+<H2><A name=s4>4. Resolución de problemas</A></H2>
+<P>
+<P>
+<H2>4.1 ¿Qué puedo hacer si tengo problemas con qmail?</H2>
+<P>
+<P>¡Lea la documentación! la mayor parte de las posibles preguntas están 
+respondidas en 
+<P>
+<UL>
+  <LI>este compendio de preguntas de uso frecuente; 
+  <LI>las imágenes de «visión en conjunto» de qmail, (<CODE> <A 
+  href="http://pobox.com/~djb/qmail/pictures.html">http://pobox.com/~djb/qmail/pictures.html</A></CODE>) 
+  que muestran cómo qmail gestiona los distintos tipos de mensajes; 
+  <LI>el resto de páginas estilo <I>cómo-hacer</I> de 
+  <CODE>/var/qmail/doc</CODE>; y 
+  <LI>las páginas de manual de qmail de <CODE>/var/qmail/man/cat*</CODE>. 
+</LI></UL>
+<P>Sus sistema incluye una gran variedad de herramientas de monitorización que 
+pueden mostrarle qué está haciendo qmail: 
+<P>
+<UL>
+  <LI>el fichero de eventos de qmail, tal y como se detalla en 
+  <CODE>/var/qmail/doc/TEST.*</CODE>; 
+  <LI><CODE>instcheck</CODE> (en el directorio de instalación de qmail), que 
+  inspecciona su sistema en busca de problemas de instalación; 
+  <LI><CODE>qmail-showctl</CODE>, que muestra cómo interpreta qmail su 
+  configuración actual; 
+  <LI><CODE>dot-forward -n</CODE> (si ha instalado <CODE>dot-forward</CODE>), 
+  que le permite ver cómo será interpretado un fichero <CODE>.forward</CODE>; 
+  <LI><CODE>fastforward -n</CODE> (si ha instalado <CODE>fastforward</CODE>), 
+  que le permite cómo va a ser interpretada una tabla de reenvío; 
+  <LI><CODE>ps</CODE> que le permite ver que procesos se están ejecutando; 
+  <LI><CODE>recordio</CODE> (si ha instalado <CODE>ucspi-tcp</CODE>) y 
+  <CODE>tcpdump</CODE>, que le permiten ver qué datos fluyen en una conexión 
+  TCP; y 
+  <LI>una herramienta de seguimiento de llamadas al sistema, como 
+  <CODE>trace</CODE> o <CODE>truss</CODE> o <CODE>strace</CODE> o 
+  <CODE>ktrace</CODE>, que le posibilitará ver de forma exacta cómo interactúa 
+  un programa con el sistema. </LI></UL>
+<P>Si todo esto no le funciona, puede intentar pedir ayuda en la lista de correo 
+de qmail (<CODE> <A 
+href="http://pobox.com/~djb/lists.html#qmail">http://pobox.com/~djb/lists.html#qmail</A></CODE> 
+en inglés, <CODE><A 
+href="http://www.es.qmail.org/listas/">http://www.es.qmail.org/listas/</A></CODE> 
+en castellano). su mensaje debe dar respuestas completas a las siguientes 
+preguntas: 
+<P>
+<OL>
+  <LI>¿Qué hizo Vd. exactamente? 
+  <LI>¿Qué hizo exactamente la computadora? 
+  <LI>¿Qué esperaba Vd. exactamente que hiciera la computadora? </LI></OL>
+<P>Si se trata de programas de comprobación de contraseñas POP como 
+<CODE>checkpassword</CODE> y otros, intente en su lugar en la lista de correo 
+<I>password</I> (<CODE> <A 
+href="http://pobox.com/~djb/lists.html#password">http://pobox.com/~djb/lists.html#password</A></CODE>). 
+Las preguntas acerca de <CODE>serialmail</CODE> u otras relacionadas con 
+conexiones telefónicas intermitentes deben ser dirigidas a la lista de correo 
+<I>serialmail</I> (<CODE> <A 
+href="http://pobox.com/~djb/lists.html#serialmail">http://pobox.com/~djb/lists.html#serialmail</A></CODE>). 
+
+<P>
+<H2>4.2 ¿Hay soporte comercial para qmail?</H2>
+<P>
+<P>Sí. Ver <CODE><A 
+href="http://www.es.qmail.org/">http://www.es.qmail.org/</A></CODE>. 
+<P>
+<H2>4.3 ¿Dónde puedo encontrar información técnica sobre el correo en 
+Internet?</H2>
+<P>
+<P>
+<UL>
+  <LI><CODE><A 
+  href="http://pobox.com/~djb/im.html">http://pobox.com/~djb/im.html</A></CODE> 
+  explica cómo funciona la infraestructura de correo en Internet. 
+  <LI><CODE><A 
+  href="http://pobox.com/~djb/smtp.html">http://pobox.com/~djb/smtp.html</A></CODE> 
+  explica el protocolo <I>SMTP</I>, o «Protocolo Simple de Transporte de 
+  Correo». 
+  <LI><CODE><A 
+  href="http://pobox.com/~djb/immhf.html">http://pobox.com/~djb/immhf.html</A></CODE> 
+  explica el formato de las cabeceras de los mensajes. </LI></UL>
+<P>
+<H2><A name=s5>5. Control de la apariencia de los mensajes salientes.</A></H2>
+<P>
+<P>
+<H2>5.1 ¿Cómo configuro el enmascaramiento de un usuario?</H2>
+<P>
+<P>Me gustaría que mis cabeceras From mostraran <CODE>"The Boss" 
+boss@af.mil</CODE> en vez de <CODE>god@heaven.af.mil</CODE>. 
+<P><B>Respuesta:</B> añada <CODE>MAILHOST=af.mil</CODE>, 
+<CODE>MAILUSER=boss</CODE> y <CODE>and MAILNAME='The Boss'</CODE> a sus 
+variables de entorno. 
+<P>Para ignorar las cabeceras From establecidas por su Agente de Usuario de 
+Correo (<I>MUA, Mail User Agent</I>) añada <CODE>QMAILINJECT=f</CODE> a sus 
+variables de entorno. 
+<P>
+<H2>5.2 ¿Cómo enmascaro el nombre de máquina?</H2>
+<P>
+<P>Todos los usuarios de este sistema, <CODE>zippy.af.mil</CODE>, son usuarios 
+de <CODE>af.mil</CODE>. Cuando <I>joe</I> envíe un mensaje a <I>fred</I>, en el 
+mensaje debe aparecer 
+<P>
+<BLOCKQUOTE><CODE><PRE>From: joe@af.mil
+To: fred@af.mil
+</PRE></CODE></BLOCKQUOTE>
+<P>sin que aparezca <CODE>zippy</CODE> por ninguna parte. 
+<P><B>Respuesta:</B> 
+<P>
+<BLOCKQUOTE><CODE><PRE>echo af.mil &gt; /var/qmail/control/defaulthost
+chmod 644 /var/qmail/control/defaulthost
+</PRE></CODE></BLOCKQUOTE>
+<P>
+<H2>5.3 ¿Cómo establezco la cabecera <CODE>Mail-Followup-To</CODE> 
+automáticamente?</H2>
+<P>
+<P>Me gustaría incluir 
+<P>
+<BLOCKQUOTE><CODE><PRE>Mail-Followup-To: sos@heaven.af.mil
+</PRE></CODE></BLOCKQUOTE>
+<P>Siempre que envíe un mensaje a la lista de correo 
+<CODE>sos@heaven.af.mil</CODE>. 
+<P><B>Respuesta:</B> añada <CODE>QMAILMFTFILE=$HOME/.lists</CODE> a sus 
+variables de entorno, y escriba <CODE>sos@heaven.af.mil</CODE> en el fichero 
+<CODE>$HOME/.lists</CODE>. 
+<P>
+<H2><A name=s6>6. Encaminamiento de mensajes salientes</A></H2>
+<P>
+<P>
+<H2><A name=serialmail></A>6.1 ¿Cómo preparo una cola aparte para una conexión 
+SLIP/PPP?</H2>
+<P>
+<P>Use <CODE>serialmail</CODE>, (<CODE> <A 
+href="http://pobox.com/~djb/serialmail.html">http://pobox.com/~djb/serialmail.html</A></CODE>). 
+
+<P>
+<H2><A name=snd2another></A>6.2 ¿Cómo envío todos los mensajes locales a otro 
+sistema? </H2>
+<P>
+<P>Todo el correo para <CODE>af.mil</CODE> debe ser entregado a unestro servidor 
+de disco, <CODE>pokey.af.mil</CODE>. He establecido un registro DNS 
+<P>
+<BLOCKQUOTE><CODE><PRE>af.mil IN MX 10 pokey.af.mil
+</PRE></CODE></BLOCKQUOTE>
+<P>pero cuando un usuario del sistema <CODE>af.mil</CODE> envía un mensaje a 
+<CODE>boss@af.mil</CODE>, <CODE>af.mil</CODE> intenta entregarlo localmente. 
+¿Cómo lo evito? 
+<P><B>Respuesta:</B> elimine <CODE>af.mil</CODE> de 
+<CODE>/var/qmail/control/locals</CODE> y haga que qmail lea <CODE>locals</CODE> 
+(como en la pregunta <A 
+href="http://www.es.qmail.org/documentacion/distro/puf/html/qmail-PUF.entera.html#newdomains">¿Cómo 
+le digo a qmail que lea locals y virtualdomains?</A>). Asegúrese de que el 
+registro <I>MX</I> pertinente esté establecido adecuadamente antes de hacerlo. 
+Así mismo, compruebe que <CODE>pokey</CODE> acepta correo destinado a 
+<CODE>af.mil</CODE>, como se expone en la respuesta a la pregunta <A 
+href="http://www.es.qmail.org/documentacion/distro/puf/html/qmail-PUF.entera.html#rcvforanother">¿Cómo 
+recibir correo destinado a otro nombre de sistema?</A>. 
+<P>
+<H2>6.3 ¿Cómo configuro un cliente nulo?</H2>
+<P>
+<P>Me gustaría que <CODE>zippy.af.mil</CODE> enviara todo el correo a 
+<CODE>bigbang.af.mil</CODE>. 
+<P><B>Respuesta:</B> 
+<P>
+<BLOCKQUOTE><CODE><PRE>echo :bigbang.af.mil &gt; /var/qmail/control/smtproutes
+chmod 644 /var/qmail/control/smtproutes 
+</PRE></CODE></BLOCKQUOTE>
+<P>Deshabilite las entregas locales como en la pregunta <A 
+href="http://www.es.qmail.org/documentacion/distro/puf/html/qmail-PUF.entera.html#rcvforanother">¿Cómo 
+recibir correo destinado a otro nombre de sistema?</A>. Desactive el 
+<I>script</I> de inicio que llama a <CODE>tcpserver</CODE> para las conexiones 
+de <CODE>qmail-smtpd</CODE>; si todavía utiliza <CODE>inetd</CODE>, elimine o 
+comente la línea correspondiente a <CODE>qmail-smtpd</CODE> y envíe una señal 
+<I>HUP</I> a <CODE>inetd</CODE>.. 
+<P>
+<H2>6.4 ¿Cómo envío el correo saliente a través de <I>UUCP</I>?</H2>
+<P>
+<P>Necesito que qmail envíe todo el correo saliente a través de <I>UUCP</I> a mi 
+servidor <I>UUCP</I> superior, <CODE>gonzo</CODE>. 
+<P><B>Respuesta:</B> escriba 
+<P>
+<BLOCKQUOTE><CODE><PRE>:alias-uucp
+</PRE></CODE></BLOCKQUOTE>
+<P>en <CODE>/var/qmail/control/virtualdomains</CODE> y haga que qmail lea 
+<CODE>virtualdomains</CODE> como en la pregunta <A 
+href="http://www.es.qmail.org/documentacion/distro/puf/html/qmail-PUF.entera.html#newdomains">¿Cómo 
+le digo a qmail que lea locals y virtualdomains?</A>. Escriba 
+<P>
+<BLOCKQUOTE><CODE><PRE>|preline -df /usr/bin/uux - -r -gC -a"${SENDER:-MAILER-DAEMON}" gonzo!rmail "($DEFAULT@$HOST)"
+</PRE></CODE></BLOCKQUOTE>
+<P>(en una sola línea) en <CODE>~alias/.qmail-uucp-default</CODE>. (Con algunos 
+programas <I>UUCP</I> necesitará usar <CODE>-d</CODE> en lugar de 
+<CODE>-df</CODE>. 
+<P>
+<H2>6.5 ¿Cómo soluciono eso de <CODE>CNAME lookup failed temporarily</CODE>? 
+</H2>
+<P>
+<P>El fichero de registro de eventos muestra que un mensaje fue postergado por 
+esta razón. De todos modos, ¿por qué está qmail efectuando búsquedas por 
+<I>CNAME</I>? 
+<P><B>Respuesta:</B> el estándar <I>SMTP</I> no permite el uso de alias como 
+nombres de sistema destino (ver <CODE><A 
+href="http://pobox.com/~djb/im/cname.html">http://pobox.com/~djb/im/cname.html</A></CODE>), 
+así que qmail debe por tanto búsquedas DNS por <I>CNAME</I> para cada sistema 
+destinatario y remitente. 
+<P>El mensaje <CODE>CNAME lookup failed temporarily</CODE> significa que el 
+servidor DNS relevante está fuera de servicio. qmail lo intentará de nuevo 
+pronto. 
+<P>
+<P>
+<H2><A name=routebyhost></A><A name=s7>7. Encaminamiento de mensajes entrantes 
+en función de la máquina</A></H2>
+<P>
+<P>
+<H2><A name=rcvforanother></A>7.1 ¿Cómo recibo correo destinado a otro 
+sistema?</H2>
+<P>
+<P>Me gustaría que nuestro servidor de disco, <CODE>pokey.af.mil</CODE>, 
+recibiera todo el correo destinado a <CODE>af.mil</CODE>. He preparado un 
+registro DNS <I>MX</I> de <CODE>af.mil</CODE> a <CODE>pokey.af.mil</CODE>, pero 
+¿cómo hago que <CODE>pokey</CODE> trate <CODE>af.mil</CODE> como un nombre de 
+local para el sistema? 
+<P><B>Respuesta:</B> añada <CODE>af.mil</CODE> a 
+<CODE>/var/qmail/control/locals</CODE> y a 
+<CODE>/var/qmail/control/rcpthosts</CODE>. Si <CODE>qmail-send</CODE> se está 
+ejecutando, envíele una señal <I>HUP</I>. 
+<P>
+<H2>7.2 ¿Cómo configuro un dominio virtual?</H2>
+<P>
+<P>Me gustaría que todo mensaje destinado a <CODE>nowhere.mil</CODE>, incluyendo 
+<CODE>root@nowhere.mil</CODE> y <CODE>postmaster@nowhere.mil</CODE> y demás, sea 
+entregado a Bob. Ya he preparado el registro DNS <I>MX</I>. 
+<P><B>Respuesta:</B> escriba 
+<P>
+<BLOCKQUOTE><CODE><PRE>nowhere.mil:bob
+</PRE></CODE></BLOCKQUOTE>
+<P>en <CODE>control/virtualdomains</CODE>. Añada <CODE>nowhere.mil</CODE> a 
+<CODE>control/rcpthosts</CODE>. Si <CODE>qmail-send</CODE> se está ejecutando, 
+envíele una señal <I>HUP</I>. 
+<P>A partir de ahora, todo correo destinado a <CODE>quiensea@nowhere.mil</CODE> 
+será entregado localmente al usuario <I>bob-quiensea</I>. Bob puede preparar un 
+fichero <CODE>~bob/.qmail-default</CODE> que capture todas las direcciones 
+posibles por omisión, <CODE>~bob/.qmail-info</CODE> para la captura de 
+<CODE>info@nowhere.mil</CODE>, etc. 
+<P>
+<H2>7.3 ¿Cómo configuro varios dominios virtuales para un mismo usuario?</H2>
+<P>
+<P>Bob quiere otro dominio virtual, <CODE>everywhere.org</CODE>, pero quiere 
+gestionar los usuarios de <CODE>nowhere.mil</CODE> y <CODE>everywhere.org</CODE> 
+separadamente. ¿Cómo podemos hacerlo sin dar de alta una segunda cuenta? 
+<P><B>Respuesta:</B> escriba dos líneas en 
+<CODE>/var/qmail/control/virtualdomains</CODE>: 
+<P>
+<BLOCKQUOTE><CODE><PRE>nowhere.mil:bob-nowhere
+everywhere.org:bob-everywhere
+</PRE></CODE></BLOCKQUOTE>
+<P>Añada <CODE>nowhere.mil</CODE> y <CODE>everywhere.org</CODE> a 
+<CODE>/var/qmail/control/rcpthosts</CODE>. Si se está ejecutando 
+<CODE>qmail-send</CODE>, envíele una señal <I>HUP</I>. 
+<P>Ahora Bob puede preparar ficheros <CODE>.qmail-nowhere-*</CODE> y 
+<CODE>everywhere-*</CODE> separados. 
+<P>
+<H2>7.4 ¿Cómo organizo una gran red?</H2>
+<P>
+<P>Tengo muchas máquinas, y no sé por dónde empezar. 
+<P><B>Respuesta:</B> 
+<P>
+<OL>
+  <LI>Elija el nombre de dominio bajo el que sus usuarios recibirán, el correo. 
+  Este suele ser el nombre de dominio más corto que tenga bajo su control. Si 
+  está a cargo de <CODE>*.movie.edu</CODE>, puede utilizar direcciones como 
+  <CODE>joe@movie.edu</CODE>. 
+  <LI>Elija la máquina que sabrá qué hacer con los distintos usuarios de 
+  <CODE>movie.edu</CODE>. Configure un nuevo nombre para esta máquina en su DNS: 
+
+  <BLOCKQUOTE><CODE><PRE>mailhost.movie.edu IN A 1.2.3.4
+4.3.2.1.in-addr.arpa IN PTR mailhost.movie.edu
+</PRE></CODE></BLOCKQUOTE>Donde <CODE>1.2.3.4</CODE> es la dirección IP de 
+  dicha máquina. 
+  <LI>Elabore un listado de las maquinas donde deba terminar el correo. Por 
+  ejemplo, si el correo de Bob debe acabar en la estación de trabajo de Bob. 
+  añádala a la lista. Para cada una de esas máquinas, dé de alta su nombre en el 
+  sistema DNS: 
+  <BLOCKQUOTE><CODE><PRE>bobshost.movie.edu IN A 1.2.3.7
+7.3.2.1.in-addr.arpa IN PTR bobshost.movie.edu
+</PRE></CODE></BLOCKQUOTE>
+  <LI>Instale qmail en <CODE>bobshost.movie.edu</CODE>. qmail se configurará a 
+  sí mismo para aceptar mensajes para <CODE>bob@bobshost.movie.edu</CODE> y 
+  entregarlos en el buzón de Bob en <CODE>bobshost</CODE>. Haga los mismo con el 
+  resto de máquinas donde deba acabar el correo. 
+  <LI>Instale qmail en <CODE>mailhost.movie.edu</CODE>. Escriba 
+  <BLOCKQUOTE><CODE><PRE>movie.edu:alias-movie
+</PRE></CODE></BLOCKQUOTE>en el fichero 
+  <CODE>/var/qmail/control/virtualdomains</CODE> de <CODE>mailhost</CODE>. 
+  Reenvíe entonces <CODE>bob@movie.edu</CODE> a 
+  <CODE>bob@bobshost.movie.edu</CODE>, añadiendo 
+  <BLOCKQUOTE><CODE><PRE> 
+bob@bobshost.movie.edu
+</PRE></CODE></BLOCKQUOTE>a <CODE>~alias/.qmail-movie-bob</CODE>. Haga lo 
+  mismo con los demás usuarios. Si tiene muchos, debería mejor establecer dichos 
+  alias con <CODE>fastforward</CODE>, (<CODE> <A 
+  href="http://pobox.com/~djb/fastforward.html">http://pobox.com/~djb/fastforward.html</A></CODE>). 
+
+  <LI>Añada <CODE>movie.edu</CODE> al fichero 
+  <CODE>/var/qmail/control/rcpthosts</CODE> de <CODE>mailhost.movie.edu</CODE>, 
+  de manera que <CODE>mailhost.movie.edu</CODE> acepte mensajes para usuarios de 
+  <CODE>movie.edu</CODE>. 
+  <LI>Prepare un registro DNS <I>MX</I> de modo que la entrega de mensajes para 
+  <CODE>movie.edu</CODE> tenga lugar en <CODE>mailhost</CODE>: 
+  <BLOCKQUOTE><CODE><PRE>movie.edu IN MX 10 mailhost.movie.edu
+</PRE></CODE></BLOCKQUOTE>
+  <LI>En todas su máquinas, añada <CODE>movie.edu</CODE> al fichero 
+  <CODE>/var/qmail/control/defaulthost</CODE>. </LI></OL>
+<P>
+<H2><A name=routebyuser></A><A name=s8>8. Encaminamiento de mensajes entrantes 
+en función del usuario</A></H2>
+<P>
+<P>
+<H2>8.1 ¿Cómo configuro una lista de correo?</H2>
+<P>
+<P>Me gustaría que lo que llegase a <CODE>yo-sos@mi.nombrede.maquina</CODE> sea 
+reenviado a un montón de personas. 
+<P><B>Respuesta:</B> cree una lista de direcciones en el fichero 
+<CODE>~yo/.qmail-sos</CODE>, una por línea. De ese modo, todo mensaje entrante 
+para <CODE>yo-sos</CODE> será reenviado a cada una de dichas direcciones. Debe 
+además hacer un <CODE>touch ~yo/.qmail-sos-owner</CODE>, para que los mensajes 
+devueltos le lleguen a Vd. y no al remitente original. Si quiere que las 
+suscripciones sean gestionadas automáticamente, escriba 
+<P>
+<BLOCKQUOTE><CODE><PRE>| qlist2 sos mi.nombrede.maquina
+</PRE></CODE></BLOCKQUOTE>
+<P>en el fichero <CODE>~yo/.qmail-sos-request</CODE>. De este modo, cualquiera 
+que desee suscribirse podrá simplemente enviar un mensaje a 
+<CODE>yo-sos-request@mi.nombrede.maquina</CODE>. 
+<P>Alternativa: ezmlm, (<CODE> <A 
+href="http://pobox.com/~djb/ezmlm.html">http://pobox.com/~djb/ezmlm.html</A></CODE>) 
+es un gestor moderno de listas de distribución de correo, que soporta 
+suscripciones, confirmaciones y archivado de forma automática, así como gestión 
+automatizada de devoluciones (incluyendo el avisar a los subscriptores 
+comunicándoles qué mensajes se han perdido), y más. 
+<P>
+<H2>8.2 ¿Cómo creo alias que contengan puntos?</H2>
+<P>
+<P>He intentado crear un alias, con el fichero 
+<CODE>~alias/.qmail-P.D.Q.Bach</CODE>, pero no hace nada. 
+<P><B>Respuesta:</B> utilice <CODE>.qmail-p:d:q:bach</CODE>. Los puntos son 
+convertidos a dos puntos, y las letras mayúsculas a minúsculas. 
+<P>
+<H2><A name=dotforward></A>8.3 ¿Cómo uso los ficheros <CODE>.forward</CODE> de 
+sendmail con qmail? </H2>
+<P>
+<P>Instale el paquete <CODE>dot-forward</CODE>, <CODE><A 
+href="http://pobox.com/~djb/dot-forward.html">http://pobox.com/~djb/dot-forward.html</A></CODE>. 
+
+<P>
+<H2><A name=aliases></A>8.4 ¿Como utilizo <CODE>/etc/aliases</CODE> de sendmail 
+con qmail?</H2>
+<P>
+<P>Instale el paquete <CODE>fastforward</CODE>, <CODE><A 
+href="http://pobox.com/~djb/fastforward.html">http://pobox.com/~djb/fastforward.html</A></CODE>. 
+
+<P>Para hacer que <CODE>majordomo 1.94.*</CODE> funcione con qmail bajo 
+<CODE>fastforward</CODE>, inserte 
+<P>
+<BLOCKQUOTE><CODE><PRE>system("newinclude","$listdir/$clean_list");
+</PRE></CODE></BLOCKQUOTE>
+<P>antes de la línea <CODE>lclose(LIST)</CODE> en <CODE>do_subscribe</CODE> y 
+<CODE>do_unsubscribe</CODE> de majordomo. 
+<P>Remítase a <CODE><A 
+href="ftp://ftp.eyrie.org/pub/software/majordomo/mjqmail">ftp://ftp.eyrie.org/pub/software/majordomo/mjqmail</A></CODE> 
+y <CODE><A href="http://www.qmail.org/">http://www.qmail.org/</A></CODE> si 
+quiere conocer otros métodos para usar majordomo con qmail. Se espera que 
+<CODE>majordomo 2.0</CODE> soporte qmail directamente. 
+<P>
+<H2>8.5 ¿Cómo hago que qmail posponga los mensajes durante periodos de carencia 
+de servicios NFS o NIS? </H2>
+<P>
+<P>Si <CODE>~joe</CODE> desaparece repentinamente, me gustaría que se pospusiese 
+el correo para <I>joe</I>. 
+<P><B>Respuesta:</B> cree una base de datos en formato <CODE>qmail-users</CODE>, 
+de modo que qmail no compruebe ya los directorios personales ni la base de datos 
+de <CODE>passwd</CODE>. Esto requiere tres pasos: 
+<P>
+<OL>
+  <LI>Ponga su lista de usuarios completa (incluyendo contraseñas NIS y locales) 
+  en <CODE>/var/qmail/users/passwd</CODE>. 
+  <LI>Ejecute 
+  <BLOCKQUOTE><CODE><PRE>qmail-pw2u -h &lt; /var/qmail/users/passwd &gt; /var/qmail/users/assign
+</PRE></CODE></BLOCKQUOTE>Aquí <CODE>-h</CODE> significa que todos los 
+  usuarios deben tener un directorio personal; si por un casual ejecuta 
+  <CODE>qmail-pw2u</CODE> durante una caída del NFS, dará un mensaje de error y 
+  se detendrá. 
+  <LI>Ejecute 
+  <BLOCKQUOTE><CODE><PRE>qmail-newu
+</PRE></CODE></BLOCKQUOTE></LI></OL>
+<P>Asegúrese de reconstruir la base de datos cada vez que modifique la lista de 
+usuarios. 
+<P>
+<H2>8.6 ¿Cómo puedo modificar qué cuenta de usuario controla una dirección?</H2>
+<P>
+<P>He creado <CODE>~alias/.qmail-www</CODE>, pero qmail sigue teniendo en cuenta 
+<CODE>~www/.qmail</CODE>. 
+<P><B>Respuesta:</B> si ejecuta 
+<P>
+<BLOCKQUOTE><CODE><PRE>chown root ~www
+</PRE></CODE></BLOCKQUOTE>
+<P>qmail no considerará ya más a <I>www</I> como un usuario; ver 
+<CODE>/var/qmail/man/cat8/qmail-getpw.0</CODE>. Para un control más preciso 
+sobre la asignación de direcciones, ver 
+<CODE>/var/qmail/man/cat5/qmail-users.0</CODE>. 
+<P>
+<H2>8.7 ¿Cómo utilizo <CODE>procmail</CODE> con qmail?</H2>
+<P>
+<P><B>Respuesta:</B> sus usuarios deberán escribir 
+<P>
+<BLOCKQUOTE><CODE><PRE>| preline procmail
+</PRE></CODE></BLOCKQUOTE>
+<P>en <CODE>~/.qmail</CODE>. Necesitarán especificar el path completo a 
+<CODE>procmail</CODE> a menos de que esté en el <CODE>PATH</CODE> de inicio del 
+sistema. 
+<P>Si está migrando de sendmail, y los usuarios tienen a <CODE>procmail</CODE> 
+en sus ficheros <CODE>.forward</CODE>: <CODE>procmail</CODE> seguirá funcionando 
+desde los ficheros <CODE>.forward</CODE> si instala <CODE>dot-forward</CODE>, 
+ver pregunta <A 
+href="http://www.es.qmail.org/documentacion/distro/puf/html/qmail-PUF.entera.html#dotforward">¿Cómo 
+utilizo los ficheros .forward de sendmail con qmail?</A>. 
+<P>Si está migrando de sendmail, y <CODE>sendmail</CODE> utilizaba 
+<CODE>procmail</CODE> en vez del sistema <I>binmail</I>: copie 
+<CODE>/var/qmail/boot/proc</CODE> o <CODE>/var/qmail/boot/proc+df</CODE> a 
+<CODE>/var/qmail/rc</CODE>. 
+<P>
+<H2>8.8 ¿Cómo utilizo el filtro de <CODE>elm</CODE> con qmail?</H2>
+<P>
+<P><B>Respuesta:</B> sus usuarios necesitarán escribir 
+<P>
+<BLOCKQUOTE><CODE><PRE>| preline filter
+</PRE></CODE></BLOCKQUOTE>
+<P>en <CODE>~/.qmail</CODE>. 
+<P>Deberán especificar la trayectoria completa a <CODE>filter</CODE> a menos que 
+esté en el <CODE>PATH</CODE> de inicio del sistema. 
+<P>
+<H2>8.9 ¿Cómo reenvío nombres de usuarios desconocidos a otra máquina? </H2>
+<P>
+<P>Me gustaría configurar un <CODE>LUSER_RELAY</CODE> que apuntara a 
+<CODE>bigbang.af.mil</CODE>. 
+<P><B>Respuesta:</B> escriba 
+<P>
+<BLOCKQUOTE><CODE><PRE>| forward "$LOCAL"@bigbang.af.mil
+</PRE></CODE></BLOCKQUOTE>
+<P>en <CODE>~alias/.qmail-default</CODE>. 
+<P>
+<P>
+<H2><A name=s9>9. Configuración de servidores</A></H2>
+<P>
+<P>
+<H2><A name=tcpserver></A>9.1 ¿Cómo ejecuto <CODE>qmail-smtpd</CODE> 
+bajo<CODE>tcpserver</CODE>? </H2>
+<P>
+<P><CODE>inetd</CODE> resuella con cargas altas, cortando el servicio durante 
+diez minutos seguidos. También me gustaría tener mejores registros de 
+conexiones. 
+<P><B>Respuesta:</B> 
+<P>
+<OL>
+  <LI>Instale el paquete <CODE>ucspi-tcp</CODE>, (<CODE> <A 
+  href="http://pobox.com/~djb/ucspi-tcp.html">http://pobox.com/~djb/ucspi-tcp.html</A></CODE>). 
+
+  <LI>Elimine la línea <CODE>smtp</CODE> de <CODE>/etc/inetd.conf</CODE>, 
+  <LI>y añada la línea 
+  <BLOCKQUOTE><CODE><PRE>tcpserver -v -u 7770 -g 2108 0 smtp /var/qmail/bin/qmail-smtpd \
+2&gt;&amp;1 | /var/qmail/bin/splogger smtpd 3 &amp;
+</PRE></CODE></BLOCKQUOTE>a sus <I>scripts</I> de inicio. Sustituya 
+  <CODE>7770</CODE> con su uid de <I>qmaild</I>, y <CODE>2108</CODE> con el gid 
+  de su grupo <I>nofiles</I>. No olvide el <CODE>&amp;</CODE>. Este cambio 
+  entrará en vigor la próxima vez que reinicie su sistema. </LI></OL>
+<P>Por defecto, <CODE>tcpserver</CODE> permite al menos 40 conexiones 
+simultáneas de procesos <CODE>qmail-smtpd</CODE>. Para subir este límite a 400, 
+utilice <CODE>tcpserver -c 400</CODE>. Para seguir la pista a quién conecta y 
+durante cuánto, ejecute (en dos líneas) 
+<P>
+<BLOCKQUOTE><CODE><PRE>tcpserver -v -u 7770 -g 2108 0 smtp /var/qmail/bin/qmail-smtpd \
+2&gt;&amp;1 | /var/qmail/bin/splogger smtpd 3 &amp;
+</PRE></CODE></BLOCKQUOTE>
+<P>
+<H2><A name=relay></A>9.2 ¿Cómo permito a clientes concretos enviar mensajes 
+salientes a través de mi servidor SMTP?</H2>
+<P>
+<P><CODE>qmail-smtpd</CODE> está dando el error <CODE>sorry, that domain isn't 
+in my list of allowed rcpthosts (#5.7.1)</CODE> para todo mensaje destinado a 
+cualquier dominio no listado en <CODE>/var/qmail/control/rcpthosts</CODE>. 
+<P><B>Respuesta:</B> se asume que está ejecutando <CODE>qmail-smtpd</CODE> bajo 
+<CODE>tcpserver</CODE>, ver pregunta <A 
+href="http://www.es.qmail.org/documentacion/distro/puf/html/qmail-PUF.entera.html#tcpserver">¿Cómo 
+ejecuto qmail-smtpd bajo tcpserver?</A>. 
+<P>Cree un fichero <CODE>/etc/tcp.smtp</CODE> que contenga 
+<P>
+<BLOCKQUOTE><CODE><PRE>1.2.3.6:allow,RELAYCLIENT=""
+127.:allow,RELAYCLIENT=""
+</PRE></CODE></BLOCKQUOTE>
+<P>para autorizar la retransmisión de correo de clientes con direcciones IP 
+<CODE>1.2.3.6</CODE> y <CODE>127.*</CODE>. 
+<P>Ejecute 
+<P>
+<BLOCKQUOTE><CODE><PRE> 
+tcprules /etc/tcp.smtp.cdb /etc/tcp.smtp.tmp &lt; /etc/tcp.smtp
+</PRE></CODE></BLOCKQUOTE>
+<P>Inserte 
+<P>
+<BLOCKQUOTE><CODE><PRE>-x /etc/tcp.smtp.cdb
+</PRE></CODE></BLOCKQUOTE>
+<P>tras <CODE>tcpserver</CODE> en los <I>scripts</I> de inicio del sistema. El 
+cambio entrará en vigor la próxima vez que reinicie su sistema. 
+<P>Si hace cualquier cambio a <CODE>/etc/tcp.smtp</CODE>, deberá ejecutar 
+<P>
+<BLOCKQUOTE><CODE><PRE>tcprules /etc/tcp.smtp.cdb /etc/tcp.smtp.tmp &lt; /etc/tcp.smtp
+</PRE></CODE></BLOCKQUOTE>
+<P>nuevamente. No necesita reiniciar <CODE>tcpserver</CODE>. 
+<P>
+<H2><A name=fixup></A>9.3 ¿Cómo arreglo los mensajes de clientes SMTP mal 
+programados?</H2>
+<P>
+<P>Se asume que está ejecutando <CODE>qmail-smtpd</CODE> bajo 
+<CODE>tcpserver</CODE>, como en la pregunta <A 
+href="http://www.es.qmail.org/documentacion/distro/puf/html/qmail-PUF.entera.html#tcpserver">¿Cómo 
+ejecuto qmail-smtpd bajo tcpserver?</A> y que también ha configurado 
+<CODE>tcpserver</CODE> para permitir que a dichos clientes les sea retransmitido 
+el correo, como en la pregunta <A 
+href="http://www.es.qmail.org/documentacion/distro/puf/html/qmail-PUF.entera.html#relay">¿Cómo 
+permito a clientes concretos enviar mensajes salientes a través de mi servidor 
+SMTP?</A>
+<P>
+<OL>
+  <LI>Escriba 
+  <BLOCKQUOTE><CODE><PRE>fixme:fixup
+</PRE></CODE></BLOCKQUOTE>en <CODE>/var/qmail/control/virtualdomains</CODE>, y 
+  haga que qmail lo lea como en la pregunta <A 
+  href="http://www.es.qmail.org/documentacion/distro/puf/html/qmail-PUF.entera.html#newdomains">¿Cómo 
+  le digo a qmail que lea locals y virtualdomains?</A>. 
+  <LI>Escriba 
+  <BLOCKQUOTE><CODE><PRE>| bouncesaying 'Permiso denegado' [ "@$HOST" != "@fixme" ]
+| qmail-inject -f "$SENDER" -- "$DEFAULT"
+</PRE></CODE></BLOCKQUOTE>en <CODE>~alias/.qmail-fixup-default</CODE>. Inserte 
+  <CODE>@fixme</CODE> en <CODE>RELAYCLIENT</CODE> en las líneas pertinentes de 
+  <CODE>/etc/tcp.smtp</CODE>: 
+  <BLOCKQUOTE><CODE><PRE>1.2.3.6:allow,RELAYCLIENT="@fixme"
+</PRE></CODE></BLOCKQUOTE>
+  <LI>Finalmente, ejecute 
+  <BLOCKQUOTE><CODE><PRE>tcprules /etc/tcp.smtp.cdb /etc/tcp.smtp.tmp &lt; /etc/tcp.smtp
+</PRE></CODE></BLOCKQUOTE>para notificar a <CODE>tcpserver</CODE> de los 
+  cambios. No necesita reiniciar <CODE>tcpserver</CODE>. </LI></OL>
+<P>Una solución alternativa es emplear el programa experimental 
+<CODE>ofmipd</CODE>, del paquete <CODE>mess822</CODE>, <CODE><A 
+href="http://pobox.com/~djb/mess822.html">http://pobox.com/~djb/mess822.html</A></CODE>. 
+<CODE>ofmipd</CODE> incluye una base de datos integrada para reescritura de 
+líneas <CODE>From</CODE> y prestaciones más elevadas que 
+<CODE>qmail-inject</CODE> en cuanto a reescrituras de nombres de máquina. 
+<P>
+<H2>9.4 ¿Cómo envío mensajes vía SMTP a un sistema autorizado al que 
+accedotelefónicamente cuando éste realiza una conexión SMTP?</H2>
+<P>
+<P>He oído hablar de <I>ETRN</I> y <I>AutoTURN</I>. 
+<P><B>Respuesta:</B> se asume que está ejecutando <CODE>qmail-smtpd</CODE> bajo 
+<CODE>tcpserver</CODE>, como en la pregunta <A 
+href="http://www.es.qmail.org/documentacion/distro/puf/html/qmail-PUF.entera.html#tcpserver">¿Cómo 
+ejecuto qmail-smtpd bajo tcpserver?</A>. 
+<P>Instale <CODE>serialmail</CODE> (<CODE> <A 
+href="http://pobox.com/~djb/serialmail.html">http://pobox.com/~djb/serialmail.html</A></CODE> 
+y lea <CODE>/usr/local/doc/serialmail/AUTOTURN</CODE>. 
+<P><I>AutoTURN</I> funciona con clientes que envían <I>ETRN</I>. Y también con 
+los que no. 
+<P>
+<H2>9.5 ¿Cómo configuro <CODE>qmail-pop3d</CODE>?</H2>
+<P>
+<P>Mi antiguo servidor POP funciona con entrega en buzones <I>mbox</I>; me 
+gustaría migrar a entregas en buzones de formato <I>maildir</I>. 
+<P><B>Respuesta:</B> instale <CODE>ucspi-tcp</CODE> (<CODE> <A 
+href="http://pobox.com/~djb/ucspi-tcp.html">http://pobox.com/~djb/ucspi-tcp.html</A></CODE>) 
+y <CODE>checkpassword</CODE> (<CODE> <A 
+href="http://pobox.com/~djb/checkpwd.html">http://pobox.com/~djb/checkpwd.html</A></CODE>). 
+Escriba 
+<P>
+<BLOCKQUOTE><CODE><PRE>tcpserver 0 110 /var/qmail/bin/qmail-popup SUMAQUINA \
+/bin/checkpassword /var/qmail/bin/qmail-pop3d Maildir &amp;
+</PRE></CODE></BLOCKQUOTE>
+<P>(en dos líneas) en los <I>scripts</I> de inicio de su sistema; sustituya 
+<CODE>SUMAQUINA</CODE> con su <I>nombre de dominio plenamente cualificado</I> 
+(<I>FQDN</I>). Establezca la entrega en formato <I>Maildir</I> para todo usuario 
+que quiera acceder a su correo vía POP. El nuevo servicio entrará en 
+funcionamiento la próxima vez que reinicie. 
+<P>Nota en cuanto a seguridad: Sólo debe hacer esto en un entorno de red seguro; 
+de otro modo, cualquier <I>cuco</I> podrá robar contraseñas. 
+<P>Existen varios sustitutos de <CODE>checkpassword</CODE>. Ver <CODE><A 
+href="http://pobox.com/~djb/qmail/toaster.html">http://pobox.com/~djb/qmail/toaster.html</A></CODE> 
+si se desea más información. 
+<P>
+<H2>9.6 ¿Cómo configuro <CODE>qmail-qmqpd</CODE>? </H2>
+<P>
+<P>Me gustaría habilitar el encolado rápido de correo saliente para clientes 
+autorizados. 
+<P><B>Respuesta:</B> instale <CODE>ucspi-tcp</CODE>, <CODE><A 
+href="http://pobox.com/~djb/ucspi-tcp.html">http://pobox.com/~djb/ucspi-tcp.html</A></CODE>. 
+Cree un fichero <CODE>/etc/qmqp.tcp</CODE> en formato <CODE>tcprules</CODE> que 
+permita conexiones desde los clientes autorizados. Por ejemplo, si se permite 
+encolar desde <CODE>1.2.3.*</CODE>: 
+<P>
+<BLOCKQUOTE><CODE><PRE>1.2.3.:allow
+:deny
+</PRE></CODE></BLOCKQUOTE>
+<P>Convierta <CODE>/etc/qmqp.tcp</CODE> a <CODE>/etc/qmqp.cdb</CODE>: 
+<P>
+<BLOCKQUOTE><CODE><PRE> 
+tcprules /etc/qmqp.cdb /etc/qmqp.tmp &lt; /etc/qmqp.tcp
+</PRE></CODE></BLOCKQUOTE>
+<P>Ponga la línea 
+<P>
+<BLOCKQUOTE><CODE><PRE> 
+tcpserver -x /etc/qmqp.cdb -u 7770 -g 2108 0 628 /var/qmail/bin/qmail-qmqpd &amp;
+</PRE></CODE></BLOCKQUOTE>
+<P>en sus <I>scripts</I> de inicio del sistema; sustituya <CODE>7770</CODE> y 
+<CODE>2108</CODE> con el uid de <I>qmaild</I> y el gid de <I>nofiles</I>. Ver 
+pregunta <A 
+href="http://www.es.qmail.org/documentacion/distro/puf/html/qmail-PUF.entera.html#tcpserver">¿Cómo 
+ejecuto qmail-smtpd bajo tcpserver?</A> para más detalles. 
+<P>
+<H2>9.7 ¿Cómo configuro <CODE>qmail-qmtpd</CODE>?</H2>
+<P>
+<P>Instale ucspi-tcp, <CODE><A 
+href="http://pobox.com/~djb/ucspi-tcp.html">http://pobox.com/~djb/ucspi-tcp.html</A></CODE>. 
+Ponga la línea 
+<P>
+<BLOCKQUOTE><CODE><PRE>tcpserver -u 7770 -g 2108 0 209 /var/qmail/bin/qmail-qmtpd &amp;
+</PRE></CODE></BLOCKQUOTE>
+<P>en sus <I>scripts</I> de inicio del sistema; Sustituya <CODE>7770</CODE> con 
+su uid de <I>qmaild</I>, y <CODE>2108</CODE> con el gid de su grupo 
+<I>nofiles</I>. No olvide el <CODE>&amp;</CODE>. Este cambio entrará en vigor la 
+próxima vez que reinicie su sistema. 
+<P>
+<H2><A name=recordio></A>9.8 ¿Cómo registro todo el tráfico de entrada 
+SMTP?</H2>
+<P>
+<P>Se asume que está ejecutando <CODE>qmail-smtpd</CODE> bajo 
+<CODE>tcpserver</CODE>, como en la pregunta <A 
+href="http://www.es.qmail.org/documentacion/distro/puf/html/qmail-PUF.entera.html#tcpserver">¿Cómo 
+ejecuto qmail-smtpd bajo tcpserver?</A> y utiliza <CODE>tcpserver 0.84</CODE> o 
+superior, con las conexiones a <CODE>tcpserver</CODE> siendo enviadas a 
+<CODE>syslog</CODE>. 
+<P>Basta con insertar <CODE>recordio</CODE> antes de <CODE>qmail-smtpd</CODE>. 
+El tráfico SMTP será enviado a <CODE>syslog</CODE>. 
+<P>
+<P>
+<H2><A name=s10>10. Configuración de Agentes de Usuario de Correo para funcionar 
+con qmail</A></H2>
+<P>
+<P>
+<H2>10.1 ¿Cómo hago que <CODE>pine</CODE> utilice <CODE>qmail-inject</CODE> en 
+vez de SMTP? </H2>
+<P>
+<P>Tengo varios usuarios de Pine que querrían aprovechar las ventajas de las 
+prestaciones de reescritura de cabeceras de <CODE>qmail-inject</CODE>. 
+<P><B>Respuesta:</B> localice su fichero <CODE>pine.conf</CODE> de configuración 
+global del sistema y escriba 
+<P>
+<BLOCKQUOTE><CODE><PRE> 
+sendmail-path=/usr/lib/sendmail -oem -oi -t
+</PRE></CODE></BLOCKQUOTE>
+<P>en él. (Esto funcionará con sendmail también). Tenga presente que pine no es 
+ni seguro ni fiable. 
+<P>
+<H2>10.2 ¿Cómo hago que MH utilice <CODE>qmail-inject</CODE> en lugar de SMTP? 
+</H2>
+<P>
+<P>Tengo algunos usuarios de MH que querrían aprovechar las prestaciones de 
+reescritura de cabeceras de <CODE>qmail-inject</CODE>. 
+<P><B>Respuesta:</B> escriba 
+<P>
+<BLOCKQUOTE><CODE><PRE>postproc: /usr/mh/lib/spost
+</PRE></CODE></BLOCKQUOTE>
+<P>en cada uno de los ficheros de usuario <CODE>.mh_profile</CODE>. (Esto 
+funcionará con sendmail también). Tenga presente que MH no es ni seguro ni 
+fiable. 
+<P>Alternativamente, podría instalar <CODE>nmh</CODE>, utilizando 
+<P>
+<BLOCKQUOTE><CODE><PRE>./configure --with-mts=sendmail
+</PRE></CODE></BLOCKQUOTE>
+<P>antes de compilar. (Esto funcionará con sendmail también). 
+<P>
+<H2>10.3 ¿Cómo hago que los programas <CODE>mail</CODE>/<CODE>mailx</CODE> BSD 
+generen la cabecera Fecha según la zona horaria local?</H2>
+<P>
+<P>Cuando envío correo, preferiría utilizar la zona horaria local en lugar de la 
+del <I>Meridiano de Greenwich</I> (GMT), ya que hay algunos <I>Agentes de 
+Usuario de Correo</I> que no saben cómo mostrar la cabecera Fecha en la zona 
+horaria del destinatario. 
+<P><B>Respuesta:</B> ponga 
+<P>
+<BLOCKQUOTE><CODE><PRE>set sendmail=/var/qmail/bin/datemail
+</PRE></CODE></BLOCKQUOTE>
+<P>en su fichero <CODE>.mailrc</CODE> o en el <CODE>Mail.rc</CODE> de 
+configuración global. 
+<P>Tenga en cuenta que el programa BSD mail no es ni seguro ni fiable. 
+<P>
+<H2>10.4 ¿Cómo evito que el programa <CODE>dtcm</CODE> de Sun se cuelgue?</H2>
+<P>
+<P>Hay un error de programación propio de principiantes en <CODE>dtcm</CODE>, 
+conocido como «fallo al cerrar el extremo de salida de la tubería en el proceso 
+hijo». No sé si Sun lo ha arreglado en Solaris 2.7, lo siento. 
+<P>
+<P>
+<H2><A name=s11>11. Administración</A></H2>
+<P>
+<P>
+<H2><A name=newdomains></A>11.1 ¿Cómo le digo a qmail que lea locals y 
+virtualdomains? </H2>
+<P>
+<P>Acabo de modificar dichos ficheros; <CODE>qmail-send</CODE> sigue teniendo en 
+cuenta los antiguos. 
+<P><B>Respuesta:</B> localice el proceso <CODE>qmail-send</CODE> y envíele una 
+señal <I>HUP</I>. Alternativamente, si qmail se ejecuta bajo <I>supervise</I> 
+ver pregunta <A 
+href="http://www.es.qmail.org/documentacion/distro/puf/html/qmail-PUF.entera.html#supervised">¿Cómo 
+ejecuto qmail bajo supervise?</A>: 
+<P>
+<BLOCKQUOTE><CODE><PRE>svc -h /service/qmail
+</PRE></CODE></BLOCKQUOTE>
+<P>Puede en su lugar reiniciar qmail, ver respuesta a la pregunta <A 
+href="http://www.es.qmail.org/documentacion/distro/puf/html/qmail-PUF.entera.html#stopqmail">¿Cómo 
+detengo de forma segura qmail-send?</A>. <CODE>qmail-send</CODE> leerá los 
+nuevos ficheros cuando se inicie. 
+<P>
+<H2><A name=stopqmail></A>11.2 ¿Cómo detengo de forma segura 
+<CODE>qmail-send</CODE>?</H2>
+<P>
+<P>En la época en que utilizábamos <CODE>sendmail</CODE>, siempre era complicado 
+matar a <CODE>sendmail</CODE> sin comprometer la pérdida de las entregas 
+actuales; qué debo hacer con <CODE>qmail-send</CODE>? 
+<P><B>Respuesta:</B> localice el proceso <CODE>qmail-send</CODE> y mándele una 
+señal <I>TERM</I>. Se detendrá limpiamente cuando acabe con las entregas 
+actuales. Espere a que aparezca <CODE>exiting</CODE> en el fichero de registro. 
+Para reiniciar qmail, ejecute <CODE>/var/qmail/rc</CODE> del mismo modo que es 
+invocado desde sus <I>scripts</I> de inicio de sistema, con el <CODE>PATH</CODE> 
+y limitaciones de recursos apropiadas, etc. 
+<P>Alternativamente, si qmail se ejecuta <I>supervisado</I>, ver pregunta <A 
+href="http://www.es.qmail.org/documentacion/distro/puf/html/qmail-PUF.entera.html#supervised">¿Cómo 
+ejecuto qmail bajo supervise?</A>: 
+<P>
+<BLOCKQUOTE><CODE><PRE>svc -t /service/qmail
+</PRE></CODE></BLOCKQUOTE>
+<P>El proceso <CODE>supervise</CODE> matará a qmail, esperará a que se pare, y 
+lo reiniciará. Use <CODE>-d</CODE> en lugar de <CODE>-t</CODE> si no quiere que 
+qmail se reinicie automáticamente; para reiniciarlo, utilice <CODE>-u</CODE>. 
+<P>
+<H2>11.3 ¿Cómo invoco el procesado de la cola manualmente?</H2>
+<P>
+<P>Me gustaría que qmail intentase entregar todos los mensajes para 
+destinatarios remotos ahora mismo. 
+<P><B>Respuesta:</B> localice el proceso <CODE>qmail-send</CODE> y envíele una 
+señal <I>ALRM</I>. Alternativamente, si qmail se ejecuta <I>bajo supervisión</I> 
+ver pregunta <A 
+href="http://www.es.qmail.org/documentacion/distro/puf/html/qmail-PUF.entera.html#supervised">¿Cómo 
+ejecuto qmail bajo supervise?</A>: 
+<P>
+<BLOCKQUOTE><CODE><PRE>svc -a /service/qmail
+</PRE></CODE></BLOCKQUOTE>
+<P>Puede que quiera ejecutar <CODE>qmail-tcpok</CODE> primero, para garantizar 
+que <CODE>qmail-remote</CODE> pruebe con todas las direcciones. Normalmente, si 
+una dirección no está disponible de forma reiterada, <CODE>qmail-remote</CODE> 
+la deja aparte durante una hora. 
+<P>
+<H2><A name=supervised></A>11.4 ¿Cómo ejecuto qmail bajo supervisión?</H2>
+<P>
+<P>Instale <CODE>daemontools</CODE>, versión <CODE>0.60</CODE> o superior 
+(<CODE> <A 
+href="http://pobox.com/~djb/daemontools.html">http://pobox.com/~djb/daemontools.html</A></CODE>). 
+Asegúrese de que <CODE>supervise</CODE> está en el <CODE>PATH</CODE> de inicio 
+del sistema. Cree un directorio <CODE>/service/qmail</CODE>: 
+<P>
+<BLOCKQUOTE><CODE><PRE>mkdir /service/qmail
+ln -s /var/qmail/rc /service/qmail/run
+</PRE></CODE></BLOCKQUOTE>
+<P>Cambie 
+<P>
+<BLOCKQUOTE><CODE><PRE>/var/qmail/rc
+</PRE></CODE></BLOCKQUOTE>
+<P>a 
+<P>
+<BLOCKQUOTE><CODE><PRE>supervise /service/qmail
+</PRE></CODE></BLOCKQUOTE>
+<P>en sus <I>scripts</I> de inicio. Ahora podrá utilizar <CODE>svc</CODE> para 
+parar o reiniciar qmail, y <CODE>svstat</CODE> para comprobar si qmail se está 
+ejecutando. 
+<P>
+<H2><A name=syslog></A>11.5 ¿Cómo evitar <CODE>syslog</CODE>? </H2>
+<P>
+<P><CODE>syslog</CODE> consume mucho tiempo de proceso, y descarta las entradas 
+en registro bajo cargas altas. 
+<P><B>Respuesta:</B> instale <CODE>daemontools 0.60</CODE> o superior (<CODE> <A 
+href="http://pobox.com/~djb/daemontools.html">http://pobox.com/~djb/daemontools.html</A></CODE>). 
+Cree un directorio <CODE>/var/log/qmail</CODE>, cuyo propietario sea 
+<I>qmaill</I>, modo <CODE>2700</CODE>. 
+<P>sustituya 
+<P>
+<BLOCKQUOTE><CODE><PRE>splogger qmail
+</PRE></CODE></BLOCKQUOTE>
+<P>en <CODE>/var/qmail/rc</CODE> por 
+<P>
+<BLOCKQUOTE><CODE><PRE> 
+multilog t /var/log/qmail
+</PRE></CODE></BLOCKQUOTE>
+<P>Asegúrese de que <CODE>multilog</CODE> está en el <CODE>PATH</CODE> de inicio 
+del sistema. 
+<P>Por omisión, <CODE>multilog</CODE> mantiene 10 ficheros de registro 
+rotándolos automáticamente, conteniendo cada uno de hasta 100KB de datos de 
+registro. Para mantener 20 ficheros de 1MB cada uno, use <CODE>multilog t 
+s1000000 n20 /var/log/qmail</CODE>. 
+<P>Si está registrando conexiones de <CODE>tcpserver</CODE> cree un directorio 
+<CODE>/var/log/smtpd</CODE>, y use <CODE>multilog /var/log/smtpd</CODE> para 
+monitorizar <CODE>tcpserver</CODE>. No ejecute dos procesos 
+<CODE>multilog</CODE> simultáneos con el mismo directorio de registro. 
+<P>
+<H2>11.6 ¿Cómo rejuvenezco un mensaje?</H2>
+<P>
+<P>Alguien ha vuelto a entrar en la computadora de Eric otra vez; va a estar 
+fuera de servicio por lo menos dos días más. Sé que Eric ha estado esperando un 
+mensaje importante, de hecho lo veo aquí en 
+<CODE>/var/qmail/queue/mess/15/26902</CODE>. Lleva seis días en la cola; cómo 
+puedo asegurarme de que no sea devuelto mañana? 
+<P><B>Respuesta:</B> basta con hacer 
+<P>
+<BLOCKQUOTE><CODE><PRE>touch /var/qmail/queue/info/15/26902.
+</PRE></CODE></BLOCKQUOTE>
+<P>Ésta es la única forma de modificación de la cola que es segura mientras 
+qmail se esté ejecutando. 
+<P>
+<H2>11.7 ¿Cómo mantengo una copia de todos los mensajes salientes y 
+entrantes?</H2>
+<P>
+<P>Establezca <CODE>QUEUE_EXTRA</CODE> a <CODE>"Tlog\0</CODE>" y 
+<CODE>QUEUE_EXTRALEN</CODE> a <CODE>5</CODE> en <CODE>extra.h</CODE>. Recompile 
+qmail. Escriba <CODE>./msg-log</CODE> en <CODE>~alias/.qmail-log</CODE>. 
+<P>Puede utilizar <CODE>QUEUE_EXTRA</CODE> también para, por ejemplo, registrar 
+la cabecera <CODE>Message-ID</CODE> de todos los mensajes: ejecute 
+<P>
+<BLOCKQUOTE><CODE><PRE>| awk '/^$/ { exit } /^[mM][eE][sS][sS][aA][gG][eE]-/ { print }'
+</PRE></CODE></BLOCKQUOTE>
+<P>desde <CODE>~alias/.qmail-log</CODE>. 
+<P>
+<P>
+<H2><A name=s12>12. Fiabilidad</A></H2>
+<P>
+<P>
+<H2><A name=filesystems></A>12.1 ¿Qué tipo de sistemas de ficheros son seguros 
+para mail? </H2>
+<P>
+<P>La cola de qmail (salvo para los contenidos de los mensajes devueltos) está a 
+prueba de fallos si el sistema de ficheros garantiza que las operaciones de 
+escritura de byte único son atómicas y que las operaciones sobre los directorios 
+son síncronas. Este tipo de garantías son proporcionadas por el sistema de 
+ficheros BSD FFS y derivados, y por los sistemas de ficheros de tipo 
+<I>journaling</I> típicos. 
+<P>No utilice sistemas de ficheros asíncronos (o de actualización por software); 
+si lo hace, y su sistema cae en el momento inoportuno, perderá correo. Bajo 
+Linux, asegúrese de que todos los sistemas de ficheros que gestionen correo sean 
+montados con la opción <CODE>sync</CODE>. Los mismos comentarios son aplicables 
+para sendmail y otros. 
+<P>Es seguro colocar la cola de qmail en un sistema de ficheros montado 
+<CODE>noatime</CODE>. 
+<P>
+<H2><A name=backup></A>12.2 ¿Cómo hago una copia de seguridad, o la restauro, 
+del disco que aloja a la cola?</H2>
+<P>
+<P>No puede. 
+<P>Un impedimento es que no puede obtener una captura fidedigna de la cola 
+mientras que <CODE>qmail-send</CODE> esté ejecutándose. Otra es que los mensajes 
+de la cola deben tener nombres de fichero que coincidan con sus números de 
+inodo. 
+<P>No obstante, el gran problema es que las copias de seguridad (incluso 
+aquellas de frecuencia horaria) son demasiado poco fiables para correo. Si su 
+disco muere, habrá muy poca solución de continuidad entre los mensajes guardados 
+en la última copia y los que se hayan perdido. 
+<P>Existen diversos métodos para dotar de fiabilidad real a un servidor de 
+correo. Los sistemas de alimentación ininterrumpida le permitirán mantener sus 
+servidores en marcha, permitiéndole «aparcar» el disco para evitar golpes en las 
+cabezas lectoras cuando se vaya la electricidad. Los discos de estado sólido 
+tienen sus propias baterías de repuesto. Los RAID le permiten sustituir discos 
+dañados sin perder dato alguno. 
+<P>
+<P>
+<H2><A name=eficiency></A><A name=s13>13. Eficiencia</A></H2>
+<P>
+<P>
+<H2>13.1 ¿Cómo hago que qmail lleve a cabo más entregas simultáneas?</H2>
+<P>
+<P>Sólo lleva a cabo 20 procesos <CODE>qmail-remote</CODE> simultáneamente. 
+<P><B>Respuesta:</B> decida cuántas entregas quiere permitir simultáneamente. 
+Escriba dicho número en <CODE>control/concurrencyremote</CODE>. Reinicie 
+<CODE>qmail-send</CODE> como en la pregunta <A 
+href="http://www.es.qmail.org/documentacion/distro/puf/html/qmail-PUF.entera.html#stopqmail">¿Cómo 
+detengo qmail-send de forma segura?</A>
+<P>Asegúrese de que establece los límites de recursos <CODE>descriptors</CODE> y 
+<CODE>openfiles</CODE> a al menos el doble de dicha concurrencia más 5, y el 
+límite <CODE>maxproc</CODE> (si su sistema cuenta con él) a al menos la 
+concurrencia más 4. De otro modo, qmail postpondrá innecesariamente las entregas 
+cuando se produzca súbitamente una gran afluencia de correo. 
+<P>Tenga en cuenta que qmail impone asimismo un límite de concurrencia en el 
+momento de la compilación, <CODE>120</CODE> por omisión. Puede modificar esto en 
+<CODE>conf-spawn</CODE> cuando vaya a compilar. 
+<P>
+<H2><A name=largequeue></A>13.2 ¿Se adapta qmail a colas de correo 
+extremadamente grandes?</H2>
+<P>
+<P>Sí. <CODE>qmail-send</CODE> almacena los momentos de reintento de los 
+mensajes en una cola de prioridad (utilizando 8 bytes de RAM por cada mensaje en 
+la cola, 0.8MB si tuviera una cola gigantesca de 100000 mensajes por ejemplo) de 
+modo que pueda localizar rápidamente el próximo mensaje que necesita ser 
+entregado. 
+<P>Los directorios de la cola de qmail están divididos en 23 subdirectorios, y 
+por tanto la búsqueda <CODE>namei()</CODE> del sistema tiene lugar en fracciones 
+despreciables de tiempo, incluso cuando haya miles de mesajes encolados. 
+<P>El mayor límite de tamaño de la cola es el espacio en disco. Cada mensaje 
+utiliza un inodo bajo el usurio <I>qmailq</I>, otros pocos bajo el usuario 
+<I>qmails</I>, y varios bloques de datos dependiendo del tamaño del mensaje. (Si 
+quiere limitar el tamaño de la cola, establezca una cuota de inodos para el 
+usuario <I>qmailq</I>). 
+<P>
+<H2><A name=backoff></A>13.3 ¿Reintenta qmail las entregas a sistemas fuera de 
+servicio?</H2>
+<P>
+<P>Sí. qmail tiene tres prestaciones al respecto (<I>backoff</I>): 
+<P>
+<UL>
+  <LI>La entrega de cada mensaje es reintentada en base a una progresión 
+  cuadrática, con intervalos cada vez más prolongados entre los reintentos. 
+  <LI>Si un sistema remoto no responde a dos intentos de conexxión (espaciados 
+  al menos en dos minutos sin establecer con éxito ninguna conexión intermedia), 
+  qmail deja de intentar contactar con dicho sistema durante una hora. Al final 
+  de la hora, lo reintenta pausadamente, permitiendo una conexión para ver si el 
+  sistema se ha recuperado. 
+  <LI>Algunos gestores de correo <I>bombardean</I> a un sistema de modo 
+  oportunista con los mensajes postpuestos en el momento en que dicha máquina 
+  restaure el servicio. qmail no. Cada mensaje esperará hasta el momento 
+  apropiado de reintento. </LI></UL>
+<P></P></BODY></HTML>

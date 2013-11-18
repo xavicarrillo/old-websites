@@ -1,0 +1,579 @@
+
+
+
+
+
+
+Network Working Group                                          J. Postel
+Request for Comments: 1591                                           ISI
+Categoría: Informacional                                      Marzo 1994
+
+       Estructura y Delegación del Sistema de Nombres de Dominio
+
+Estado de este memorándum
+
+
+   Este memorándum proporciona información para la comunidad Internet.
+   No especifica ningún tipo de estándar de Internet. La distribución es
+   ilimitada.
+
+
+
+1. Introducción
+
+
+   Este memorándum da información sobre la estructura de los nombres en
+   el Sistema de Nombres de Dominio (Domain Name System, DNS),
+   específicamente los nombres de dominio de nivel superior; y sobre la
+   administración de dominios. La Autoridad de Números Asignados de
+   Internet (Internet Assigned Numbers Authority, IANA) es la autoridad
+   superior para las direcciones IP, los nombres de dominio, y otros
+   muchos parámetros usados en Internet. La responsabilidad día a día de
+   la asignación de direcciones IP, Números de Sistemas Autónomos y la
+   mayoría de los Nombres de Dominio de nivel superior y segundo la
+   tiene el Registro de Internet (Internet Registry, IR) y los registros
+   regionales.
+
+
+
+2. La Estructura de Nivel Superior de los Nombres de Dominio
+
+
+   El Sistema de Nombres de Dominio (Domain Name System, DNS) al dar
+   nombre a los ordenadores hay una jerarquía. La raíz del sistema no
+   tiene nombre. Hay un conjunto de lo que se conoce como "nombres de
+   dominio de nivel superior" ("top-level domain names", TLDs). Son los
+   TLDs genéricos (EDU, COM, NET, ORG, GOV, MIL, and INT), y las dos
+   letras de código de país del ISO-3166. Es muy poco probable que se
+   creen nuevos TLDs.
+
+
+   Bajo cada TLD puede crearse una jerarquía de nombres. Normalmente,
+   bajo los TLDs genéricos la estructura es muy plana. Esto es, muchas
+   organizaciones se registran directamente bajo el TLD, y cualquier
+   estructura posterior recae sobre las organizaciones individuales.
+
+
+
+Postel                                                          [Pág. 1]
+
+RFC 1591      Estructura del Sistema de Nombres de Dominio    Marzo 1994
+
+
+   En los TLDs de país, hay una amplia variedad de estructuras, en
+   algunos países la estructura es muy plana, en otros es una organi­
+   zación estructural substancial. En algunos dominios de país los
+   segundos niveles son categorías genéricas (como AC, CO, GO y RE), en
+   otros se basan en la geografía, e incluso en otros, los nombres de
+   las organizaciones se listan directamente bajo el código de país. La
+   organización para el dominio de país US se describe en el RFC 1480
+   [1].
+
+
+   Cada uno de los TLDs genéricos se creó para una categoría general de
+   organizaciones. Los dominios de código de país (por ejemplo, ES, FR,
+   NL, KR, US) están organizados cada uno por un administrador para ese
+   país. Estos administradores pueden delegar el mantenimiento de partes
+   del árbol de nombres. Estos administradores están realizando un ser­
+   vicio público en favor de la comunidad Internet. A continuación están
+   las descripciones de los dominios genéricos y del dominio de país US.
+   De estos dominios genéricos, cinco son internacionales por naturaleza
+   y dos están restringidos para uso de entidades en los Estados Unidos.
+
+
+   Dominios Genéricos a nivel mundial:
+
+
+COM - Este dominio va destinado a entidades comerciales, esto es,
+      compañías. Este dominio ha crecido enormemente y hay preocupación
+      por la carga administrativa y el rendimiento de los sistemas si el
+      ritmo de crecimiento actual continúa. Se está considerando dividir
+      el dominio COM y permitir registros futuros sólo en los subdomin­
+      ios.
+
+
+EDU - Este dominio inicialmente era para instituciones educacionales.
+      Muchas universidades, escuelas, colegios, organizaciones de servi­
+      cio educacional y consorcios de educación se han registrado aquí.
+      Recientemente se ha tomado la decisión de limitar posteriores reg­
+      istros a escuelas de 4 años (carreras de 4 años) y universidades.
+      Los colegios y las escuelas de 2 años se registrarán bajo los
+      dominios de país (ver dominio US, especialmente K12 y CC abajo).
+
+
+
+
+
+
+
+
+Postel                                                          [Pág. 2]
+
+RFC 1591      Estructura del Sistema de Nombres de Dominio    Marzo 1994
+
+
+NET - Este dominio está únicamente para los ordenadores de proveedores
+      de servicios de red, esto es, los ordenadores NIC (Centro de
+      Información de Red) y NOC, los ordenadores de administración y los
+      nodos de red. Los clientes de los proveedores de red tendrían sus
+      nombres de dominio propios (no en el TLD NET).
+
+
+ORG - Este es el dominio para organizaciones que no encajan en otro
+      sitio. Algunas organizaciones no gubernamentales pueden encajar
+      aquí.
+
+
+INT - Este dominio es el de organizaciones establecidas por tratados
+      internacionales o bases de datos internacionales.
+
+
+   Dominios Genéricos sólo para los Estados Unidos:
+
+
+GOV - Este dominio se creó originalmente para cualquier tipo de oficina
+      o agencia del gobierno. Recientemente se decidió registrar sólo
+      agencias del gobierno Federal de los Estados Unidos bajo este
+      dominio. Las agencias estatales y locales se registran en los
+      dominios de país (ver Dominio US, abajo).
+
+
+MIL - Este dominio lo usan los militares de los Estados Unidos.
+
+
+   Ejemplo de Dominio de código de país:
+
+
+US -  Como ejemplo de un dominio de país, el dominio US proporciona el
+      registro de todo tipo de entidades en los Estados Unidos basándose
+      en la geografía, esto es, una jerarquía de <nombre de enti­
+      dad>.<localización>.<código de estado>.US. Por ejemplo,
+      "IBM.Armonk.NY.US". Además, se proveen ramas del dominio US en
+      cada estado para los colegios (K12), escuelas comunitarias (CC),
+      escuelas técnicas (TEC), agencias gubernamentales (STATE), juntas
+      de gobierno (COG), bibliotecas (LIB), museos (MUS), y otros tipos
+
+
+
+
+
+
+
+Postel                                                          [Pág. 3]
+
+RFC 1591      Estructura del Sistema de Nombres de Dominio    Marzo 1994
+
+
+      genéricos de entidades (ver RFC 1480 para más detalles [1]).
+
+
+   Para encontrar un contacto de un TLD en concreto, use el programa
+   "whois" para acceder a la base de datos en rs.internic.net. Añada
+   "-dom" al nombre del TLD en el que esté interesado. Por ejemplo:
+
+                      whois -h rc.internic.net us-dom
+
+
+     o
+
+                      whois -h rc.internic.net edu-dom
+
+
+
+3. Administración de dominios delegados
+
+
+   La Autoridad de Números Asignados en Internet (IANA) es responsable
+   de la coordinación y mantenimiento del Sistema de Nombres de Dominio
+   (DNS), y especialmente de la delegación de parte del espacio de nom­
+   bres llamado dominios de nivel superior. La mayoría de los dominios
+   de nivel superior son códigos de país de dos letras extraídos del
+   estándar ISO 3166.
+
+
+   Se ha seleccionado y designado un Registro de Internet ("Internet
+   Register, IR" o RI) central para manejar el grueso de la adminis­
+   tración diaria del Sistema de Nombres de Dominio. Las peticiones de
+   nuevos dominios de nivel superior (p.ej., dominios de código de país)
+   las lleva el RI, con consultas de la IANA. El RI central es INTER­
+   NIC.NET. Los dominios de segundo nivel en COM, EDU, ORG, NET y GOV se
+   registran a través del RI en InterNIC. Los dominios de segundo nivel
+   en MIL los registra el registro DDN en NIC.DDN.MIL. Los nombres de
+   segundo nivel en INT se registran a través de PVM en ISI.EDU.
+
+
+   Mientras que las peticiones de dominios de nivel superior deben
+   enviarse a Internic (a hostmaster@internic.net), a veces se pide
+
+
+
+
+
+
+
+Postel                                                          [Pág. 4]
+
+RFC 1591      Estructura del Sistema de Nombres de Dominio    Marzo 1994
+
+
+   ayuda a los registros regionales para la administración del DNS,
+   especialmente para solucionar problemas con la administración de un
+   país. Actualmente, RIPE NCC es el registro regional de Europa y APNIC
+   el de la región Pacífico-Asiática, mientras que INTERNIC administra
+   la región de Norteamérica y todas las regiones sin delegación.
+
+
+     Los contactos para estos registros regionales son:
+
+        INTERNIC          hostmaster@internic.net
+
+        APNIC             hostmaster@apnic.net
+
+        RIPE NCC          ncc@ripe.net
+
+
+   A continuación se describe la política a seguir en el establecimiento
+   de un nuevo dominio de nivel superior. También se mencionan los
+   aspectos que aparecen cuando es necesario cambiar la delegación de un
+   dominio establecido de una parte a otra.
+
+
+   Normalmente se crea y se delega el mantenimiento de un nuevo dominio
+   de orden superior a un "administrador designado", todo a la vez.
+
+
+   La mayoría de estos aspectos son relevantes cuando se delega un sub­
+   dominio y en general se aplican estos principios recursivamente a
+   todas las delegaciones del espacio de nombres del Sistema de Nombres
+   de Dominio de Internet.
+
+
+   La mayor preocupación en la designación del administrador de un
+   dominio es que sea capaz de cumplir con las responsabilidades nece­
+   sarias y que tenga la capacidad de realizar un trabajo equitativo,
+   justo, honesto y competente.
+
+
+1) El requisito clave es que para cada dominio haya un administrador
+   asignado para supervisar el espacio de nombres de ese dominio. En el
+
+
+
+
+
+
+
+Postel                                                          [Pág. 5]
+
+RFC 1591      Estructura del Sistema de Nombres de Dominio    Marzo 1994
+
+
+   caso de dominios de orden superior que sean códigos de país esto sig­
+   nifica que hay un administrador que supervisa los nombres de dominio
+   y opera el sistema de nombres de dominio en ese país.
+
+
+   El administrador debe estar, por supuesto, en Internet. Tiene que
+   haber conectividad por Protocolo Internet ("Internet Protocol, IP") a
+   los servidores de nombres y conectividad por correo electrónico con
+   la administración y el personal del administrador.
+
+
+   Debe haber un contacto administrativo y uno técnico para cada
+   dominio. Para los dominios de nivel superior que sean códigos de
+   país, al menos el contacto administrativo debe residir en el país
+   involucrado.
+
+
+2) Estas autoridades designadas son depositarios del dominio delegado y
+   tienen el deber de servir a la comunidad.
+
+
+   El administrador designado es el depositario del dominio de nivel
+   superior tanto para el país, en el caso de un código de país, como
+   para la comunidad global de Internet.
+
+
+   Aspectos como "derechos" y "propiedad" del dominio no son apropiados.
+   Es más apropiado hablar de "responsabilidades" y "servicio" a la
+   comunidad.
+
+
+3) El administrador designado debe ser equitativo con todos los grupos
+   en el dominio que soliciten nombres de dominio.
+
+
+   Esto significa que deben aplicarse las mismas reglas a todas las
+   peticiones, todas deben procesarse sin discriminaciones y los usuar­
+   ios académicos y comerciales (u otros) se tratarán por igual. No
+   deben mostrarse predisposiciones con peticiones de clientes de algún
+   negocio relacionado con el administrador -- p.ej., no debe haber
+
+
+
+
+
+
+
+Postel                                                          [Pág. 6]
+
+RFC 1591      Estructura del Sistema de Nombres de Dominio    Marzo 1994
+
+
+   trato preferencial para clientes de un proveedor de servicios de red
+   en particular. No puede haber requerimientos de un sistema de correo
+   (u otra aplicación), protocolo o producto particulares.
+
+
+   No hay más requisitos para subdominios de dominios de niveles superi­
+   ores que los propios de los dominios de un nivel más alto.  Esto es,
+   los requisitos de este memorándum se aplican recursivamente. En par­
+   ticular, todos los subdominios tendrán la posibilidad de hacer fun­
+   cionar sus propios servidores de nombres, proporcionando cualquier
+   información que el administrador del subdominio crea apropiada (siem­
+   pre que sea verdadera y correcta).
+
+
+4) Las partes del dominio interesadas deberían coincidir en que el
+   administrador designado es el correcto.
+
+
+   La IANA intenta que las partes contendientes lleguen a un acuerdo
+   entre ellas y normalmente no toma parte para cambiar las cosas a no
+   ser que todas las partes estén de acuerdo; sólo en casos en los que
+   el administrador designado se haya portado sustancialmente mal,
+   entrará la IANA.
+
+
+   Sin embargo, también es apropiado que las partes interesadas tengan
+   algo de voz y voto al elegir al administrador.
+
+
+   Hay dos casos en los que la IANA y el RI central podrían estableces
+   un nuevo dominio de nivel superior y delegar sólo una parte de él:
+   (1) hay partes contendientes que no se ponen de acuerdo, o (2) la
+   parte solicitante puede no ser capaz de servir o representar al país
+   entero. El último caso a veces aparece cuando una parte de fuera de
+   un país intenta ayudar a iniciar la red en otro país --esto a veces
+   se llama servicio de DNS "proxy".
+
+
+   El Panel de Revisión de Nombres del DNS de Internet ("Internet DNS
+   Names Review Board, IDNB"), un comité establecido por la IANA,
+
+
+
+
+
+
+
+Postel                                                          [Pág. 7]
+
+RFC 1591      Estructura del Sistema de Nombres de Dominio    Marzo 1994
+
+
+   actuará como panel de revisión para casos en los que las partes no
+   puedan ponerse de acuerdo entre ellas. Las decisiones del IDNB serán
+   vinculantes.
+
+5) El administrador designado debe realizar un trabajo satisfactorio al
+   operar el servicio DNS del dominio.
+
+
+   Esto es, la administración de la asignación de nombres de dominio,
+   delegación de subdominios y operación de servidores de nombres debe
+   realizarse con cierta competencia técnica. Esto incluye el manten­
+   imiento del RI central (en el caso de los dominios de nivel superior)
+   o que administradores de otros dominios del nivel más alto estén al
+   tanto del estado del dominio, contesten las peticiones a tiempo y
+   operen la base de datos con precisión, robustez y elasticidad.
+
+
+   Deben haber un servidor de nombres primario y otro secundario que
+   tengan conectividad IP a Internet y que puedan ser chequeados por el
+   IR y la IANA para la precisión de la base de datos y el estado de
+   operatividad.
+
+
+   En casos de problemas persistentes con la operación apropiada del
+   dominio, puede revocarse la delegación y, posiblemente, delegarse a
+   otro administrador.
+
+
+6) Para cualquier transferencia de administración de una organización a
+   otra, el administrador del dominio del nivel inmediatamente superior
+   (la IANA en el caso de dominios de nivel superior) debe recibir comu­
+   nicaciones de la organización antigua y de la nueva que asegure a la
+   IANA que la transferencia ha sido aceptada por las dos partes y que
+   la nueva organización acepta y conoce sus responsabilidades.
+
+
+   También es de mucha ayuda para la IANA recibir comunicaciones de
+   otras partes que puedan estar interesadas o afectadas por la trans­
+   ferencia.
+
+
+
+
+
+
+
+
+Postel                                                          [Pág. 8]
+
+RFC 1591      Estructura del Sistema de Nombres de Dominio    Marzo 1994
+
+
+4. Derechos sobre los nombres
+
+
+1) Nombres y marcas registradas
+
+
+   En el caso de una disputa entre solicitantes del registro de un nom­
+   bre de dominio, así como los derechos sobre un nombre en particular,
+   la autoridad de registros no tendrá otro papel o responsabilidad que
+   el de proporcionar la información de contacto a las dos partes.
+
+
+   El registro de un nombre de dominio no tiene estatus de Marca Reg­
+   istrada. Depende del que hace la petición asegurarse de que no viola
+   ninguna marca registrada.
+
+
+2) Códigos de país
+
+
+   No depende de la IANA decidir qué es y qué no es un país. La
+   selección de la lista del ISO 3166 como base para los nombres de
+   dominio de nivel superior de códigos de país se hizo basándose en que
+   ISO tiene una forma de determinar qué entidades deberían estar o no
+   en esa lista.
+
+
+
+5. Consideraciones de seguridad
+
+
+   En este memorándum no se discuten asuntos de seguridad.
+
+
+
+6. Reconocimientos
+
+
+   Mucha gente ha hecho comentarios sobre el borrador de estas descrip­
+   ciones y procedimientos. Steve Goldstein y John Klensin han sido de
+
+
+
+
+
+
+
+Postel                                                          [Pág. 9]
+
+RFC 1591      Estructura del Sistema de Nombres de Dominio    Marzo 1994
+
+
+   gran ayuda.
+
+
+
+7. Dirección del autor
+
+
+   Jon Postel
+   USC/Information Sciences Institute
+   4676 Admiralty Way
+   Marina del Rey, CA 91292
+   Teléfono: 310-822-1511
+   Fax:      310-823-6714
+   EMail:    Postel@ISI.EDU
+
+
+
+   Traducción al castellano:
+   Carlos García Argos
+   C/Antonio Trueba, 14; 4-8-2
+   29017 MALAGA
+   ESPAÑA (SPAIN)
+   Correo Electrónico: cgasoft@yahoo.com
+
+8. Referencias
+
+
+[1] Cooper, A. y J. Postel, "El Dominio US", RFC 1480, USC/Information
+    Sciences Institute, Junio 1993.
+
+
+[2] Reynolds, J. y J. Postel, "Números asignados", STD 2, RFC 1340,
+    USC/Information Sciences Institute, Julio 1992.
+
+
+[3] Mockapetris, P., "Nombres de dominio - Conceptos y facilidades", STD
+    13, RFC 1034, USC/Information Sciences Institute, Noviembre 1987.
+
+
+
+
+
+
+
+
+
+
+Postel                                                         [Pág. 10]
+
+RFC 1591      Estructura del Sistema de Nombres de Dominio    Marzo 1994
+
+
+[4] Mockapetris, P., "Nombres de dominio - Especificación e Imple­
+    mentación", STD 13, RFC 1035, USC/Information Sciences Institute,
+    Noviembre 1987.
+
+
+[6] Partridge, C., "Rutado de correo y el sistema de dominios", STD 14,
+    RFC 974, CSNET CIC BBN, Enero 1986.
+
+
+[7] Braden, R., Editor, "Requisitos para hosts de Internet - Aplicación
+    y soporte", STD 3, RFC 1123, Internet Engineering Task Force,
+    Octubre 1989.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Postel                                                         [Pág. 11]
+

